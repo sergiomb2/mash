@@ -1,0 +1,9 @@
+# mash config file
+
+[development]
+product_path = Fedora
+debug = True
+multilib = True
+mutlib_method = devel
+tag = dist-fc7
+inherit = True

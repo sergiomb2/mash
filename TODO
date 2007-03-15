@@ -1,3 +1,2 @@
-- run createrepo
 - do multilib
 - re-run createrepo

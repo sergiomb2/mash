@@ -15,6 +15,7 @@ class MashConfig(config.BaseConfig):
     keys = config.ListOption()
     configdir = config.Option('/etc/mash')
     strict_keys = config.BoolOption(False)
+    workdir = config.Option('/var/tmp/mash')
     distros = []
     
 class MashDistroConfig(config.BaseConfig):

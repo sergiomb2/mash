@@ -1,0 +1,4 @@
+- add config parser
+- run createrepo
+- do multilib
+- re-run createrepo

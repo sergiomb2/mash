@@ -22,7 +22,7 @@ try:
 except:
     import brew as koji
 
-import mash.arch
+import arch as masharch
 
 def nevra(pkg):
     return '%s-%s:%s-%s.%s' % (pkg['name'],pkg['epoch'],pkg['version'],pkg['release'],pkg['arch'])
@@ -32,20 +32,20 @@ class PackageList:
         self._packages = {}
         self.mashconfig = config
         
-    def add(self, package)
+    def add(self, package):
         def _better_sig(a, b):
             keylist = self.mashconfig.keys
             
-            aKey = a['sigkey'].tolower()
-            bKey = b['sigkey'].tolower()
+            aKey = a['sigkey'].lower()
+            bKey = b['sigkey'].lower()
             
             try:
                 aIndex = keylist.index(aKey)
-            else:
+            except:
                 aIndex = sys.maxint
             try:
                 bIndex = keylist.index(bKey)
-            else:
+            except:
                 bIndex = sys.maxint
             
             if aIndex < bIndex:
@@ -72,29 +72,29 @@ class Mash():
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
         
-    def doCompose():
+    def doCompose(self):
         def _write_files(list, path):
             
             print "Writing out files for %s..." % (path,)
             
             for pkg in list:
-                filename = '%(name)-%(version)-%(release).%(arch).rpm' % pkg
+                filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
                 
                 dst = os.path.join(path, filename)
                 
                 z = pkg.copy()
                 z['name'] = builds_hash[z['build_id']]['package_name']
                 
-                src = os.path.join(koji.pathinfo.build(z) + koji.pathinfo.signed(pkg, pkg['sigkey'])
+                src = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
                 
                 if not os.path.exists(src):
-                    src = os.path.join(koji.pathinfo.build(z) + koji.pathinfo.rpm(pkg)
+                    src = os.path.join(koji.pathinfo.build(z), koji.pathinfo.rpm(pkg))
                     
                 if not os.path.exists(src):
-                    print "WARNING: can't find package %s" % (nevra(pkg),)
+                    print "WARNING: can't find package %s as %s" % (nevra(pkg), src)
                     continue
                 
-                if config.get(symlink):
+                if self.config.symlink:
                     os.symlink(src, dst)
                 else:
                     try:
@@ -106,82 +106,91 @@ class Mash():
         
         print "Getting package lists for %s..." % (self.config.tag)
         
-        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, rpmsigs = True)
+        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, package = 'glibc', rpmsigs = True)
         builds_hash = dict([(x['build_id'], x) for x in buildlist])
         
         print "Sorting packages..."
         
         packages = {}
         debug = {}
-        source = PackageList(config)
-        for arch in self.config.get('arches'):
-            packages[arch] = PackageList(config)
-            debug[arch] = PackageList(config)
+        source = PackageList(self.config)
+        for arch in self.config.arches:
+            packages[arch] = PackageList(self.config)
+            debug[arch] = PackageList(self.config)
             
         # Sort into lots of buckets.
         for pkg in pkglist:
             arch = pkg['arch']
-            nevra = '%s-%s:%s-%s.%s' % (pkg['name'],pkg['epoch'],pkg['version'],pkg['release'],pkg['arch'])
             
-            if pkg['name'].endswith('-debuginfo'):
+            if pkg['name'].endswith('-debuginfo') and debug.has_key(arch):
                 debug[arch].add(pkg)
+                continue
             
             if arch == 'src':
                 source.add(pkg)
+                continue
             
-            for target_arch in self.config.get('arches'):
-                if arch in mash.arch.compat(target_arch):
-                    packages[arch].add(pkg)
+            for target_arch in self.config.arches:
+                if not masharch.compat.has_key(arch):
+                    masharch.compat[arch] = ( arch, 'noarch' )
+                
+                if arch in masharch.compat[target_arch]:
+                    packages[target_arch].add(pkg)
                     
-                if config.multilib and mash.arch.biarch.has_key(target_arch):
-                    packages[arch].add(pkg)
+                if self.config.multilib and masharch.biarch.has_key(target_arch):
+                    if arch in masharch.compat[masharch.biarch[target_arch]]:
+                        packages[target_arch].add(pkg)
                     
         print "Checking signatures..."
         
         # Do some checking
         exit = 0
-        for arch in self.config.get('arches'):
+        for arch in self.config.arches:
             for pkg in packages[arch].packages() + debug[arch].packages():
-                key = pkg['sigkey'].tolower()
-                if key not in config.get('keys'):
-                    print "WARNING: package %s is not signed with preferred key (%s)" % (nevra(pkg), key)
-                    if config.get('strict_keys'):
+                key = pkg['sigkey'].lower()
+                if key not in self.config.keys:
+                    print "WARNING: package %s is not signed with a preferred key (signed with %s)" % (nevra(pkg), key)
+                    if self.config.strict_keys:
                         exit = 1
         if exit:
             sys.exit(1)
         
         # Make the trees
-        tmpdir = os.path.join(config.workdir, config.name)
-        os.mkdir(tmpdir)
+        tmpdir = os.path.join(self.config.workdir, self.config.name)
+        shutil.rmtree(tmpdir, ignore_errors = True)
+        os.makedirs(tmpdir)
         cachedir = os.path.join(tmpdir,".createrepo-cache")
-        os.mkdir(cachedir)
+        os.makedirs(cachedir)
         # Pay no attention to the harcoded values behind the curtain.
         koji.pathinfo.topdir = '/mnt/redhat/brewroot'
         
         pids = []
-        for arch in self.config.get('arches'):
-            if config.debuginfo:
-                path = os.path.join(tmpdir, debuginfo_path % (arch,))
-                os.mkdir(path)
-                _write_files(debug[arch].packages, path)
-                pid = Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+        for arch in self.config.arches:
+            if self.config.debuginfo:
+                path = os.path.join(tmpdir, self.config.debuginfo_path % { 'arch': arch })
+                os.makedirs(path)
+                _write_files(debug[arch].packages(), path)
+                pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
                 pids.append(pid)
             
-            path = os.path.join(tmpdir, rpm_path % (arch,))
-            os.mkdir(path)
-            _write_files(packages[arch].packages, path)
-            pid = Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+            path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
+            os.makedirs(path)
+            _write_files(packages[arch].packages(), path)
+            pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
             pids.append(pid)
             
         path = os.path.join(tmpdir, 'sources')
-        os.mkdir(path)
-        _write_files(source.packages, path)
-        pid = Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+        os.makedirs(path)
+        _write_files(source.packages(), path)
+        pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
         while 1:
-            p = wait()
+            try:
+                p = os.wait()
+            except:
+                break
             pids.remove(p[0])
             if len(pids) == 0:
                 break

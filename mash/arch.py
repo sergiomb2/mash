@@ -3,10 +3,10 @@
 
 
 compat = { "i386" : ("athlon", "i686", "i586", "i486", "i386", "noarch"),
-           "x86_64" : ("x86_64", "ia32e", "amd64", "noarch"),
+           "x86_64" : ("amd64", "ia32e", "x86_64", "noarch"),
            "ia64" : ("ia64", "noarch"),
            "ppc" : ("ppc", "noarch"),
-           "ppc64" : ("ppc64", "ppc64iseries", "ppc64pseries", "noarch"),
+           "ppc64" : ("ppc64pseries", "ppc64iseries", "ppc64", "noarch"),
            "s390" : ("s390", "noarch"),
            "s390x" : ("s390x",  "noarch"),
            "sparc" : ("sparcv9v", "sparcv9", "sparcv8", "sparc", "noarch"),

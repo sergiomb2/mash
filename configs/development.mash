@@ -7,3 +7,5 @@ multilib = True
 mutlib_method = devel
 tag = dist-fc7
 inherit = True
+strict_keys = False
+keys = [ '4F2A6FD2', '1AC70CE6', '30C9ECF8', 'DB42A60E', '897DA07A' ]

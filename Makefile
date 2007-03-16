@@ -1,7 +1,7 @@
 PKGNAME=mash
 VERSION=$(shell rpm -q --qf "%{VERSION}\n" --specfile ${PKGNAME}.spec)
 RELEASE=$(shell rpm -q --qf "%{RELEASE}\n" --specfile ${PKGNAME}.spec)
-HGTAG=${PKGNAME}-$(VERSION)-$(RELEASE)
+TAG=${PKGNAME}-$(VERSION)-$(RELEASE)
 PKGRPMFLAGS=--define "_topdir ${PWD}" --define "_specdir ${PWD}" --define "_sourcedir ${PWD}/dist" --define "_srcrpmdir ${PWD}" --define "_rpmdir ${PWD}" --define "_builddir ${PWD}"
 
 RPM="noarch/${PKGNAME}-$(VERSION)-$(RELEASE).noarch.rpm"
@@ -14,7 +14,7 @@ all:
 	@echo "Nothing to do"
 
 tag:
-	@hg tag -m "$(HGTAG)" $(HGTAG)
+#	@hg tag -m "$(HGTAG)" $(HGTAG)
 #	@hg push
 
 archive:

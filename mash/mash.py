@@ -118,7 +118,7 @@ class Mash():
         
         print "Getting package lists for %s..." % (self.config.tag)
         
-        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, package = 'glibc', rpmsigs = True)
+        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, package = 'kernel', rpmsigs = True)
         builds_hash = dict([(x['build_id'], x) for x in buildlist])
         
         print "Sorting packages..."
@@ -134,8 +134,9 @@ class Mash():
         for pkg in pkglist:
             arch = pkg['arch']
             
-            if pkg['name'].endswith('-debuginfo') and debug.has_key(arch):
-                debug[arch].add(pkg)
+            if pkg['name'].find('-debuginfo') != -1:
+                if debug.has_key(arch):
+                    debug[arch].add(pkg)
                 continue
             
             if arch == 'src':
@@ -161,6 +162,8 @@ class Mash():
             for pkg in packages[arch].packages() + debug[arch].packages():
                 key = pkg['sigkey'].lower()
                 if key not in self.config.keys:
+                    if key == '':
+                        key = 'no key'
                     print "WARNING: package %s is not signed with a preferred key (signed with %s)" % (nevra(pkg), key)
                     if self.config.strict_keys:
                         exit = 1
@@ -182,19 +185,19 @@ class Mash():
                 path = os.path.join(tmpdir, self.config.debuginfo_path % { 'arch': arch })
                 os.makedirs(path)
                 _write_files(debug[arch].packages(), path)
-                pid = _runCreateRepo(path, cachedir)
+                pid = self._runCreateRepo(path, cachedir)
                 pids.append(pid)
             
             path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
             os.makedirs(path)
             _write_files(packages[arch].packages(), path)
-            pid = _runCreateRepo(path, cachedir)
+            pid = self._runCreateRepo(path, cachedir)
             pids.append(pid)
             
         path = os.path.join(tmpdir, 'sources')
         os.makedirs(path)
         _write_files(source.packages(), path)
-        pid = _runCreateRepo(path, cachedir)
+        pid = self._runCreateRepo(path, cachedir)
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
@@ -297,9 +300,9 @@ cache=1
                     
             for pkg in os.listdir(repodir):
                 if pkg not in filelist:
-                    os.unlink(os.path.join(repodir, pkg)
+                    os.unlink(os.path.join(repodir, pkg))
             
-            pid = _runCreateRepo(path, cachedir)
+            pid = self._runCreateRepo(path, cachedir)
             pids.append(pid)
 
         print "Waiting for createrepo to finish..."

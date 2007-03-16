@@ -9,6 +9,7 @@ setup(name='mash',
       url='http://move/along/nothing/to/see/here/',
       license='GPL',
       packages=['mash'],
+      scripts = ['mashbin'],
       data_files=[('/etc/mash', glob.glob('config/*'))]
       )
 

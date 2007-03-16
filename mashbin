@@ -13,6 +13,6 @@ for dist in conf.distros:
     if dist.name == 'cow':
         themash = mash.Mash(dist)
 
-#themash.doCompose()
+themash.doCompose()
 
-themash.doMultilib()
+#themash.doMultilib()

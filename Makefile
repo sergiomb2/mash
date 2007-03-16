@@ -14,8 +14,6 @@ all:
 	@echo "Nothing to do"
 
 tag:
-#	@hg tag -m "$(HGTAG)" $(HGTAG)
-#	@hg push
 
 archive:
 	@rm -rf ${PKGNAME}-$(VERSION)/

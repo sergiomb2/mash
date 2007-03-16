@@ -10,6 +10,6 @@ setup(name='mash',
       license='GPL',
       packages=['mash'],
       scripts = ['mashbin'],
-      data_files=[('/etc/mash', glob.glob('config/*'))]
+      data_files=[('/etc/mash', glob.glob('configs/*'))]
       )
 

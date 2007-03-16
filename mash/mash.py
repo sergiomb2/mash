@@ -76,6 +76,13 @@ class Mash():
     def __init__(self, config):
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
+
+    def _runCreateRepo(self, path, cachedir, background = True):
+        pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+        if not background:
+            os.waitpid(pid)
+        return pid
+        
         
     def doCompose(self):
         def _write_files(list, path):
@@ -175,19 +182,19 @@ class Mash():
                 path = os.path.join(tmpdir, self.config.debuginfo_path % { 'arch': arch })
                 os.makedirs(path)
                 _write_files(debug[arch].packages(), path)
-                pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+                pid = _runCreateRepo(path, cachedir)
                 pids.append(pid)
             
             path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
             os.makedirs(path)
             _write_files(packages[arch].packages(), path)
-            pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+            pid = _runCreateRepo(path, cachedir)
             pids.append(pid)
             
         path = os.path.join(tmpdir, 'sources')
         os.makedirs(path)
         _write_files(source.packages(), path)
-        pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+        pid = _runCreateRepo(path, cachedir)
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
@@ -215,6 +222,7 @@ class Mash():
             print "Invalid multilib method %s" % (self.config.multilib_method,)
             return
         
+        pids = []
         for arch in self.config.arches:
             
             if arch not in masharch.biarch.keys():
@@ -285,5 +293,21 @@ cache=1
                 
                 if file not in filelist:
                     print "added %s" % (file,)
+                    filelist.append(pkg)
+                    
+            for pkg in os.listdir(repodir):
+                if pkg not in filelist:
+                    os.unlink(os.path.join(repodir, pkg)
+            
+            pid = _runCreateRepo(path, cachedir)
+            pids.append(pid)
 
-            # at this point we remove the unneeded biarch packages and run creatrepo
+        print "Waiting for createrepo to finish..."
+        while 1:
+            try:
+                p = os.wait()
+            except:
+                break
+            pids.remove(p[0])
+            if len(pids) == 0:
+                break

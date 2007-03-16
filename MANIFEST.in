@@ -3,4 +3,5 @@ include ChangeLog
 include COPYING
 include configs/*
 include README
-
+include TODO
+include mash.spec

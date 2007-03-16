@@ -35,10 +35,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING GPL README TODO
+%doc AUTHORS ChangeLog COPYING README TODO
 %config(noreplace) %{_sysconfdir}/mash
-%{python_sitelib}/pypungi
-%{_bindir}/pungi
+%{python_sitelib}/mash
+%{_bindir}/*
 
 
 %changelog

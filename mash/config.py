@@ -1,9 +1,12 @@
 #!/usr/bin/python -tt
 
-from yum import config
-from ConfigParser import RawConfigParser
 import os
 import glob
+import string
+
+from ConfigParser import RawConfigParser
+
+from yum import config
 
 class MashConfig(config.BaseConfig):
     symlink = config.BoolOption(False)
@@ -11,6 +14,7 @@ class MashConfig(config.BaseConfig):
     debuginfo = config.BoolOption(True)
     debuginfo_path = config.Option('%(arch)s/debug')
     multilib = config.BoolOption(True)
+    multilib_method = config.Option('devel')
     arches = config.ListOption()
     keys = config.ListOption()
     configdir = config.Option('/etc/mash')
@@ -26,6 +30,7 @@ class MashDistroConfig(config.BaseConfig):
     debuginfo = config.Inherit(MashConfig.debuginfo)
     debuginfo_path = config.Inherit(MashConfig.debuginfo_path)
     multilib = config.Inherit(MashConfig.multilib)
+    multilib_method = config.Inherit(MashConfig.multilib_method)
     arches = config.Inherit(MashConfig.arches)
     tag = config.Option()
     inherit = config.BoolOption(True)
@@ -40,8 +45,7 @@ def readMainConfig(conf):
     parser.read(conf)
     config.populate(parser, 'defaults')
     config.parser = parser
-    for key in config.keys:
-        key = key.lower()
+    config.keys = map(string.lower, config.keys)
     
     for section in config.parser.sections():
         if section == 'defaults':
@@ -49,8 +53,7 @@ def readMainConfig(conf):
         
         thisdistro = MashDistroConfig()
         thisdistro.populate(parser, section)
-        for key in thisdistro.keys:
-            key = key.lower()
+        thisdistro.keys = map(string.lower, thisdistro.keys)
         config.distros.append(thisdistro)
     
     if os.path.isdir(config.configdir):
@@ -62,8 +65,7 @@ def readMainConfig(conf):
                 thisdistro.populate(parser, sect, config)
                 if not thisdistro.name:
                     thisdistro.name = sect
-                for key in thisdistro.keys:
-                    key = key.lower()
+                thisdistro.keys = map(string.lower, thisdistro.keys)
                 config.distros.append(thisdistro)
     return config
 

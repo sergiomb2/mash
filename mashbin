@@ -1,0 +1,18 @@
+#!/usr/bin/python
+
+import sys
+import os
+sys.path.append('./mash')
+
+import config
+import mash
+
+conf = config.readMainConfig('./configs/mash.conf')
+
+for dist in conf.distros:
+    if dist.name == 'cow':
+        themash = mash.Mash(dist)
+
+#themash.doCompose()
+
+themash.doMultilib()

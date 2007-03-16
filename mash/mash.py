@@ -21,8 +21,13 @@ try:
     import koji
 except:
     import brew as koji
+import rpm
+import yum
 
 import arch as masharch
+import multilib
+
+import rpmUtils.arch
 
 def nevra(pkg):
     return '%s-%s:%s-%s.%s' % (pkg['name'],pkg['epoch'],pkg['version'],pkg['release'],pkg['arch'])
@@ -194,4 +199,91 @@ class Mash():
             pids.remove(p[0])
             if len(pids) == 0:
                 break
+    
+    def doMultilib(self):
         
+        if not self.config.multilib:
+            return
+        
+        try:
+            method = { 'devel'   : multilib.DevelMultilibMethod,
+                       'file'    : multilib.FileMultilibMethod,
+                       'all'     : multilib.AllMultilibMethod,
+                       'none'    : multilib.MultilibMethod,
+                       'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method]()
+        except KeyError:
+            print "Invalid multilib method %s" % (self.config.multilib_method,)
+            return
+        
+        for arch in self.config.arches:
+            
+            if arch not in masharch.biarch.keys():
+                continue
+            
+            print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
+            repodir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
+            cachedir = os.path.join(self.config.workdir, "yumcache")
+            rpmdb = os.path.join(self.config.workdir, "%s-%s.rpm" % (self.config.name, arch))
+            
+            yumbase = yum.YumBase()
+            rpmUtils.arch.canonArch = arch
+            
+            yconfig = """
+[main]
+debuglevel=2
+pkgpolicy=newest
+exactarch=1
+gpgcheck=0
+reposdir=/dev/null
+cachedir=%s
+installroot=%s
+
+[%s]
+name=%s
+baseurl=file://%s
+enabled=1
+cache=1
+""" % (cachedir, rpmdb, self.config.name, self.config.name, repodir)
+            shutil.rmtree(cachedir)
+            os.makedirs(cachedir)
+            shutil.rmtree(os.path.join(rpmdb), ignore_errors = True)
+            os.makedirs(os.path.join(rpmdb,'var/lib/rpm'))
+            yconfig_path = os.path.join(self.config.workdir, 'yum.conf-%s-%s' % (self.config.name, arch))
+            f = open(yconfig_path, 'w')
+            f.write(yconfig)
+            f.close()
+            yumbase.doConfigSetup(fn=yconfig_path)
+            yumbase.doRepoSetup()
+            yumbase.doTsSetup()
+            yumbase.doRpmDBSetup()
+            # Nggh.
+            yumbase.ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
+            archlist = masharch.compat[arch] + masharch.compat[masharch.biarch[arch]]
+            yumbase.doSackSetup(archlist = archlist, thisrepo=self.config.name)
+            
+            yumbase.doSackFilelistPopulate()
+
+            filelist = []
+            
+            for pkg in os.listdir(repodir):
+                try:
+                    ypkg = yum.YumLocalPackage(ts = yumbase.ts, filename = os.path.join(repodir, pkg))
+                    if ypkg.arch in masharch.compat[arch]:
+                        yumbase.tsInfo.addInstall(ypkg)
+                        filelist.append(pkg)
+                    elif method.select(ypkg):
+                        yumbase.tsInfo.addInstall(ypkg)
+                        filelist.append(pkg)
+                except:
+                    if pkg.endswith('.rpm'):
+                        print "WARNING: Could not open %s" % (pkg,)
+                    continue
+                
+            yumbase.resolveDeps()
+            for f in yumbase.tsInfo.getMembers():
+                file = os.path.basename(f.po.localPkg())
+                
+                if file not in filelist:
+                    print "added %s" % (file,)
+
+            # at this point we remove the unneeded biarch packages and run creatrepo

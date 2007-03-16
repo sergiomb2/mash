@@ -1,6 +1,6 @@
 # mash config file
 
-[cow]
+[development]
 rpm_path = %(arch)s/os/Fedora
 debuginfo = True
 multilib = True

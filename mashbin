@@ -10,7 +10,7 @@ import mash
 conf = config.readMainConfig('./configs/mash.conf')
 
 for dist in conf.distros:
-    if dist.name == 'cow':
+    if dist.name == 'development':
         themash = mash.Mash(dist)
 
 themash.doCompose()

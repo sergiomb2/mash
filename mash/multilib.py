@@ -2,6 +2,15 @@
 
 class MultilibMethod():
     def __init__(self):
+        self.name = 'base'
+        self.prefer_64 = [ 'kernel', 'gdb', 'frysk' ]
+    def select(self, po):
+        if po.arch.find('64') != -1 and po.name in self.prefer_64:
+            return True
+        return False
+
+class NoMultilibMethod():
+    def __init__(self):
         self.name = 'none'
         
     def select(self, po):
@@ -14,15 +23,6 @@ class AllMultilibMethod(MultilibMethod):
     def select(self, po):
         return True
     
-class DevelMultilibMethod(MultilibMethod):
-    def __init__(self):
-        self.name = 'devel'
-    
-    def select(self, po):
-        if po.name.endswith('-devel'):
-            return True
-        return False
-
 class FileMultilibMethod(MultilibMethod):
     def __init__(self, file):
         self.name = 'file'
@@ -45,15 +45,35 @@ class FileMultilibMethod(MultilibMethod):
 class RuntimeMultilibMethod(MultilibMethod):
     def __init__(self):
         self.name = 'runtime'
-        # haaaaaack. This is an example. Don't use this.
-        self.libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64',
-                         '/usr/lib/mysql', '/usr/lib64/mysql', 
-                         '/usr/lib/qt-3.3/lib', '/usr/lib64/qt-3.3/lib' ]
+        self.libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
     
     def select(self, po):
+        if MultlibMethod.select(po):
+            return True
         for file in po.filenames:
             (dirname, filename) = file.rsplit('/', 1)
+            # libraries in standard dirs
             if dirname in self.libdirs and fnmatch(filename, '*.so.*'):
                 return True
+            # pam
+            if dirname in [ '/lib/security', '/lib64/security' ]:
+                return True
+            # nss
+            if dirname in [ '/lib', '/lib64' ] and filename.startswith('libnss_'):
+                return True
+            # mysql, qt, etc.
+            if dirname == '/etc/ld.so.conf.d' and filename.endswith('.conf'):
+                return True
+        return False
+
+class DevelMultilibMethod(RuntimeMultilibMethod):
+    def __init__(self):
+        self.name = 'devel'
+    
+    def select(self, po):
+        if RuntimeMultilibMethod.select(po):
+            return True
+        if po.name.endswith('-devel'):
+            return True
         return False
 

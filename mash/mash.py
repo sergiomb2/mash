@@ -118,7 +118,7 @@ class Mash():
         
         print "Getting package lists for %s..." % (self.config.tag)
         
-        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, package = 'kernel', rpmsigs = True)
+        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, rpmsigs = True)
         builds_hash = dict([(x['build_id'], x) for x in buildlist])
         
         print "Sorting packages..."
@@ -219,12 +219,13 @@ class Mash():
             method = { 'devel'   : multilib.DevelMultilibMethod,
                        'file'    : multilib.FileMultilibMethod,
                        'all'     : multilib.AllMultilibMethod,
-                       'none'    : multilib.MultilibMethod,
+                       'none'    : multilib.NoMultilibMethod,
                        'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method]()
         except KeyError:
             print "Invalid multilib method %s" % (self.config.multilib_method,)
             return
         
+        cachedir = os.path.join(self.config.workdir, self.config.name, ".createrepo-cache")
         pids = []
         for arch in self.config.arches:
             
@@ -233,8 +234,8 @@ class Mash():
             
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
             repodir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
-            cachedir = os.path.join(self.config.workdir, "yumcache")
-            rpmdb = os.path.join(self.config.workdir, "%s-%s.rpm" % (self.config.name, arch))
+            tmpdir = os.path.join(self.config.workdir, "%s-%s.tmp" % (self.config.name, arch))
+            yumcachedir = os.path.join(tmpdir, "yumcache")
             
             yumbase = yum.YumBase()
             rpmUtils.arch.canonArch = arch
@@ -253,17 +254,16 @@ installroot=%s
 name=%s
 baseurl=file://%s
 enabled=1
-cache=1
-""" % (cachedir, rpmdb, self.config.name, self.config.name, repodir)
-            shutil.rmtree(cachedir)
-            os.makedirs(cachedir)
-            shutil.rmtree(os.path.join(rpmdb), ignore_errors = True)
-            os.makedirs(os.path.join(rpmdb,'var/lib/rpm'))
-            yconfig_path = os.path.join(self.config.workdir, 'yum.conf-%s-%s' % (self.config.name, arch))
+""" % (yumcachedir, tmpdir, self.config.name, self.config.name, repodir)
+            shutil.rmtree(tmpdir, ignore_errors = True)
+            os.makedirs(yumcachedir)
+            os.makedirs(os.path.join(tmpdir,'var/lib/rpm'))
+            yconfig_path = os.path.join(tmpdir, 'yum.conf-%s-%s' % (self.config.name, arch))
             f = open(yconfig_path, 'w')
             f.write(yconfig)
             f.close()
             yumbase.doConfigSetup(fn=yconfig_path)
+            yumbase.conf.cache = 0
             yumbase.doRepoSetup()
             yumbase.doTsSetup()
             yumbase.doRpmDBSetup()
@@ -277,6 +277,8 @@ cache=1
             filelist = []
             
             for pkg in os.listdir(repodir):
+                if not pkg.endswith('.rpm'):
+                    continue
                 try:
                     ypkg = yum.YumLocalPackage(ts = yumbase.ts, filename = os.path.join(repodir, pkg))
                     if ypkg.arch in masharch.compat[arch]:
@@ -284,11 +286,10 @@ cache=1
                         filelist.append(pkg)
                     elif method.select(ypkg):
                         yumbase.tsInfo.addInstall(ypkg)
+                        print "Adding package %s for multlib" %  (pkg,)
                         filelist.append(pkg)
                 except:
-                    if pkg.endswith('.rpm'):
-                        print "WARNING: Could not open %s" % (pkg,)
-                    continue
+                    print "WARNING: Could not open %s" % (pkg,)
                 
             yumbase.resolveDeps()
             for f in yumbase.tsInfo.getMembers():
@@ -299,10 +300,11 @@ cache=1
                     filelist.append(pkg)
                     
             for pkg in os.listdir(repodir):
-                if pkg not in filelist:
+                if pkg.endswith('.rpm') and pkg not in filelist:
+                    print "removing %s" % (pkg,)
                     os.unlink(os.path.join(repodir, pkg))
             
-            pid = self._runCreateRepo(path, cachedir)
+            pid = self._runCreateRepo(repodir, cachedir)
             pids.append(pid)
 
         print "Waiting for createrepo to finish..."
@@ -314,3 +316,7 @@ cache=1
             pids.remove(p[0])
             if len(pids) == 0:
                 break
+        
+        shutil.rmtree(tmpdir, ignore_errors = True)
+        shutil.rmtree(cachedir, ignore_errors = True)
+        

@@ -15,4 +15,4 @@ for dist in conf.distros:
 
 themash.doCompose()
 
-#themash.doMultilib()
+themash.doMultilib()

@@ -1,11 +1,13 @@
 #!/usr/bin/python -tt
 
+from fnmatch import fnmatch
+
 class MultilibMethod():
     def __init__(self):
         self.name = 'base'
-        self.prefer_64 = [ 'kernel', 'gdb', 'frysk' ]
     def select(self, po):
-        if po.arch.find('64') != -1 and po.name in self.prefer_64:
+        prefer_64 = [ 'kernel', 'kernel-kdump', 'gdb', 'frysk' ]
+        if po.arch.find('64') != -1 and po.name in prefer_64:
             return True
         return False
 
@@ -45,15 +47,15 @@ class FileMultilibMethod(MultilibMethod):
 class RuntimeMultilibMethod(MultilibMethod):
     def __init__(self):
         self.name = 'runtime'
-        self.libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
     
     def select(self, po):
-        if MultlibMethod.select(po):
+        libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
+        if MultilibMethod.select(self,po):
             return True
         for file in po.filenames:
             (dirname, filename) = file.rsplit('/', 1)
             # libraries in standard dirs
-            if dirname in self.libdirs and fnmatch(filename, '*.so.*'):
+            if dirname in libdirs and fnmatch(filename, '*.so.*'):
                 return True
             # pam
             if dirname in [ '/lib/security', '/lib64/security' ]:
@@ -71,7 +73,7 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
         self.name = 'devel'
     
     def select(self, po):
-        if RuntimeMultilibMethod.select(po):
+        if RuntimeMultilibMethod.select(self,po):
             return True
         if po.name.endswith('-devel'):
             return True

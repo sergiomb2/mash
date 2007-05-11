@@ -28,7 +28,7 @@ def main():
     
     conf = mash.config.readMainConfig(opts.config)
     
-    if opts.outputdir == "":
+    if opts.outputdir != "":
         conf.workdir = opts.outputdir
         
     dists = []

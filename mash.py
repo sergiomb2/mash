@@ -10,7 +10,7 @@ import mash.config
     
 def main():
     usage = "usage: %prog [options] <configuration to build>"
-    parser = OptionParser(usage, version='%prog 0.1.2')
+    parser = OptionParser(usage, version='%prog 0.1.3')
     parser.add_option("-o","--outputdir",default="", dest="outputdir",
       help="output directory")
     parser.add_option("-c","--config", default="/etc/mash/mash.conf", dest="config",
@@ -30,6 +30,8 @@ def main():
     
     if opts.outputdir != "":
         conf.workdir = opts.outputdir
+        for dist in conf.distros:
+            dist.workdir = opts.outputdir
         
     dists = []
     for dist in conf.distros:

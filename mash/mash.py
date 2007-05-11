@@ -210,8 +210,7 @@ class Mash:
         os.makedirs(tmpdir)
         cachedir = os.path.join(tmpdir,".createrepo-cache")
         os.makedirs(cachedir)
-        # Pay no attention to the harcoded values behind the curtain.
-        koji.pathinfo.topdir = '/mnt/koji'
+        koji.pathinfo.topdir = self.config.reopdir
         
         pids = []
         for arch in self.config.arches:

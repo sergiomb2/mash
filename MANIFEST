@@ -8,7 +8,7 @@ mash.spec
 setup.py
 configs/development.mash
 configs/mash.conf
+mash/__init__.py
 mash/arch.py
 mash/config.py
-mash/__init__.py
 mash/multilib.py

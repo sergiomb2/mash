@@ -5,15 +5,12 @@ import os
 
 from optparse import OptionParser
 
-sys.path.append('./mash')
-
-import config
 import mash
-
+import mash.config
     
 def main():
     usage = "usage: %prog [options] <configuration to build>"
-    parser = OptionParser(usage)
+    parser = OptionParser(usage, version='%prog 0.1.0')
     parser.add_option("-o","--outputdir",default="", dest="outputdir",
       help="output directory")
     parser.add_option("-c","--config", default="/etc/mash/mash.conf", dest="config",
@@ -21,33 +18,33 @@ def main():
     (opts, args) = parser.parse_args()
     
     if len(args) < 1:
+        print "ERROR: No configuration specified!\n"
+        parser.print_help()
+        sys.exit(1)
+    if len(args) > 1:
+        print "ERROR: Only one configuration at a time, please.\n"
         parser.print_help()
         sys.exit(1)
     
-    conf = config.readMainConfig(opts.config)
+    conf = mash.config.readMainConfig(opts.config)
     
     if opts.outputdir == "":
         conf.workdir = opts.outputdir
         
     dists = []
     for dist in conf.distros:
-        dists.append(name)
-    err = 0
-    for arg in args:
-        if arg not in dists:
-            print "ERROR: No configuration named '%s'\n" % (arg,)
-            err = 1
-    if err:
-        parser.print_help()
-        sys.exit(1)
-                
-    for dist in args:
-        themash = mash.Mash(dist)
+        if dist.name == args[0]:
+            themash = mash.Mash(dist)
         
-        themash.doCompose()
-        themash.doMultilib()
+            themash.doCompose()
+            themash.doMultilib()
         
-        print "mash done in %s/%s" % (conf.workdir, dist)
+            print "mash done in %s/%s" % (conf.workdir, dist)
+            sys.exit(0)
+
+    print "ERROR: No configuration named '%s'!\n" % (args[0],)
+    parser.print_help()
+    sys.exit(1)
 
 if __name__ == '__main__':
     main()

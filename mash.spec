@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.0.1
+Version:        0.1.0
 Release:        1%{?dist}
 Summary:        Buildsystem -> tree converter
 Group:          Development/Tools
@@ -28,6 +28,7 @@ any multlib RPMs necesary.
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
+mv $RPM_BUILD_ROOT/%{_bindir}/mash.py $RPM_BUILD_ROOT/%{_bindir}/mash
  
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -9,4 +9,4 @@ tag = f7-final
 inherit = True
 strict_keys = False
 keys = 4F2A6FD2, 1AC70CE6, 30C9ECF8, DB42A60E, 897DA07A
-arches = x86_64
+arches = i386 x86_64 ppc ppc64

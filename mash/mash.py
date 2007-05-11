@@ -332,7 +332,7 @@ enabled=1
                 
                 if file not in filelist:
                     print "added %s" % (file,)
-                    filelist.append(pkg)
+                    filelist.append(file)
                     
             for pkg in os.listdir(pkgdir):
                 if pkg.endswith('.rpm') and pkg not in filelist:

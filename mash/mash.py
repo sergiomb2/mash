@@ -72,7 +72,7 @@ class PackageList:
     def packages(self):
         return self._packages.values()
     
-class Mash():
+class Mash:
     def __init__(self, config):
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
@@ -82,8 +82,7 @@ class Mash():
         if not background:
             os.waitpid(pid)
         return pid
-        
-        
+
     def doCompose(self):
         def _write_files(list, path):
             
@@ -95,7 +94,9 @@ class Mash():
                 dst = os.path.join(path, filename)
                 
                 z = pkg.copy()
-                z['name'] = builds_hash[z['build_id']]['package_name']
+                z['name'] = builds_hash[pkg['build_id']]['package_name']
+                z['version'] = builds_hash[pkg['build_id']]['version']
+                z['release'] = builds_hash[pkg['build_id']]['release']
                 
                 src = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
                 
@@ -114,6 +115,16 @@ class Mash():
                     except:
                         shutil.copyfile(src, dst)
 
+        def has_any(l1, l2):
+            if type(l1) not in (type(()), type([])):
+                l1 = [l1]
+            if type(l2) not in (type(()), type([])):
+                l2 = [l2]
+            for I in l2:
+                if I in l1:
+                    return 1
+            return 0
+        
         # Get package list. This is an expensive operation.
         
         print "Getting package lists for %s..." % (self.config.tag)
@@ -125,6 +136,9 @@ class Mash():
         
         packages = {}
         debug = {}
+        excludearch = {}
+        exclusivearch = {}
+        noarch = []
         source = PackageList(self.config)
         for arch in self.config.arches:
             packages[arch] = PackageList(self.config)
@@ -133,14 +147,24 @@ class Mash():
         # Sort into lots of buckets.
         for pkg in pkglist:
             arch = pkg['arch']
-            
+            if arch == 'noarch':
+                # Stow it in a list for later
+                noarch.append(pkg)
+                continue
+
+            if arch == 'src':
+                path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
+                fn = open(path, 'r')
+                hdr = koji.get_rpm_header(fn)
+                source.add(pkg)
+                excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
+                exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
+                fn.close()
+                continue
+             
             if pkg['name'].find('-debuginfo') != -1:
                 if debug.has_key(arch):
                     debug[arch].add(pkg)
-                continue
-            
-            if arch == 'src':
-                source.add(pkg)
                 continue
             
             for target_arch in self.config.arches:
@@ -154,6 +178,16 @@ class Mash():
                     if arch in masharch.compat[masharch.biarch[target_arch]]:
                         packages[target_arch].add(pkg)
                     
+        # now deal with noarch
+        for pkg in noarch:
+            for target_arch in self.config.arches:
+                if (excludearch[pkg['build_id']] and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
+                        (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], exclusivearch[pkg['build_id']])):
+                    print "Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], arch)
+                    continue
+                else:
+                    packages[target_arch].add(pkg)
+
         print "Checking signatures..."
         
         # Do some checking
@@ -177,7 +211,7 @@ class Mash():
         cachedir = os.path.join(tmpdir,".createrepo-cache")
         os.makedirs(cachedir)
         # Pay no attention to the harcoded values behind the curtain.
-        koji.pathinfo.topdir = '/mnt/redhat/brewroot'
+        koji.pathinfo.topdir = '/mnt/koji'
         
         pids = []
         for arch in self.config.arches:
@@ -191,10 +225,10 @@ class Mash():
             path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
             os.makedirs(path)
             _write_files(packages[arch].packages(), path)
-            pid = self._runCreateRepo(path, cachedir)
+            pid = self._runCreateRepo(os.path.dirname(path), cachedir)
             pids.append(pid)
             
-        path = os.path.join(tmpdir, 'sources')
+        path = os.path.join(tmpdir, 'source', 'SRPMS')
         os.makedirs(path)
         _write_files(source.packages(), path)
         pid = self._runCreateRepo(path, cachedir)
@@ -233,7 +267,8 @@ class Mash():
                 continue
             
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
-            repodir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
+            pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
+            repodir = os.path.dirname(pkgdir)
             tmpdir = os.path.join(self.config.workdir, "%s-%s.tmp" % (self.config.name, arch))
             yumcachedir = os.path.join(tmpdir, "yumcache")
             
@@ -276,11 +311,11 @@ enabled=1
 
             filelist = []
             
-            for pkg in os.listdir(repodir):
+            for pkg in os.listdir(pkgdir):
                 if not pkg.endswith('.rpm'):
                     continue
                 try:
-                    ypkg = yum.YumLocalPackage(ts = yumbase.ts, filename = os.path.join(repodir, pkg))
+                    ypkg = yum.YumLocalPackage(ts = yumbase.ts, filename = os.path.join(pkgdir, pkg))
                     if ypkg.arch in masharch.compat[arch]:
                         yumbase.tsInfo.addInstall(ypkg)
                         filelist.append(pkg)
@@ -299,10 +334,10 @@ enabled=1
                     print "added %s" % (file,)
                     filelist.append(pkg)
                     
-            for pkg in os.listdir(repodir):
+            for pkg in os.listdir(pkgdir):
                 if pkg.endswith('.rpm') and pkg not in filelist:
                     print "removing %s" % (pkg,)
-                    os.unlink(os.path.join(repodir, pkg))
+                    os.unlink(os.path.join(pkgdir, pkg))
             
             pid = self._runCreateRepo(repodir, cachedir)
             pids.append(pid)

@@ -6,9 +6,14 @@ class MultilibMethod:
     def __init__(self):
         self.name = 'base'
     def select(self, po):
-        prefer_64 = ['kernel', 'kernel-kdump', 'gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace', 'valgrind']
-        if po.arch.find('64') != -1 and po.name in prefer_64:
-            return True
+        prefer_64 = [ 'gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace', 'valgrind']
+        if po.arch.find('64') != -1:
+            if po.name in prefer_64:
+                return True
+            if po.name.startswith('kernel'):
+                for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
+                    if p_name == 'kernel' or p_name == 'kernel-devel':
+                        return True
         return False
 
 class NoMultilibMethod:
@@ -80,6 +85,10 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
         whitelist = ['perl']
         if po.name in blacklist:
             return False
+        if po.name.startswith('kernel'):
+            for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
+                if p_name == 'kernel-devel':
+                    return False
         if po.name in whitelist:
             return True
         if RuntimeMultilibMethod.select(self,po):

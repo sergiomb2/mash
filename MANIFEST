@@ -7,6 +7,7 @@ mash.py
 mash.spec
 setup.py
 configs/development.mash
+configs/development.mash~
 configs/mash.conf
 mash/__init__.py
 mash/arch.py

@@ -39,7 +39,7 @@ def main():
             themash.doCompose()
             themash.doMultilib()
         
-            print "mash done in %s/%s" % (conf.workdir, dist)
+            print "mash done in %s/%s" % (conf.workdir, dist.name)
             sys.exit(0)
 
     print "ERROR: No configuration named '%s'!\n" % (args[0],)

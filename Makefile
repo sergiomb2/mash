@@ -15,7 +15,7 @@ all:
 
 tag:
 
-archive:
+archive: clean
 	@rm -rf ${PKGNAME}-$(VERSION)/
 	@python setup.py sdist > /dev/null
 	@echo "The archive is in dist/${PKGNAME}-$(VERSION).tar.gz"
@@ -40,3 +40,4 @@ clean:
 	@rm -f *.tar.gz
 	@rm -rf dist
 	@rm -f MANIFEST
+	@find . -name *~ -exec rm -f {} \;

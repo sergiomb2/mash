@@ -22,6 +22,7 @@ class MashConfig(config.BaseConfig):
     workdir = config.Option('/var/tmp/mash')
     buildhost = config.Option()
     repodir = config.Option('/mnt/koji')
+    compsfile = config.Option()
     distros = []
     
 class MashDistroConfig(config.BaseConfig):
@@ -40,6 +41,7 @@ class MashDistroConfig(config.BaseConfig):
     buildhost = config.Inherit(MashConfig.buildhost)
     repodir = config.Inherit(MashConfig.repodir)
     workdir = config.Inherit(MashConfig.workdir)
+    compsfile = config.Inherit(MashConfig.compsfile)
 
 def readMainConfig(conf):
     config = MashConfig()

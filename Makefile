@@ -40,4 +40,4 @@ clean:
 	@rm -f *.tar.gz
 	@rm -rf dist
 	@rm -f MANIFEST
-	@find . -name *~ -exec rm -f {} \;
+	@find . -name "*~" -exec rm -f {} \;

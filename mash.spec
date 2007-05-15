@@ -8,7 +8,7 @@ Group:          Development/Tools
 License:        GPL
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       yum, createrepo
+Requires:       yum, createrepo, koji
 BuildRequires:  python-devel
 
 BuildArch:      noarch

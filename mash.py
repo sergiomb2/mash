@@ -34,7 +34,7 @@ def main():
         conf.workdir = opts.outputdir
         for dist in conf.distros:
             dist.workdir = opts.outputdir
-    if opts.compsfile != ""
+    if opts.compsfile != "":
         conf.compsfile = opts.compsfile
         for dist in conf.distros:
             dist.compsfile = opts.compsfile

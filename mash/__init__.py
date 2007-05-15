@@ -77,9 +77,9 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _runCreateRepo(self, path, cachedir, background = True):
+    def _runCreateRepo(self, path, cachedir, comps = False, background = True):
         command = ["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path]
-        if self.config.compsfile:
+        if comps and self.config.compsfile:
             command = command + [ "-g", self.config.compsfile ]
         command = command + [ path ]
         pid = subprocess.Popen(command).pid
@@ -228,7 +228,7 @@ class Mash:
             path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
             os.makedirs(path)
             _write_files(packages[arch].packages(), path)
-            pid = self._runCreateRepo(os.path.dirname(path), cachedir)
+            pid = self._runCreateRepo(os.path.dirname(path), cachedir, comps = True)
             pids.append(pid)
             
         path = os.path.join(tmpdir, 'source', 'SRPMS')
@@ -342,7 +342,7 @@ enabled=1
                     print "removing %s" % (pkg,)
                     os.unlink(os.path.join(pkgdir, pkg))
             
-            pid = self._runCreateRepo(repodir, cachedir)
+            pid = self._runCreateRepo(repodir, cachedir, comps = True)
             pids.append(pid)
 
         print "Waiting for createrepo to finish..."

@@ -78,7 +78,10 @@ class Mash:
         self.session = koji.ClientSession(config.buildhost, {})
 
     def _runCreateRepo(self, path, cachedir, background = True):
-        pid = subprocess.Popen(["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]).pid
+        command = ["/usr/bin/createrepo","-p","-q", "-c", cachedir, "-o" ,path, path]
+        if self.config.compsfile:
+            command = command + [ "-g", self.config.compsfile ]
+        pid = subprocess.Popen(command).pid
         if not background:
             os.waitpid(pid)
         return pid

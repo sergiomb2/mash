@@ -1,0 +1,97 @@
+#!/usr/bin/python2
+
+# Generates a changelog between build trees.
+#
+# Usage: treediff tree1 tree2
+
+timeformat="%a %b %d %Y"
+
+import getopt
+import string
+import glob
+import sys
+import rpm
+import os
+import time
+from stat import *
+
+args = sys.argv[1:]
+
+if not args or not args[0] or not args[1]:
+   print "Usage: treediff newtree oldtree\n"
+   sys.exit(-1)
+tree1 = args[0]
+tree2 = args[1]
+
+new = []
+axed = []
+changed = []
+
+def formatRPMChangeLogs(hdr, num = 3):
+   s = []
+   names = hdr[rpm.RPMTAG_CHANGELOGNAME]
+   times = hdr[rpm.RPMTAG_CHANGELOGTIME]
+   text = hdr[rpm.RPMTAG_CHANGELOGTEXT]
+   if len(names) == 1:
+        times = [times]
+   for i in range(0, num):
+      if num > len(names) -1:
+	continue
+      s.append("* %s %s" %(time.strftime(timeformat, time.gmtime(times[i])),
+                           names[i]))
+      s.append("%s\n" %(text[i]))
+   return string.joinfields(s, "\n")
+
+ts = rpm.TransactionSet()
+ts.setVSFlags(-1)
+
+filelist = os.listdir('%s/source/SRPMS/' % tree1)
+filelist.sort()
+for file in filelist:
+   if file[-4:] != '.rpm': continue
+   # is same version in old tree?
+   if os.path.exists("%s/source/SRPMS/%s" %(tree2,file)):
+      continue
+
+   fd = os.open("%s/source/SRPMS/%s" %(tree1,file), os.O_RDONLY)
+   h = ts.hdrFromFdno(fd)
+   os.close(fd)
+
+   oldversion = glob.glob("%s/source/SRPMS/%s*" %(tree2, h[rpm.RPMTAG_NAME]))
+   if not oldversion:
+      new.append('New package %s\n\t%s\n' % (h[rpm.RPMTAG_NAME], h[rpm.RPMTAG_SUMMARY]))
+   else:
+      fd = os.open(oldversion[0], os.O_RDONLY)
+      oldh = ts.hdrFromFdno(fd)
+      os.close(fd)
+      newCL = string.split(formatRPMChangeLogs(h), "\n")
+      oldCL = string.split(formatRPMChangeLogs(oldh), "\n")      
+      clist = []
+      if newCL and oldCL:
+         while (newCL[0] != oldCL[0]):
+            clist.append(newCL[0])
+            newCL=newCL[1:]
+            if not newCL:
+               break
+      elif newCL:
+         clist = newCL
+      if h[rpm.RPMTAG_EPOCH] is None:
+         epoch = ""
+      else:
+         epoch = "%s:" %(h[rpm.RPMTAG_EPOCH],)
+      nvr = "%s-%s%s-%s" % (h[rpm.RPMTAG_NAME], epoch, h[rpm.RPMTAG_VERSION], h[rpm.RPMTAG_RELEASE])
+      hashes = "-" * len(nvr)
+      changed.append("%s\n%s\n%s" % (nvr,hashes,string.join(clist,'\n')))
+
+for file in os.listdir('%s/source/SRPMS/' % tree2):
+   if file[-4:] != '.rpm': continue
+   fd = os.open("%s/source/SRPMS/%s" %(tree2, file), os.O_RDONLY)
+   h = ts.hdrFromFdno(fd)
+   os.close(fd)
+   if not glob.glob('%s/source/SRPMS/%s*' % (tree1, h[rpm.RPMTAG_NAME])):
+      axed.append('Removed package %s\n' % (h[rpm.RPMTAG_NAME],))
+
+if not changed:
+	changed = [ '(none)', ]
+
+print string.join(new,'\n'),'\n\n',string.join(axed,'\n'),'\nUpdated Packages:\n\n',string.join(changed,'\n')

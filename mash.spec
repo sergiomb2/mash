@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.6
+Version:        0.1.7
 Release:        1%{?dist}
 Summary:        Buildsystem -> tree converter
 Group:          Development/Tools
@@ -40,6 +40,6 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/mash
 %{python_sitelib}/mash
 %{_bindir}/*
-
+%{_datadir}/mash
 
 %changelog

@@ -167,8 +167,9 @@ class Mash:
                 continue
              
             if pkg['name'].find('-debuginfo') != -1:
-                if debug.has_key(arch):
-                    debug[arch].add(pkg)
+                for target_arch in self.config.arches:
+                    if arch in masharch.compat[target_arch]:
+                        debug[target_arch].add(pkg)
                 continue
             
             for target_arch in self.config.arches:

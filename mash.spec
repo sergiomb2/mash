@@ -1,12 +1,12 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.7
+Version:        0.1.8
 Release:        1%{?dist}
 Summary:        Buildsystem -> tree converter
 Group:          Development/Tools
 License:        GPL
-URL:		https://hosted.fedoraproject.org/projects/mash
+URL:            https://hosted.fedoraproject.org/projects/mash
 Source0:        http://people.redhat.com/notting/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       yum >= 3.1.0, createrepo, koji
@@ -43,5 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Fri May 18 2007 Bill Nottingham <notting@redhat.com> 0.1.8-1
+- spec cleanups
+
 * Thu May 17 2007 Bill Nottingham <notting@redhat.com> 0.1.7-1
 - initial build

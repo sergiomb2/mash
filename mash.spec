@@ -6,17 +6,17 @@ Release:        1%{?dist}
 Summary:        Buildsystem -> tree converter
 Group:          Development/Tools
 License:        GPL
-Source0:        %{name}-%{version}.tar.gz
+URL:		https://hosted.fedoraproject.org/projects/mash
+Source0:        http://people.redhat.com/notting/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       yum, createrepo, koji
+Requires:       yum >= 3.1.0, createrepo, koji
 BuildRequires:  python-devel
-
 BuildArch:      noarch
 
 %description
 mash is a tool that queries a koji buildsystem for the latest RPMs for
 any particular tag, and creates repositories of those RPMs, including
-any multlib RPMs necesary.
+any multlib RPMs that are necessary.
 
 %prep
 %setup -q
@@ -43,3 +43,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Thu May 17 2007 Bill Nottingham <notting@redhat.com> 0.1.7-1
+- initial build

@@ -281,7 +281,7 @@ class Mash:
             
             yconfig = """
 [main]
-debuglevel=3
+debuglevel=2
 pkgpolicy=newest
 exactarch=1
 gpgcheck=0

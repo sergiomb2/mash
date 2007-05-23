@@ -1,9 +1,9 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.8
+Version:        0.1.9
 Release:        1%{?dist}
-Summary:        Buildsystem -> tree converter
+Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
 License:        GPL
 URL:            https://hosted.fedoraproject.org/projects/mash
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Wed May 23 2007 Bill Nottingham <notting@redhat.com> 0.1.9-1
+- add wine, wine-arts to multilib whitelist (#241059)
+
 * Fri May 18 2007 Bill Nottingham <notting@redhat.com> 0.1.8-1
 - spec cleanups
 

@@ -1,0 +1,472 @@
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 23 17:32:11 2007 -0400
+
+    update to 0.1.9
+
+ mash.py   |    2 +-
+ mash.spec |    7 +++++--
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 23 17:32:05 2007 -0400
+
+    remove #! to pacify rpmlint
+
+ mash/__init__.py |    1 -
+ mash/config.py   |    1 -
+ mash/multilib.py |    1 -
+ 3 files changed, 0 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 23 17:29:55 2007 -0400
+
+    add a very brief readme
+
+ README |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 23 17:17:35 2007 -0400
+
+    add wine to multilib whitelist
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 22 13:33:19 2007 -0400
+
+    tone down the debuglevel
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 18 21:06:27 2007 -0400
+
+    bump release to 0.1.8
+
+ mash.py   |    2 +-
+ mash.spec |    7 +++++--
+ setup.py  |    4 ++--
+ 3 files changed, 8 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 18 21:02:30 2007 -0400
+
+    various spec-related cleanups
+
+ TODO      |    2 ++
+ mash.spec |   10 ++++++----
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 18 18:02:58 2007 -0400
+
+    pass -d to createrepo
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 16 16:13:10 2007 -0400
+
+    fix exclude debug statement to print the right arch
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 16 01:17:51 2007 -0400
+
+    add treediff. bump release.
+
+ MANIFEST.in    |    1 +
+ mash.py        |    2 +-
+ mash.spec      |    4 +-
+ setup.py       |    4 +-
+ utils/treediff |   97 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 103 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 22:11:10 2007 -0400
+
+    fix i686-debuginfo-on-i386 problem
+
+ mash/__init__.py |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 17:47:23 2007 -0400
+
+    bump release
+
+ mash.py   |    2 +-
+ mash.spec |    2 +-
+ setup.py  |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 03:06:57 2007 -0400
+
+    don't ship comps in the srpm dir
+
+ mash/__init__.py |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 02:58:51 2007 -0400
+
+    fix
+
+ mash/__init__.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 02:45:58 2007 -0400
+
+    bump release
+
+ Makefile  |    2 +-
+ mash.py   |    2 +-
+ mash.spec |    2 +-
+ setup.py  |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 02:45:17 2007 -0400
+
+    actually wire up the compsfile option
+
+ MANIFEST          |   14 --------------
+ configs/mash.conf |    2 +-
+ mash/__init__.py  |    5 ++++-
+ 3 files changed, 5 insertions(+), 16 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 02:24:34 2007 -0400
+
+    syntax fix
+    require koji
+
+ mash.py   |    2 +-
+ mash.spec |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 01:26:40 2007 -0400
+
+    clean up some noise
+
+ MANIFEST |    2 --
+ Makefile |    3 ++-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 15 01:20:29 2007 -0400
+
+    support passing a comps file
+    bump version
+
+ MANIFEST       |    1 +
+ mash.py        |    8 +++++++-
+ mash.spec      |    2 +-
+ mash/config.py |    2 ++
+ setup.py       |    2 +-
+ 5 files changed, 12 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 11 16:10:37 2007 -0400
+
+    bump
+
+ mash.spec |    2 +-
+ setup.py  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 11 16:10:19 2007 -0400
+
+    fix -o
+    more debugging
+
+ mash.py          |    4 +++-
+ mash/__init__.py |    2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 11 15:08:08 2007 -0400
+
+    fix final output
+
+ MANIFEST |    1 +
+ mash.py  |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 11 13:45:55 2007 -0400
+
+    bump to 0.1.2
+
+ mash.py   |    2 +-
+ mash.spec |    2 +-
+ setup.py  |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 11 13:45:14 2007 -0400
+
+    DOH. take 2.
+
+ mash.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 11 13:33:14 2007 -0400
+
+    all arches!
+
+ configs/development.mash |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 23:20:58 2007 -0400
+
+    typok
+
+ MANIFEST         |    2 +-
+ mash/__init__.py |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 22:48:58 2007 -0400
+
+    bump version
+
+ mash.py   |    2 +-
+ mash.spec |    2 +-
+ setup.py  |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 22:47:20 2007 -0400
+
+    fix kernel handling:
+    
+    - add anything that provides kernel, kernel-devel in the prefer64 case
+    - never add kernel-devel in devel multilib
+
+ mash/multilib.py |   15 ++++++++++++---
+ 1 files changed, 12 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 22:29:01 2007 -0400
+
+    oops, add this
+
+ MANIFEST |   14 ++++++++++++++
+ 1 files changed, 14 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 22:26:18 2007 -0400
+
+    various packaging fixes. bump version.
+
+ AUTHORS           |    2 +
+ configs/mash.conf |    3 +-
+ mash.py           |   50 ++++++++
+ mash.spec         |    3 +-
+ mash/__init__.py  |  356 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ mash/mash.py      |  356 -----------------------------------------------------
+ mashbin           |   53 --------
+ setup.py          |    4 +-
+ 8 files changed, 413 insertions(+), 414 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 21:53:56 2007 -0400
+
+    move the koji root to the config file
+    
+    make mashbin into a usable frontend, well, sort of
+
+ configs/mash.conf |    1 +
+ mash/config.py    |    2 ++
+ mash/mash.py      |    3 +--
+ mashbin           |   49 ++++++++++++++++++++++++++++++++++++++++++-------
+ 4 files changed, 46 insertions(+), 9 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 20:28:11 2007 -0400
+
+    merge in current fixes
+
+ configs/mash.conf |    2 +-
+ mash/mash.py      |    2 +-
+ mash/multilib.py  |    7 +++++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 10 20:26:43 2007 -0400
+
+    merge in jkeating's changes
+
+ configs/development.mash |    4 +-
+ configs/mash.conf        |    5 ++-
+ mash/mash.py             |   69 ++++++++++++++++++++++++++++++++++-----------
+ mash/multilib.py         |   14 ++++++--
+ 4 files changed, 67 insertions(+), 25 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 15:33:08 2007 -0400
+
+    no tag
+
+ Makefile |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 15:28:26 2007 -0400
+
+    not my homedir
+
+ configs/mash.conf |    2 +-
+ setup.py          |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 15:27:24 2007 -0400
+
+    final bits of changes. seems to work
+
+ configs/development.mash |    2 +-
+ configs/mash.conf        |    2 +-
+ mash/mash.py             |   38 ++++++++++++++++++++++----------------
+ mash/multilib.py         |   14 ++++++++------
+ mashbin                  |    2 +-
+ 5 files changed, 33 insertions(+), 25 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 13:37:10 2007 -0400
+
+    more fixes
+
+ MANIFEST.in |    3 ++-
+ mash.spec   |    6 +++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 13:35:10 2007 -0400
+
+    switch name back
+
+ configs/development.mash |    2 +-
+ mashbin                  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 13:34:29 2007 -0400
+
+    further fixes
+
+ Makefile                 |    4 ++--
+ configs/development.mash |    2 +-
+ mash.spec                |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ mash/mash.py             |   19 +++++++++++--------
+ mashbin                  |    4 ++--
+ setup.py                 |    1 +
+ 6 files changed, 61 insertions(+), 13 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 13:10:28 2007 -0400
+
+    clean up, run createrepo
+
+ TODO         |    2 --
+ mash/mash.py |   32 ++++++++++++++++++++++++++++----
+ 2 files changed, 28 insertions(+), 6 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 13:00:03 2007 -0400
+
+    fix multilib handling - have devel inherit from runtime, etc.
+
+ mash/multilib.py |   46 +++++++++++++++++++++++++++++++++-------------
+ 1 files changed, 33 insertions(+), 13 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Mar 16 12:40:15 2007 -0400
+
+    multlib stuff. mostly working
+
+ configs/development.mash |    6 +-
+ mash/config.py           |   18 +++++----
+ mash/mash.py             |   94 +++++++++++++++++++++++++++++++++++++++++++++-
+ mash/multilib.py         |   59 +++++++++++++++++++++++++++++
+ mashbin                  |   18 +++++++++
+ 5 files changed, 183 insertions(+), 12 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Mar 15 14:26:28 2007 -0400
+
+    works now. on to multilib
+
+ configs/development.mash |    3 +-
+ configs/mash.conf        |    1 +
+ mash/arch.py             |    4 +-
+ mash/config.py           |   17 ++++++--
+ mash/mash.py             |  101 +++++++++++++++++++++++++---------------------
+ 5 files changed, 73 insertions(+), 53 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Mar 15 11:55:34 2007 -0400
+
+    add createrepo, clean up package dumping. Now, to actually *test* it!
+
+ TODO           |    1 -
+ mash/config.py |    1 +
+ mash/mash.py   |  173 ++++++++++++++++++++++++++++++++++++--------------------
+ 3 files changed, 113 insertions(+), 62 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Mar 15 11:13:28 2007 -0400
+
+    simple config parser
+
+ TODO                     |    1 -
+ configs/development.mash |    6 ++--
+ configs/mash.conf        |    3 +-
+ mash/config.py           |   59 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 64 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Mar 15 10:26:11 2007 -0400
+
+    yesterday's updates
+
+ configs/development.mash |    2 ++
+ configs/mash.conf        |    1 -
+ 2 files changed, 2 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Mar 15 10:25:56 2007 -0400
+
+    yesterday's work
+
+ COPYING      |  339 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ MANIFEST.in  |    6 +
+ Makefile     |   44 ++++++++
+ TODO         |    4 +
+ mash/arch.py |   20 ++++
+ mash/mash.py |  137 +++++++++++++++++++++++
+ setup.py     |   14 +++
+ 7 files changed, 564 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Mar 13 17:27:06 2007 -0400
+
+    initial config files
+
+ configs/development.mash |    9 +++++++++
+ configs/mash.conf        |    4 ++++
+ 2 files changed, 13 insertions(+), 0 deletions(-)

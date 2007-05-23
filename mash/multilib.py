@@ -55,7 +55,7 @@ class RuntimeMultilibMethod(MultilibMethod):
     
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
-        whitelist = ['scim-bridge-gtk', 'scim-qtimm', 'redhat-artwork', 'gtk2-engines', 'libgnat' ]
+        whitelist = ['scim-bridge-gtk', 'scim-qtimm', 'redhat-artwork', 'gtk2-engines', 'libgnat', 'wine', 'wine-arts' ]
         if po.name in whitelist:
             return True
         if MultilibMethod.select(self,po):

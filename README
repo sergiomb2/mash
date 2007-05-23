@@ -1,0 +1,3 @@
+
+mash is a tool that creates repositories from koji tags, and solves
+them for multilib dependencies.

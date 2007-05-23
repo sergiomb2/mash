@@ -1,4 +1,3 @@
-#!/usr/bin/python -tt
 
 from fnmatch import fnmatch
 

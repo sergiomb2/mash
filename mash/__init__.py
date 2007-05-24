@@ -226,6 +226,9 @@ class Mash:
                 pids.append(pid)
             
             path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
+            if os.path.exists(path):
+                shutil.rmtree(path, ignore_errors = True)
+                
             os.makedirs(path)
             _write_files(packages[arch].packages(), path)
             pid = self._runCreateRepo(os.path.dirname(path), cachedir, comps = True)

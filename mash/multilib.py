@@ -86,7 +86,7 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
             return False
         if po.name.startswith('kernel'):
             for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
-                if p_name == 'kernel-devel':
+                if p_name == 'kernel-devel' or p_name == 'kernel-xen':
                     return False
         if po.name in whitelist:
             return True

@@ -6,7 +6,7 @@ Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
 License:        GPL
-URL:            https://hosted.fedoraproject.org/projects/mash
+URL:            http://people.redhat.com/notting/mash/
 Source0:        http://people.redhat.com/notting/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       yum >= 3.1.0, createrepo, koji

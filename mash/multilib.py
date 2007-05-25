@@ -59,6 +59,10 @@ class RuntimeMultilibMethod(MultilibMethod):
             return True
         if MultilibMethod.select(self,po):
             return True
+        if po.name.startswith('kernel'):
+            for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
+                if p_name == 'kernel':
+                    return False
         for file in po.returnFileEntries():
             (dirname, filename) = file.rsplit('/', 1)
             # libraries in standard dirs
@@ -86,7 +90,7 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
             return False
         if po.name.startswith('kernel'):
             for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
-                if p_name == 'kernel-devel' or p_name == 'kernel-xen':
+                if p_name == 'kernel-devel':
                     return False
         if po.name in whitelist:
             return True

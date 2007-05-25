@@ -1,4 +1,69 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 24 21:45:19 2007 -0400
+
+    bump release to 0.1.10
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 24 21:43:17 2007 -0400
+
+    blacklist any kernels not selected elsewhere, not just kernel-xen
+
+ mash/multilib.py |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 24 21:03:26 2007 -0400
+
+    update to point to dist-rawhide
+
+ configs/development.mash |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 24 17:19:10 2007 -0400
+
+    work with existing paths
+
+ mash/__init__.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Merge: b0093eb... d7e19b6...
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 24 12:54:05 2007 -0400
+
+    Merge branch 'master' of ssh://git.fedoraproject.org/git/hosted/mash
+
+Author: Jesse Keating <jkeating at redhat dot com>
+Date:   Thu May 24 11:43:24 2007 -0400
+
+    We don't want kernel-xen to be multilib either.
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 23 22:43:28 2007 -0400
+
+    switch URL to something valid
+
+ mash.spec |    2 +-
+ setup.py  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 23 17:38:04 2007 -0400
+
+    add ChangeLog
+
+ ChangeLog |  472 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 472 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Wed May 23 17:32:11 2007 -0400
 
     update to 0.1.9

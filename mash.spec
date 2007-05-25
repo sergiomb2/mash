@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.9
+Version:        0.1.10
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Thu May 24 2007 Bill Nottingham <notting@redhat.com> 0.1.10-1
+- fix kernel handling
+- tweak rawhide config
+
 * Wed May 23 2007 Bill Nottingham <notting@redhat.com> 0.1.9-1
 - add wine, wine-arts to multilib whitelist (#241059)
 

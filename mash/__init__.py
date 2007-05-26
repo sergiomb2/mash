@@ -237,17 +237,17 @@ class Mash:
         pids = []
         for arch in self.config.arches:
             path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
-            pid = _write_files(packages[arch].packages(), path, cachedir = cachedir, comps = True, fork = True)
+            pid = _write_files(packages[arch].packages(), path, cachedir = cachedir, comps = True, fork = self.config.fork)
             pids.append(pid)
             
             if self.config.debuginfo:
                 path = os.path.join(tmpdir, self.config.debuginfo_path % { 'arch': arch })
-                pid = _write_files(debug[arch].packages(), path, cachedir = cachedir, fork = True)
+                pid = _write_files(debug[arch].packages(), path, cachedir = cachedir, fork = self.config.fork)
                 pids.append(pid)
                 
             
         path = os.path.join(tmpdir, 'source', 'SRPMS')
-        pid = _write_files(source.packages(), path, cachedir = cachedir, fork = True)
+        pid = _write_files(source.packages(), path, cachedir = cachedir, fork = self.config.fork)
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
@@ -375,7 +375,7 @@ enabled=1
         pids = []
         for arch in self.config.arches:
         
-            pid = self.doDepSolveAndMultilib(arch, cachedir, fork = True)
+            pid = self.doDepSolveAndMultilib(arch, cachedir, fork = self.config.fork)
             pids.append(pid)
 
         print "Waiting for depsolve and createrepo to finish..."

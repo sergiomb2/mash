@@ -9,6 +9,7 @@ from yum import config
 
 class MashConfig(config.BaseConfig):
     symlink = config.BoolOption(False)
+    fork = config.BoolOption(True)
     rpm_path = config.Option('Mash')
     debuginfo = config.BoolOption(True)
     debuginfo_path = config.Option('%(arch)s/debug')
@@ -27,6 +28,7 @@ class MashConfig(config.BaseConfig):
 class MashDistroConfig(config.BaseConfig):
     name = config.Option()
     symlink = config.Inherit(MashConfig.symlink)
+    fork = config.Ihnerit(MashConfig.fork)
     rpm_path = config.Inherit(MashConfig.rpm_path)
     debuginfo = config.Inherit(MashConfig.debuginfo)
     debuginfo_path = config.Inherit(MashConfig.debuginfo_path)

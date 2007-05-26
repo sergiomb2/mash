@@ -127,7 +127,12 @@ class Mash:
                     except:
                         shutil.copyfile(src, dst)
                         
-            status = self._runCreateRepo(path, cachedir, comps)
+            # deep, abiding, HAAACK
+            if os.path.basename(path) == "Fedora":
+                rpath = os.path.dirname(path)
+            else:
+                rpath = path
+            status = self._runCreateRepo(rpath, cachedir, comps)
             if fork:
                 os._exit(status)
 
@@ -255,10 +260,9 @@ class Mash:
             if len(pids) == 0:
                 break
     
-    def doMultilib(self):
+    def doDepSolveAndMultilib(self, arch, cachedir, fork = True):
         
-        if not self.config.multilib:
-            return
+        do_multi = self.config.multilib
         
         try:
             method = { 'devel'   : multilib.DevelMultilibMethod,
@@ -268,25 +272,29 @@ class Mash:
                        'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method]()
         except KeyError:
             print "Invalid multilib method %s" % (self.config.multilib_method,)
+            do_multi = false
             return
         
         cachedir = os.path.join(self.config.workdir, self.config.name, ".createrepo-cache")
-        pids = []
-        for arch in self.config.arches:
-            
-            if arch not in masharch.biarch.keys():
-                continue
-            
+        if fork:
+            pid = os.fork()
+            if pid:
+                return pid
+                
+        if arch not in masharch.biarch.keys():
+            print "Resolving deps for arch %s" % (arch)
+            do_multi = False
+        else:
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
-            pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
-            repodir = os.path.dirname(pkgdir)
-            tmpdir = os.path.join(self.config.workdir, "%s-%s.tmp" % (self.config.name, arch))
-            yumcachedir = os.path.join(tmpdir, "yumcache")
+        pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
+        repodir = os.path.dirname(pkgdir)
+        tmpdir = os.path.join(self.config.workdir, "%s-%s.tmp" % (self.config.name, arch))
+        yumcachedir = os.path.join(tmpdir, "yumcache")
             
-            yumbase = yum.YumBase()
-            rpmUtils.arch.canonArch = arch
+        yumbase = yum.YumBase()
+        rpmUtils.arch.canonArch = arch
             
-            yconfig = """
+        yconfig = """
 [main]
 debuglevel=2
 pkgpolicy=newest
@@ -301,43 +309,47 @@ name=%s
 baseurl=file://%s
 enabled=1
 """ % (yumcachedir, tmpdir, self.config.name, self.config.name, repodir)
-            shutil.rmtree(tmpdir, ignore_errors = True)
-            os.makedirs(yumcachedir)
-            os.makedirs(os.path.join(tmpdir,'var/lib/rpm'))
-            yconfig_path = os.path.join(tmpdir, 'yum.conf-%s-%s' % (self.config.name, arch))
-            f = open(yconfig_path, 'w')
-            f.write(yconfig)
-            f.close()
-            yumbase.doConfigSetup(fn=yconfig_path)
-            yumbase.conf.cache = 0
-            yumbase.doRepoSetup()
-            yumbase.doTsSetup()
-            yumbase.doRpmDBSetup()
-            # Nggh.
-            yumbase.ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
+        shutil.rmtree(tmpdir, ignore_errors = True)
+        os.makedirs(yumcachedir)
+        os.makedirs(os.path.join(tmpdir,'var/lib/rpm'))
+        yconfig_path = os.path.join(tmpdir, 'yum.conf-%s-%s' % (self.config.name, arch))
+        f = open(yconfig_path, 'w')
+        f.write(yconfig)
+        f.close()
+        yumbase.doConfigSetup(fn=yconfig_path)
+        yumbase.conf.cache = 0
+        yumbase.doRepoSetup()
+        yumbase.doTsSetup()
+        yumbase.doRpmDBSetup()
+        # Nggh.
+        yumbase.ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
+        if do_multi:
             archlist = masharch.compat[arch] + masharch.compat[masharch.biarch[arch]]
-            yumbase.doSackSetup(archlist = archlist, thisrepo=self.config.name)
+        else:
+            archlist = masharch.compat[arch]
+        yumbase.doSackSetup(archlist = archlist, thisrepo=self.config.name)
             
-            yumbase.doSackFilelistPopulate()
+        yumbase.doSackFilelistPopulate()
 
-            filelist = []
+        filelist = []
             
-            for pkg in os.listdir(pkgdir):
-                if not pkg.endswith('.rpm'):
-                    continue
-                try:
-                    ypkg = yum.YumLocalPackage(ts = yumbase.ts, filename = os.path.join(pkgdir, pkg))
-                    if ypkg.arch in masharch.compat[arch]:
-                        yumbase.tsInfo.addInstall(ypkg)
-                        filelist.append(pkg)
-                    elif method.select(ypkg):
-                        yumbase.tsInfo.addInstall(ypkg)
-                        print "Adding package %s for multlib" %  (pkg,)
-                        filelist.append(pkg)
-                except:
-                    print "WARNING: Could not open %s" % (pkg,)
+        for pkg in os.listdir(pkgdir):
+            if not pkg.endswith('.rpm'):
+                continue
+            try:
+                ypkg = yum.YumLocalPackage(ts = yumbase.ts, filename = os.path.join(pkgdir, pkg))
+                if ypkg.arch in masharch.compat[arch]:
+                    yumbase.tsInfo.addInstall(ypkg)
+                    filelist.append(pkg)
+                elif do_multi and method.select(ypkg):
+                    yumbase.tsInfo.addInstall(ypkg)
+                    print "Adding package %s for multlib" %  (pkg,)
+                    filelist.append(pkg)
+            except:
+                print "WARNING: Could not open %s" % (pkg,)
                 
-            yumbase.resolveDeps()
+        (rc, errors) = yumbase.resolveDeps()
+        if do_multi:
             for f in yumbase.tsInfo.getMembers():
                 file = os.path.basename(f.po.localPkg())
                 
@@ -350,10 +362,23 @@ enabled=1
                     print "removing %s" % (pkg,)
                     os.unlink(os.path.join(pkgdir, pkg))
             
-            pid = self._runCreateRepo(repodir, cachedir, comps = True)
+            print "Running createrepo on %s..." %(repodir),
+            self._runCreateRepo(repodir, cachedir, comps = True)
+
+        
+        shutil.rmtree(tmpdir, ignore_errors = True)
+        if fork:
+            os._exit(0)
+        
+    def doMultilib(self):
+        cachedir = os.path.join(self.config.workdir, self.config.name, ".createrepo-cache")
+        pids = []
+        for arch in self.config.arches:
+        
+            pid = self.doDepSolveAndMultilib(arch, cachedir, fork = True)
             pids.append(pid)
 
-        print "Waiting for createrepo to finish..."
+        print "Waiting for depsolve and createrepo to finish..."
         while 1:
             try:
                 p = os.wait()
@@ -362,7 +387,5 @@ enabled=1
             pids.remove(p[0])
             if len(pids) == 0:
                 break
-        
-        shutil.rmtree(tmpdir, ignore_errors = True)
         shutil.rmtree(cachedir, ignore_errors = True)
         

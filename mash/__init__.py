@@ -76,20 +76,26 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _runCreateRepo(self, path, cachedir, comps = False, background = True):
+    def _runCreateRepo(self, path, cachedir, comps = False):
         command = ["/usr/bin/createrepo","-p", "-q", "-d", "-c", cachedir, "-o" ,path]
         if comps and self.config.compsfile:
             command = command + [ "-g", self.config.compsfile ]
         command = command + [ path ]
         pid = subprocess.Popen(command).pid
-        if not background:
-            os.waitpid(pid)
-        return pid
+        (p, status) = os.waitpid(pid,0)
+        return status
 
     def doCompose(self):
-        def _write_files(list, path):
+        def _write_files(list, path, comps = False, cachedir = None, fork = True):
             
             print "Writing out files for %s..." % (path,)
+            os.makedirs(path)
+            
+            
+            if fork:
+                pid = os.fork()
+                if pid:
+                    return pid
             
             for pkg in list:
                 filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
@@ -111,12 +117,19 @@ class Mash:
                     continue
                 
                 if self.config.symlink:
-                    os.symlink(src, dst)
+                    try:
+                        os.symlink(src, dst)
+                    except:
+                        print "couldn't link %s to %s (%d %d)" % (src, dst, os.path.exists(src), os.path.exists(os.path.dirname(dst)))
                 else:
                     try:
                         os.link(src, dst)
                     except:
                         shutil.copyfile(src, dst)
+                        
+            status = self._runCreateRepo(path, cachedir, comps)
+            if fork:
+                os._exit(status)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -218,26 +231,18 @@ class Mash:
         
         pids = []
         for arch in self.config.arches:
-            if self.config.debuginfo:
-                path = os.path.join(tmpdir, self.config.debuginfo_path % { 'arch': arch })
-                os.makedirs(path)
-                _write_files(debug[arch].packages(), path)
-                pid = self._runCreateRepo(path, cachedir)
-                pids.append(pid)
-            
             path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
-            if os.path.exists(path):
-                shutil.rmtree(path, ignore_errors = True)
-                
-            os.makedirs(path)
-            _write_files(packages[arch].packages(), path)
-            pid = self._runCreateRepo(os.path.dirname(path), cachedir, comps = True)
+            pid = _write_files(packages[arch].packages(), path, cachedir = cachedir, comps = True, fork = True)
             pids.append(pid)
             
+            if self.config.debuginfo:
+                path = os.path.join(tmpdir, self.config.debuginfo_path % { 'arch': arch })
+                pid = _write_files(debug[arch].packages(), path, cachedir = cachedir, fork = True)
+                pids.append(pid)
+                
+            
         path = os.path.join(tmpdir, 'source', 'SRPMS')
-        os.makedirs(path)
-        _write_files(source.packages(), path)
-        pid = self._runCreateRepo(path, cachedir)
+        pid = _write_files(source.packages(), path, cachedir = cachedir, fork = True)
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."

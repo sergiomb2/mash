@@ -28,7 +28,7 @@ class MashConfig(config.BaseConfig):
 class MashDistroConfig(config.BaseConfig):
     name = config.Option()
     symlink = config.Inherit(MashConfig.symlink)
-    fork = config.Ihnerit(MashConfig.fork)
+    fork = config.Inherit(MashConfig.fork)
     rpm_path = config.Inherit(MashConfig.rpm_path)
     debuginfo = config.Inherit(MashConfig.debuginfo)
     debuginfo_path = config.Inherit(MashConfig.debuginfo_path)

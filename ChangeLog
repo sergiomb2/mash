@@ -1,4 +1,56 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Sat May 26 23:31:57 2007 -0400
+
+    update to 0.1.11
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Sat May 26 23:28:15 2007 -0400
+
+    fix typo
+
+ mash/config.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Sat May 26 03:41:14 2007 -0400
+
+    wire up fork/no-fork as a config option.
+
+ configs/mash.conf |    1 +
+ mash/__init__.py  |    8 ++++----
+ mash/config.py    |    2 ++
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Sat May 26 03:20:59 2007 -0400
+
+    run depsolving/multilib in parallel too. get dep errors
+
+ mash/__init__.py |  129 ++++++++++++++++++++++++++++++++----------------------
+ 1 files changed, 76 insertions(+), 53 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Sat May 26 01:55:47 2007 -0400
+
+    fork off the entire write files/createrepo process
+
+ mash/__init__.py |   45 +++++++++++++++++++++++++--------------------
+ 1 files changed, 25 insertions(+), 20 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 24 21:50:16 2007 -0400
+
+    update changelog
+
+ ChangeLog |   65 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 65 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu May 24 21:45:19 2007 -0400
 
     bump release to 0.1.10

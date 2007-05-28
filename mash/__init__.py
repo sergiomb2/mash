@@ -76,14 +76,17 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _runCreateRepo(self, path, cachedir, comps = False):
+    def _runCreateRepo(self, path, cachedir, comps = False, exec = False):
         command = ["/usr/bin/createrepo","-p", "-q", "-d", "-c", cachedir, "-o" ,path]
         if comps and self.config.compsfile:
             command = command + [ "-g", self.config.compsfile ]
         command = command + [ path ]
-        pid = subprocess.Popen(command).pid
-        (p, status) = os.waitpid(pid,0)
-        return status
+        if exec:
+            os.execv("/usr/bin/createrepo", command)
+        else:
+            pid = subprocess.Popen(command).pid
+            (p, status) = os.waitpid(pid,0)
+            return status
 
     def doCompose(self):
         def _write_files(list, path, comps = False, cachedir = None, fork = True):
@@ -132,9 +135,7 @@ class Mash:
                 rpath = os.path.dirname(path)
             else:
                 rpath = path
-            status = self._runCreateRepo(rpath, cachedir, comps)
-            if fork:
-                os._exit(status)
+            status = self._runCreateRepo(rpath, cachedir, comps, exec = fork)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -227,26 +228,27 @@ class Mash:
             sys.exit(1)
         
         # Make the trees
-        tmpdir = os.path.join(self.config.workdir, self.config.name)
-        shutil.rmtree(tmpdir, ignore_errors = True)
-        os.makedirs(tmpdir)
+        outputdir = os.path.join(self.config.workdir, self.config.name)
+        shutil.rmtree(outputdir, ignore_errors = True)
+        os.makedirs(outputdir)
+        tmpdir = "/tmp/mash-%s/" % (self.config.name,)
         cachedir = os.path.join(tmpdir,".createrepo-cache")
         os.makedirs(cachedir)
         koji.pathinfo.topdir = self.config.repodir
         
         pids = []
         for arch in self.config.arches:
-            path = os.path.join(tmpdir, self.config.rpm_path % { 'arch':arch })
+            path = os.path.join(outputdir, self.config.rpm_path % { 'arch':arch })
             pid = _write_files(packages[arch].packages(), path, cachedir = cachedir, comps = True, fork = self.config.fork)
             pids.append(pid)
             
             if self.config.debuginfo:
-                path = os.path.join(tmpdir, self.config.debuginfo_path % { 'arch': arch })
+                path = os.path.join(outputdir, self.config.debuginfo_path % { 'arch': arch })
                 pid = _write_files(debug[arch].packages(), path, cachedir = cachedir, fork = self.config.fork)
                 pids.append(pid)
                 
             
-        path = os.path.join(tmpdir, 'source', 'SRPMS')
+        path = os.path.join(outputdir, 'source', 'SRPMS')
         pid = _write_files(source.packages(), path, cachedir = cachedir, fork = self.config.fork)
         pids.append(pid)
         
@@ -275,7 +277,8 @@ class Mash:
             do_multi = false
             return
         
-        cachedir = os.path.join(self.config.workdir, self.config.name, ".createrepo-cache")
+        tmpdir = "/tmp/mash-%s/" % (self.config.name,)
+        cachedir = os.path.join(tmpdir,".createrepo-cache")
         if fork:
             pid = os.fork()
             if pid:
@@ -288,8 +291,8 @@ class Mash:
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
         pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
         repodir = os.path.dirname(pkgdir)
-        tmpdir = os.path.join(self.config.workdir, "%s-%s.tmp" % (self.config.name, arch))
-        yumcachedir = os.path.join(tmpdir, "yumcache")
+        tmproot = os.path.join(self.config.workdir, "%s-%s.tmp" % (self.config.name, arch))
+        yumcachedir = os.path.join(tmproot, "yumcache")
             
         yumbase = yum.YumBase()
         rpmUtils.arch.canonArch = arch
@@ -308,11 +311,11 @@ installroot=%s
 name=%s
 baseurl=file://%s
 enabled=1
-""" % (yumcachedir, tmpdir, self.config.name, self.config.name, repodir)
-        shutil.rmtree(tmpdir, ignore_errors = True)
+""" % (yumcachedir, tmproot, self.config.name, self.config.name, repodir)
+        shutil.rmtree(tmproot, ignore_errors = True)
         os.makedirs(yumcachedir)
-        os.makedirs(os.path.join(tmpdir,'var/lib/rpm'))
-        yconfig_path = os.path.join(tmpdir, 'yum.conf-%s-%s' % (self.config.name, arch))
+        os.makedirs(os.path.join(tmproot,'var/lib/rpm'))
+        yconfig_path = os.path.join(tmproot, 'yum.conf-%s-%s' % (self.config.name, arch))
         f = open(yconfig_path, 'w')
         f.write(yconfig)
         f.close()
@@ -362,16 +365,17 @@ enabled=1
                     print "removing %s" % (pkg,)
                     os.unlink(os.path.join(pkgdir, pkg))
             
+            shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._runCreateRepo(repodir, cachedir, comps = True)
+            self._runCreateRepo(repodir, cachedir, comps = True, exec = fork)
 
-        
-        shutil.rmtree(tmpdir, ignore_errors = True)
+        shutil.rmtree(tmproot, ignore_errors = True)
         if fork:
             os._exit(0)
         
     def doMultilib(self):
-        cachedir = os.path.join(self.config.workdir, self.config.name, ".createrepo-cache")
+        tmpdir = "/tmp/mash-%s/" % (self.config.name,)
+        cachedir = os.path.join(tmpdir,".createrepo-cache")
         pids = []
         for arch in self.config.arches:
         
@@ -387,5 +391,5 @@ enabled=1
             pids.remove(p[0])
             if len(pids) == 0:
                 break
-        shutil.rmtree(cachedir, ignore_errors = True)
+        shutil.rmtree(tmpdir, ignore_errors = True)
         

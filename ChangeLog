@@ -1,4 +1,82 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 13:58:53 2007 -0400
+
+    update to 0.1.13
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 13:58:20 2007 -0400
+
+    add updates config files
+
+ configs/f7-updates-testing.mash |   13 +++++++++++++
+ configs/f7-updates.mash         |   13 +++++++++++++
+ 2 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 13:58:01 2007 -0400
+
+    allow source RPM path to be configurable
+    pass -d again in createrepo
+
+ configs/development.mash |    1 +
+ mash/__init__.py         |    4 ++--
+ mash/config.py           |    2 ++
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 12:26:11 2007 -0400
+
+    use arch in the repo name, to further avoid the chances of collision
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 12:25:52 2007 -0400
+
+    use os.path.join (<lmacken@redhat.com>)
+
+ mash.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 04:26:42 2007 -0400
+
+    fix directory cleanup (<lmacken@redhat.com>)
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 00:23:11 2007 -0400
+
+    turn off sqlite for now
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 00:14:24 2007 -0400
+
+    import yum later
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 29 23:16:21 2007 -0400
+
+    update changelog
+
+ ChangeLog |   29 +++++++++++++++++++++++++++++
+ 1 files changed, 29 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Tue May 29 23:15:57 2007 -0400
 
     update to 1.1.12

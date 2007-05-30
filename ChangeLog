@@ -1,4 +1,48 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 15:28:36 2007 -0400
+
+    update to 0.1.14
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 15:27:38 2007 -0400
+
+    add use_sqlite to determine whether we pass -d to createrepo
+
+ configs/mash.conf |    1 +
+ mash/__init__.py  |    4 +++-
+ mash/config.py    |    2 ++
+ 3 files changed, 6 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 15:16:59 2007 -0400
+
+    we run with older yum. we're just slow
+
+ mash.spec |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 15:14:18 2007 -0400
+
+    fix error
+
+ mash.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 13:59:24 2007 -0400
+
+    update changelog
+
+ ChangeLog |   78 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 78 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Wed May 30 13:58:53 2007 -0400
 
     update to 0.1.13

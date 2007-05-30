@@ -1,4 +1,33 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue May 29 23:15:57 2007 -0400
+
+    update to 1.1.12
+    fork when calling koji to cut down on memory
+
+ mash.py          |   13 +++++++++++--
+ mash.spec        |    6 +++++-
+ mash/__init__.py |   10 ++++++----
+ setup.py         |    2 +-
+ 4 files changed, 23 insertions(+), 8 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon May 28 03:31:18 2007 -0400
+
+    use  /tmp for createrepo cache, yum cruft
+    exec createrepo (save some memory)
+
+ mash/__init__.py |   54 +++++++++++++++++++++++++++++-------------------------
+ 1 files changed, 29 insertions(+), 25 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Sat May 26 23:32:57 2007 -0400
+
+    update changelog
+
+ ChangeLog |   52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 52 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Sat May 26 23:31:57 2007 -0400
 
     update to 0.1.11

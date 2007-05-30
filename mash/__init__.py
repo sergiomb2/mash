@@ -293,7 +293,7 @@ class Mash:
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
         pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
         repodir = os.path.dirname(pkgdir)
-        tmproot = os.path.join(self.config.workdir, "%s-%s.tmp" % (self.config.name, arch))
+        tmproot = os.path.join(tmpdir, "%s-%s.tmp" % (self.config.name, arch))
         yumcachedir = os.path.join(tmproot, "yumcache")
             
         yumbase = yum.YumBase()

@@ -76,7 +76,7 @@ class Mash:
         self.session = koji.ClientSession(config.buildhost, {})
 
     def _runCreateRepo(self, path, cachedir, comps = False, execute = False):
-        command = ["/usr/bin/createrepo","-p", "-q", "-d", "-c", cachedir, "-o" ,path]
+        command = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "-o" ,path]
         if comps and self.config.compsfile:
             command = command + [ "-g", self.config.compsfile ]
         command = command + [ path ]

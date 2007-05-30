@@ -21,7 +21,6 @@ try:
 except:
     import brew as koji
 import rpm
-import yum
 
 import arch as masharch
 import multilib
@@ -285,6 +284,7 @@ class Mash:
             pid = os.fork()
             if pid:
                 return pid
+        import yum
                 
         if arch not in masharch.biarch.keys():
             print "Resolving deps for arch %s" % (arch)

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.13
+Version:        0.1.14
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Wed May 30 2007 Bill Nottingham <notting@redhat.com> 0.1.14-1
+- add a use_sqlite config option for determining whether to use createrepo -d
+
 * Wed May 30 2007 Bill Nottingham <notting@redhat.com> 0.1.13-1
 - hopefully fix the db locking issues
 - make source rpm path configurable

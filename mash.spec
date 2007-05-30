@@ -9,7 +9,7 @@ License:        GPL
 URL:            http://people.redhat.com/notting/mash/
 Source0:        http://people.redhat.com/notting/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       yum >= 3.1.0, createrepo, koji
+Requires:       yum, createrepo, koji
 BuildRequires:  python-devel
 BuildArch:      noarch
 

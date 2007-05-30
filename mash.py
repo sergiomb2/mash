@@ -10,7 +10,7 @@ import mash.config
     
 def main():
     usage = "usage: %prog [options] <configuration to build>"
-    parser = OptionParser(usage, version='%prog 0.1.11')
+    parser = OptionParser(usage, version='%prog 0.1.12')
     parser.add_option("-o","--outputdir",default="", dest="outputdir",
       help="output directory")
     parser.add_option("-c","--config", default="/etc/mash/mash.conf", dest="config",
@@ -44,7 +44,16 @@ def main():
         if dist.name == args[0]:
             themash = mash.Mash(dist)
         
-            themash.doCompose()
+            # HAAACK
+            pid = os.fork()
+            if pid == 0:
+                rc = themash.doCompose()
+                print rc
+                os._exit(rc)
+            else:
+                (p, status) = os.waitpid(pid,0)
+            if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
+                sys.exit(1)
             themash.doMultilib()
         
             print "mash done in %s/%s" % (conf.workdir, dist.name)

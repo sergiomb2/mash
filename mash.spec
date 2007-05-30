@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.11
+Version:        0.1.12
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Tue May 29 2007 Bill Nottingham <notting@redhat.com> 0.1.12-1
+- use /tmp where appropriate
+- hacks to use less memory
+
 * Sat May 26 2007 Bill Nottingham <notting@redhat.com> 0.1.11-1
 - run more operations in parallel
 

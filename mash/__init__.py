@@ -76,12 +76,12 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _runCreateRepo(self, path, cachedir, comps = False, exec = False):
+    def _runCreateRepo(self, path, cachedir, comps = False, execute = False):
         command = ["/usr/bin/createrepo","-p", "-q", "-d", "-c", cachedir, "-o" ,path]
         if comps and self.config.compsfile:
             command = command + [ "-g", self.config.compsfile ]
         command = command + [ path ]
-        if exec:
+        if execute:
             os.execv("/usr/bin/createrepo", command)
         else:
             pid = subprocess.Popen(command).pid
@@ -135,7 +135,7 @@ class Mash:
                 rpath = os.path.dirname(path)
             else:
                 rpath = path
-            status = self._runCreateRepo(rpath, cachedir, comps, exec = fork)
+            status = self._runCreateRepo(rpath, cachedir, comps, execute = fork)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -233,6 +233,7 @@ class Mash:
         os.makedirs(outputdir)
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)
         cachedir = os.path.join(tmpdir,".createrepo-cache")
+        shutil.rmtree(cachedir, ignore_errors = True)
         os.makedirs(cachedir)
         koji.pathinfo.topdir = self.config.repodir
         
@@ -261,6 +262,7 @@ class Mash:
             pids.remove(p[0])
             if len(pids) == 0:
                 break
+        return 0
     
     def doDepSolveAndMultilib(self, arch, cachedir, fork = True):
         
@@ -367,7 +369,7 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._runCreateRepo(repodir, cachedir, comps = True, exec = fork)
+            self._runCreateRepo(repodir, cachedir, comps = True, execute = fork)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         if fork:

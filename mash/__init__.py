@@ -309,11 +309,11 @@ reposdir=/dev/null
 cachedir=%s
 installroot=%s
 
-[%s]
+[%s-%s]
 name=%s
 baseurl=file://%s
 enabled=1
-""" % (yumcachedir, tmproot, self.config.name, self.config.name, repodir)
+""" % (yumcachedir, tmproot, self.config.name, arch, self.config.name, repodir)
         shutil.rmtree(tmproot, ignore_errors = True)
         os.makedirs(yumcachedir)
         os.makedirs(os.path.join(tmproot,'var/lib/rpm'))

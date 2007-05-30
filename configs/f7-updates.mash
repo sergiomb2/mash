@@ -1,6 +1,6 @@
 # mash config file
 
-[updates]
+[f7-updates]
 rpm_path = %(arch)s/
 source_path = SRPMS/
 debuginfo = True

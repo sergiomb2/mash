@@ -312,7 +312,14 @@ class Mash:
         yumcachedir = os.path.join(tmproot, "yumcache")
             
         yumbase = yum.YumBase()
-        rpmUtils.arch.canonArch = arch
+        archlist = masharch.compat[arch]
+        transaction_arch = arch
+        if do_multi:
+            archlist = archlist + masharch.compat[masharch.biarch[arch]]
+            best_compat = masharch.compat[masharch.biarch[arch]][0]
+            if rpmUtils.arch.archDifference(best_compat, arch) > 0:
+                transaction_arch = best_compat
+        rpmUtils.arch.canonArch = transaction_arch
             
         yconfig = """
 [main]
@@ -323,11 +330,13 @@ gpgcheck=0
 reposdir=/dev/null
 cachedir=%s
 installroot=%s
+logfile=/yum.log
 
 [%s-%s]
 name=%s
 baseurl=file://%s
 enabled=1
+
 """ % (yumcachedir, tmproot, self.config.name, arch, self.config.name, repodir)
         shutil.rmtree(tmproot, ignore_errors = True)
         os.makedirs(yumcachedir)
@@ -343,12 +352,7 @@ enabled=1
         yumbase.doRpmDBSetup()
         # Nggh.
         yumbase.ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
-        if do_multi:
-            archlist = masharch.compat[arch] + masharch.compat[masharch.biarch[arch]]
-        else:
-            archlist = masharch.compat[arch]
         yumbase.doSackSetup(archlist = archlist, thisrepo=self.config.name)
-            
         yumbase.doSackFilelistPopulate()
 
         filelist = []

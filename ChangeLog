@@ -1,4 +1,32 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 31 22:30:35 2007 -0400
+
+    update to 0.1.16
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 31 22:29:15 2007 -0400
+
+    silence the 'can't open log file' message
+    
+    fix architecture handling - solve ppc deps as if we're a ppc64
+
+ mash/__init__.py |   16 ++++++++++------
+ 1 files changed, 10 insertions(+), 6 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 31 20:52:21 2007 -0400
+
+    update changelog for 0.1.15
+
+ ChangeLog |   47 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 47 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu May 31 20:52:12 2007 -0400
 
     update to 0.1.15

@@ -369,6 +369,11 @@ enabled=1
                 print "WARNING: Could not open %s" % (pkg,)
                 
         (rc, errors) = yumbase.resolveDeps()
+        if errors:
+            pass
+            #print "Unresolved dependencies on %s:" % (arch,)
+            #for error in errors:
+            #    print error
         if do_multi:
             for f in yumbase.tsInfo.getMembers():
                 file = os.path.basename(f.po.localPkg())

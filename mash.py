@@ -53,9 +53,12 @@ def main():
             else:
                 (p, status) = os.waitpid(pid,0)
             if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
+                print "mash failed in %s" % os.path.join(conf.workdir, dist.name)
                 sys.exit(1)
-            themash.doMultilib()
-        
+            rc = themash.doMultilib()
+            if rc:
+                print "mash failed in %s" % os.path.join(conf.workdir, dist.name)
+                sys.exit(1)
             print "mash done in %s" % os.path.join(conf.workdir, dist.name)
             sys.exit(0)
 

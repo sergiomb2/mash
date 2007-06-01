@@ -225,6 +225,16 @@ class Mash:
                     print "WARNING: package %s is not signed with a preferred key (signed with %s)" % (nevra(pkg), key)
                     if self.config.strict_keys:
                         exit = 1
+                else:
+                    z = pkg.copy()
+                    z['name'] = builds_hash[pkg['build_id']]['package_name']
+                    z['version'] = builds_hash[pkg['build_id']]['version']
+                    z['release'] = builds_hash[pkg['build_id']]['release']
+                    p = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
+                    if not os.path.exists(p):
+                        print "WARNING: package %s has cached signatures (%s), but no signed RPM" % (nevra(pkg), key)
+                        if self.config.strict_keys:
+                            exit = 1
         if exit:
             sys.exit(1)
         
@@ -255,15 +265,18 @@ class Mash:
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
+        rc = 0
         while 1:
             try:
-                p = os.wait()
+                (p, status) = os.wait()
             except:
                 break
-            pids.remove(p[0])
+            pids.remove(p)
+            if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
+                rc = 1
             if len(pids) == 0:
                 break
-        return 0
+        return rc
     
     def doDepSolveAndMultilib(self, arch, cachedir, fork = True):
         
@@ -387,13 +400,17 @@ enabled=1
             pids.append(pid)
 
         print "Waiting for depsolve and createrepo to finish..."
+        rc = 0
         while 1:
             try:
-                p = os.wait()
+                (p, status) = os.wait()
             except:
                 break
-            pids.remove(p[0])
+            pids.remove(p)
+            if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
+                rc = 1
             if len(pids) == 0:
                 break
         shutil.rmtree(tmpdir, ignore_errors = True)
+        return rc
         

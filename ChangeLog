@@ -1,4 +1,51 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 31 20:52:12 2007 -0400
+
+    update to 0.1.15
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 31 20:50:04 2007 -0400
+
+    commented out depchecking
+
+ mash/__init__.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 31 20:45:54 2007 -0400
+
+    Catch errors properly, propagate them all the way back and return an
+    error if anything fails.
+    Handle the case where a package has signature in koji's signature
+    cache but no signed RPMs.
+
+ mash.py          |    7 +++++--
+ mash/__init__.py |   27 ++++++++++++++++++++++-----
+ 2 files changed, 27 insertions(+), 7 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 19:03:23 2007 -0400
+
+    change name to match configs
+
+ configs/f7-updates-testing.mash |    2 +-
+ configs/f7-updates.mash         |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 30 15:31:56 2007 -0400
+
+    update changelog for 0.1.14
+
+ ChangeLog |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 44 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Wed May 30 15:28:36 2007 -0400
 
     update to 0.1.14

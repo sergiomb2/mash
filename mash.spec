@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.15
+Version:        0.1.16
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Thu May 31 2007 Bill Nottingham <notting@redhat.com> 0.1.16-1
+- fix arch handling
+
 * Thu May 31 2007 Bill Nottingham <notting@redhat.com> 0.1.15-1
 - propagate errors better
 - handle signatures in koji correctly

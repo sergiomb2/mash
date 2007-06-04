@@ -81,6 +81,8 @@ class Mash:
             command = command + [ "-g", self.config.compsfile ]
         if self.config.use_sqlite:
             command = command + [ "-d" ]
+         if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
+            command = command + [ "-x", "debug/*" ]    
         command = command + [ path ]
         if execute:
             os.execv("/usr/bin/createrepo", command)

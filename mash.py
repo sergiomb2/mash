@@ -48,7 +48,6 @@ def main():
             pid = os.fork()
             if pid == 0:
                 rc = themash.doCompose()
-                print rc
                 os._exit(rc)
             else:
                 (p, status) = os.waitpid(pid,0)

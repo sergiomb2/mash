@@ -13,6 +13,7 @@
 
 import os
 import shutil
+import string
 import subprocess
 import sys
 
@@ -81,7 +82,7 @@ class Mash:
             command = command + [ "-g", self.config.compsfile ]
         if self.config.use_sqlite:
             command = command + [ "-d" ]
-         if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
+        if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
             command = command + [ "-x", "debug/*" ]    
         command = command + [ path ]
         if execute:
@@ -304,6 +305,8 @@ class Mash:
         import yum
                 
         if arch not in masharch.biarch.keys():
+            if not self.config.show_broken_deps:
+                os._exit(0)
             print "Resolving deps for arch %s" % (arch)
             do_multi = False
         else:
@@ -375,11 +378,12 @@ enabled=1
                 print "WARNING: Could not open %s" % (pkg,)
                 
         (rc, errors) = yumbase.resolveDeps()
-        if errors:
-            pass
-            #print "Unresolved dependencies on %s:" % (arch,)
-            #for error in errors:
-            #    print error
+        if errors and self.config.show_broken_deps:
+            for error in errors:
+                if error.startswith("Missing"):
+                    e = error.split()
+                    error = string.join(e[2:])
+                print "Broken dependency on %s: %s" % (arch, error)
         if do_multi:
             for f in yumbase.tsInfo.getMembers():
                 file = os.path.basename(f.po.localPkg())

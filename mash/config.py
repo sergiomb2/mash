@@ -25,7 +25,6 @@ class MashConfig(config.BaseConfig):
     repodir = config.Option('/mnt/koji')
     compsfile = config.Option()
     use_sqlite = config.BoolOption(True)
-    show_broken_deps = config.BoolOption(False)
     distros = []
     
 class MashDistroConfig(config.BaseConfig):
@@ -48,7 +47,6 @@ class MashDistroConfig(config.BaseConfig):
     workdir = config.Inherit(MashConfig.workdir)
     compsfile = config.Inherit(MashConfig.compsfile)
     use_sqlite = config.Inherit(MashConfig.use_sqlite)
-    show_broken_deps = config.Inherit(MashConfig.show_broken_deps)
 
 def readMainConfig(conf):
     config = MashConfig()

@@ -135,8 +135,8 @@ class Mash:
                         shutil.copyfile(src, dst)
                         
             # deep, abiding, HAAACK
-            if os.path.basename(path) == "Fedora":
-                rpath = os.path.dirname(path)
+            if os.path.basename(os.path.normpath(path)) == "Fedora":
+                rpath = os.path.dirname(os.path.normpath(path))
             else:
                 rpath = path
             status = self._runCreateRepo(rpath, cachedir, comps, execute = fork)

@@ -1,4 +1,75 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jun 7 02:48:18 2007 -0400
+
+    update to 0.1.17
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jun 7 01:54:24 2007 -0400
+
+    initial port to koji & rawhide
+
+ utils/spam-o-matic |  254 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 254 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Jun 6 15:58:37 2007 -0400
+
+    revert - this is best done outside mash
+
+ configs/development.mash |    1 -
+ mash/__init__.py         |   13 +++++--------
+ mash/config.py           |    2 --
+ 3 files changed, 5 insertions(+), 11 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Jun 6 14:37:26 2007 -0400
+
+    use normpath
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 4 21:04:30 2007 -0400
+
+    add a show_broken_deps config parameter - if so, dump the depcheck
+    output
+
+ configs/development.mash |    1 +
+ mash/__init__.py         |   16 ++++++++++------
+ mash/config.py           |    2 ++
+ 3 files changed, 13 insertions(+), 6 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 4 20:29:03 2007 -0400
+
+    kill extraneous print
+
+ mash.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 4 18:08:37 2007 -0400
+
+    exclude debuginfo in createrepo
+
+ mash/__init__.py |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 31 22:30:41 2007 -0400
+
+    update changelog for 0.1.16
+
+ ChangeLog |   28 ++++++++++++++++++++++++++++
+ 1 files changed, 28 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu May 31 22:30:35 2007 -0400
 
     update to 0.1.16

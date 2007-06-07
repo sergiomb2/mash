@@ -134,7 +134,7 @@ def assignBlame(resolver, dep, guilty):
 
     return list
 
-def generateSpam(pkgname, sendmail = False):
+def generateSpam(pkgname, sendmail = True):
 
     package = deps[pkgname]
     guilty = owners[pkgname]
@@ -183,7 +183,7 @@ Subject: Broken dependencies: %s
 
         print foo
 
-def doit(dir, mail=False):
+def doit(dir, mail=True):
     for arch in os.listdir(dir):
         conffile = generateConfig(dir, arch)
         if not conffile:
@@ -251,4 +251,4 @@ if __name__ == '__main__':
         mail = False
     else:
         mail = True
-    doit(args[0], mail=False)
+    doit(args[0], mail)

@@ -71,6 +71,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # pam
             if dirname in [ '/lib/security', '/lib64/security' ]:
                 return True
+            # sasl
+            if dirname in [ '/usr/lib/sasl2', '/usr/lib64/sasl2' ]:
+                return True
             # nss
             if dirname in [ '/lib', '/lib64' ] and filename.startswith('libnss_'):
                 return True

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.18
+Version:        0.1.19
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Mon Jul 23 2007 Bill Nottingham <notting@redhat.com> 0.1.19-1
+- fix spam-o-matic to use python mailer
+
 * Thu Jun 21 2007 Bill Nottingham <notting@redhat.com> 0.1.18-1
 - pull in cyrus-sasl plugins (#245176)
 

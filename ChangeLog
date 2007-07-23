@@ -1,4 +1,30 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jul 23 14:17:37 2007 -0400
+
+    update to 0.1.19
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jul 23 14:16:43 2007 -0400
+
+    use python mailer, point at localhost
+
+ utils/spam-o-matic |   38 ++++++++++++++++++++++----------------
+ 1 files changed, 22 insertions(+), 16 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jun 21 13:28:45 2007 -0400
+
+    update changelog for 0.1.18
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu Jun 21 13:28:37 2007 -0400
 
     update to 0.1.18

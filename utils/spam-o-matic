@@ -7,6 +7,7 @@ import string
 import sys
 import tempfile
 import re
+import smtplib
 from optparse import OptionParser
 from yum.constants import *
 from yum.misc import getCacheDir
@@ -150,7 +151,7 @@ def generateSpam(pkgname, sendmail = True):
                     if party != guilty and party not in conspirators:
                         conspirators.append(party)
 
-    foo = """
+    data = """
 
 %s has broken dependencies in the development tree:
 """ % (pkgname,)
@@ -158,30 +159,35 @@ def generateSpam(pkgname, sendmail = True):
     for s in package.keys():
         subpackage = package[s]
         for arch in subpackage.keys():
-            foo = foo + "On %s:\n" % (arch)
+            data = data + "On %s:\n" % (arch)
             brokendeps = subpackage[arch]
             for dep in brokendeps:
-                foo = foo + "\t%s\n" % printableReq(dep[0],dep[1])
+                data = data + "\t%s\n" % printableReq(dep[0],dep[1])
 
-    foo = foo + "Please resolve this as soon as possible.\n\n"
-
-    command = '/bin/mail -s "Broken dependencies: %s" %s' % (pkgname, guilty)
+    data = data + "Please resolve this as soon as possible.\n\n"
+    
+    fromaddr = 'buildsys@fedoraproject.org'
+    toaddrs = [guilty]
     if conspirators:
-        command = command + " -c %s" % (string.join(conspirators,","),)
+        toaddrs = toaddrs + conspirators
 
-    if sendmail:
-        mailer = os.popen(command, 'w')
-        mailer.write(foo)
-        mailer.close()
-    else:
-        print """
+    msg = """
+From: %s
 To: %s
 Cc: %s
 Subject: Broken dependencies: %s
 
-""" % (guilty, string.join(conspirators,','), pkgname)
-
-        print foo
+%s
+""" % (fromaddr, guilty, string.join(conspirators,','), pkgname, data)
+    if sendmail:
+        try:
+            server = smtplib.SMTP('localhost')
+            server.set_debuglevel(1)
+            server.sendmail(fromaddr, toaddrs, msg)
+        except:
+            print 'sending mail failed'
+    else:
+        print msg
 
 def doit(dir, mail=True):
     for arch in os.listdir(dir):

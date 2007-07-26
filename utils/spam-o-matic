@@ -171,8 +171,7 @@ def generateSpam(pkgname, sendmail = True):
     if conspirators:
         toaddrs = toaddrs + conspirators
 
-    msg = """
-From: %s
+    msg = """From: %s
 To: %s
 Cc: %s
 Subject: Broken dependencies: %s

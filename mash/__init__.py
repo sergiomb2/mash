@@ -135,7 +135,7 @@ class Mash:
                         shutil.copyfile(src, dst)
                         
             # deep, abiding, HAAACK
-            if os.path.basename(os.path.normpath(path)) == "Fedora":
+            if os.path.basename(os.path.normpath(path)) == "Packages":
                 rpath = os.path.dirname(os.path.normpath(path))
             else:
                 rpath = path
@@ -305,8 +305,10 @@ class Mash:
         import yum
                 
         if arch not in masharch.biarch.keys():
-            print "Resolving deps for arch %s" % (arch)
-            do_multi = False
+            if fork:
+                os._exit(0)
+            else:
+                return
         else:
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
         pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})

@@ -1,7 +1,7 @@
 # mash config file
 
 [development]
-rpm_path = %(arch)s/os/Fedora
+rpm_path = %(arch)s/os/Packages
 source_path = source/SRPMS
 debuginfo = True
 multilib = True

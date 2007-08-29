@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.1.19
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -10,6 +10,7 @@ URL:            http://people.redhat.com/notting/mash/
 Source0:        http://people.redhat.com/notting/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       yum, createrepo, koji
+Conflicts:	pungi < 1.0.0
 BuildRequires:  python-devel
 BuildArch:      noarch
 
@@ -43,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Tue Aug 28 2007 Bill Nottingham <notting@redhat.com> 0.2.0-1
+- updates to work with pungi 1.0.0, conflict with older pungi
+- fix some multilib compose issues (<drago01@gmail.com>)
+
 * Mon Jul 23 2007 Bill Nottingham <notting@redhat.com> 0.1.19-1
 - fix spam-o-matic to use python mailer
 

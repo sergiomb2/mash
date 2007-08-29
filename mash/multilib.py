@@ -66,7 +66,7 @@ class RuntimeMultilibMethod(MultilibMethod):
     
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
-        whitelist = ['scim-bridge-gtk', 'scim-qtimm', 'redhat-artwork', 'gtk2-engines', 'libgnat', 'wine', 'wine-arts' ]
+        whitelist = ['scim-bridge-gtk', 'scim-qtimm', 'redhat-artwork', 'libgnat', 'wine', 'wine-arts' ]
         if po.name in whitelist:
             return True
         if MultilibMethod.select(self,po):
@@ -92,6 +92,10 @@ class RuntimeMultilibMethod(MultilibMethod):
             # mysql, qt, etc.
             if dirname == '/etc/ld.so.conf.d' and filename.endswith('.conf'):
                 return True
+	    # gtk2-engines
+	    if po.name.startswith('gtk') and fnmatch(filename, '*gtkrc'):
+		return True
+	    
         return False
 
 class DevelMultilibMethod(RuntimeMultilibMethod):

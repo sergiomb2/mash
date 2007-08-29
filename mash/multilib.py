@@ -66,7 +66,7 @@ class RuntimeMultilibMethod(MultilibMethod):
     
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
-        whitelist = ['scim-bridge-gtk', 'scim-qtimm', 'redhat-artwork', 'libgnat', 'wine', 'wine-arts' ]
+        whitelist = [ 'libgnat', 'wine', 'wine-arts' ]
         if po.name in whitelist:
             return True
         if MultilibMethod.select(self,po):
@@ -95,6 +95,12 @@ class RuntimeMultilibMethod(MultilibMethod):
 	    # gtk2-engines
 	    if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/engines'):
 		return True
+	    # scim-bridge-gtk	
+            if fnmatch(dirname, '/usr/lib*/gtk-2.0/immoudles'):
+                return True
+            # scim-qtimm
+            if fnmatch(dirname, '/usr/lib*/qt-*/plugins/inputmethods'):
+                return True
 	    
         return False
 

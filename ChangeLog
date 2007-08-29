@@ -1,4 +1,75 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Aug 28 22:40:07 2007 -0400
+
+    update to 0.2.0
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Aug 28 22:36:59 2007 -0400
+
+    further multilib cleanups
+
+ mash/multilib.py |    8 +++++++-
+ 1 files changed, 7 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Aug 28 22:32:35 2007 -0400
+
+    handle gtk2 engines correctly <drago01@gmail.com>
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Aug 28 22:31:26 2007 -0400
+
+    handle gtk engines more correctly (<drago01@gmail.com>)
+
+ mash/multilib.py |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Aug 28 22:30:19 2007 -0400
+
+    use new paths that pungi has (<jkeating@redhat.com>)
+
+ configs/development.mash |    2 +-
+ mash/__init__.py         |    8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Aug 3 16:10:15 2007 -0400
+
+    clarify license
+
+ mash.py          |   13 +++++++++++++
+ mash/arch.py     |   12 ++++++++++++
+ mash/config.py   |   12 ++++++++++++
+ mash/multilib.py |   12 ++++++++++++
+ setup.py         |    2 +-
+ 5 files changed, 50 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jul 26 09:58:27 2007 -0400
+
+    nuke extra newline
+
+ utils/spam-o-matic |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jul 23 14:17:54 2007 -0400
+
+    update changelog for 0.1.19
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Jul 23 14:17:37 2007 -0400
 
     update to 0.1.19

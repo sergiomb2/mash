@@ -93,7 +93,7 @@ class RuntimeMultilibMethod(MultilibMethod):
             if dirname == '/etc/ld.so.conf.d' and filename.endswith('.conf'):
                 return True
 	    # gtk2-engines
-	    if po.name.startswith('gtk') and fnmatch(filename, '*gtkrc'):
+	    if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/engines'):
 		return True
 	    
         return False

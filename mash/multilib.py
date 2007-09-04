@@ -113,14 +113,14 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
         whitelist = ['perl']
         if po.name in blacklist:
             return False
-        if po.name.startswith('kernel'):
-            for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
-                if p_name == 'kernel-devel':
-                    return False
         if po.name in whitelist:
             return True
         if RuntimeMultilibMethod.select(self,po):
             return True
+        if po.name.startswith('kernel'):
+            for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
+                if p_name == 'kernel-devel':
+                    return False
         if po.name.endswith('-devel'):
             return True
         return False

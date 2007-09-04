@@ -66,7 +66,7 @@ class RuntimeMultilibMethod(MultilibMethod):
     
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
-        whitelist = [ 'libgnat', 'wine', 'wine-arts' ]
+        whitelist = [ 'libgnat', 'wine', 'wine-arts', 'nspluginwrapper' ]
         if po.name in whitelist:
             return True
         if MultilibMethod.select(self,po):

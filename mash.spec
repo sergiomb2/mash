@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.2.1
+Version:        0.2.2
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,8 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
-* Tue Sep  4 2007 Bill Nottingham <notting@redhat.com> 0.2.1-1
+* Tue Sep  4 2007 Bill Nottingham <notting@redhat.com> 0.2.2-1
 - add nspluginwrapper to multilib whitelist (#275021)
+- fix kernel-devel (#247321)
 
 * Tue Aug 28 2007 Bill Nottingham <notting@redhat.com> 0.2.0-1
 - updates to work with pungi 1.0.0, conflict with older pungi

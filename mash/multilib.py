@@ -109,7 +109,7 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
         self.name = 'devel'
     
     def select(self, po):
-        blacklist = ['dmraid-devel', 'kdeutils-devel', 'mkinitrd-devel', 'java-1.5.0-gcj-devel']
+        blacklist = ['dmraid-devel', 'kdeutils-devel', 'mkinitrd-devel', 'java-1.5.0-gcj-devel', 'java-1.7.0-icedtea-devel' ]
         whitelist = ['perl']
         if po.name in blacklist:
             return False

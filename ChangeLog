@@ -1,4 +1,26 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 17 16:14:53 2007 -0400
+
+    - repoview support (<jkeating@redhat.com>)
+
+ configs/development.mash        |    2 ++
+ configs/f7-updates-testing.mash |    2 ++
+ configs/f7-updates.mash         |    2 ++
+ mash.py                         |    2 +-
+ mash.spec                       |    5 ++++-
+ mash/__init__.py                |   12 +++++++++++-
+ setup.py                        |    2 +-
+ 7 files changed, 23 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 6 10:24:20 2007 -0400
+
+    update changelog for 0.2.3
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu Sep 6 10:24:14 2007 -0400
 
     bump to 0.2.3

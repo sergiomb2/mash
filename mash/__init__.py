@@ -77,7 +77,7 @@ class Mash:
         self.session = koji.ClientSession(config.buildhost, {})
 
     def _runCreateRepo(self, path, cachedir, comps = False, execute = False):
-        command = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "-o" ,path]
+        command = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "--update", "-o", path]
         if comps and self.config.compsfile:
             command = command + [ "-g", self.config.compsfile ]
         if self.config.use_sqlite:
@@ -87,6 +87,15 @@ class Mash:
         command = command + [ path ]
         if execute:
             os.execv("/usr/bin/createrepo", command)
+        else:
+            pid = subprocess.Popen(command).pid
+            (p, status) = os.waitpid(pid,0)
+            return status
+
+    def _runCreateRepoview(self, path, arch, execute = False):
+        command = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
+        if execute:
+            os.execv("/usr/bin/repoview", command)
         else:
             pid = subprocess.Popen(command).pid
             (p, status) = os.waitpid(pid,0)
@@ -399,6 +408,7 @@ enabled=1
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
             self._runCreateRepo(repodir, cachedir, comps = True, execute = fork)
+            self._runCreateRepoview(repodir, arch, execute = fork)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         if fork:

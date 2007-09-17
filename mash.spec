@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.2.3
+Version:        0.2.4
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Mon Sep 17 2007 Bill Nottingham <notting@redhat.com> 0.2.4-1
+- repoview support (<jkeating@redhat.com>)
+
 * Thu Sep  6 2007 Bill Nottingham <notting@redhat.com> 0.2.3-1
 - blacklist java-1.7.0-icedtea-devel (#271761)
 

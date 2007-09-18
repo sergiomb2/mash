@@ -1,4 +1,30 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 18 11:47:55 2007 -0400
+
+    update to 0.2.5
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 18 11:41:09 2007 -0400
+
+    move valgrind to whitelist (#294761)
+
+ mash/multilib.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 17 16:15:27 2007 -0400
+
+    update changelog for 0.2.4
+
+ ChangeLog |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Sep 17 16:14:53 2007 -0400
 
     - repoview support (<jkeating@redhat.com>)

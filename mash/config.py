@@ -21,7 +21,6 @@ from yum import config
 
 class MashConfig(config.BaseConfig):
     symlink = config.BoolOption(False)
-    fork = config.BoolOption(True)
     rpm_path = config.Option('Mash')
     source_path = config.Option('source/SRPMS')
     debuginfo = config.BoolOption(True)
@@ -44,7 +43,6 @@ class MashConfig(config.BaseConfig):
 class MashDistroConfig(config.BaseConfig):
     name = config.Option()
     symlink = config.Inherit(MashConfig.symlink)
-    fork = config.Inherit(MashConfig.fork)
     rpm_path = config.Inherit(MashConfig.rpm_path)
     source_path = config.Inherit(MashConfig.source_path)
     debuginfo = config.Inherit(MashConfig.debuginfo)

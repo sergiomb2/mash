@@ -76,7 +76,7 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _makeMetadata(self, path, cachedir, comps = False, repoview = False, execute = False):
+    def _makeMetadata(self, path, cachedir, comps = False, repoview = False)
         createrepo_cmd = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "--update", "-o", path]
         repoview_cmd = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
         if comps and self.config.compsfile:
@@ -90,30 +90,20 @@ class Mash:
             pid = subprocess.Popen(createrepo_cmd).pid
             (p, status) = os.waitpid(pid, 0)
             
-            if execute:
-                os.execv("/usr/bin/repoview", repoview_cmd)
-            else:
-                pid = subprocess.Popen(repoview_cmd).pid
-                (p, status) = os.waitpid(pid, 0)
+            os.execv("/usr/bin/repoview", repoview_cmd)
         else:
-            if execute:
-                os.execv("/usr/bin/createrepo", createrepo_cmd)
-            else:
-                pid = subprocess.Popen(createrepo_cmd).pid
-                (p, status) = os.waitpid(pid,0)
-                return status
+            os.execv("/usr/bin/createrepo", createrepo_cmd)
 
     def doCompose(self):
-        def _write_files(list, path, comps = False, cachedir = None, fork = True):
+        def _write_files(list, path, comps = False, cachedir = None):
             
             print "Writing out files for %s..." % (path,)
             os.makedirs(path)
             
             
-            if fork:
-                pid = os.fork()
-                if pid:
-                    return pid
+            pid = os.fork()
+              if pid:
+                  return pid
             
             for pkg in list:
                 filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
@@ -150,7 +140,7 @@ class Mash:
                 rpath = os.path.dirname(os.path.normpath(path))
             else:
                 rpath = path
-            status = self._makeMetadata(rpath, cachedir, comps, repoview = True, execute = fork)
+            status = self._makeMetadata(rpath, cachedir, comps, repoview = True)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -265,17 +255,17 @@ class Mash:
         pids = []
         for arch in self.config.arches:
             path = os.path.join(outputdir, self.config.rpm_path % { 'arch':arch })
-            pid = _write_files(packages[arch].packages(), path, cachedir = cachedir, comps = True, fork = self.config.fork)
+            pid = _write_files(packages[arch].packages(), path, cachedir = cachedir, comps = True)
             pids.append(pid)
             
             if self.config.debuginfo:
                 path = os.path.join(outputdir, self.config.debuginfo_path % { 'arch': arch })
-                pid = _write_files(debug[arch].packages(), path, cachedir = cachedir, fork = self.config.fork)
+                pid = _write_files(debug[arch].packages(), path, cachedir = cachedir)
                 pids.append(pid)
                 
             
         path = os.path.join(outputdir, self.config.source_path)
-        pid = _write_files(source.packages(), path, cachedir = cachedir, fork = self.config.fork)
+        pid = _write_files(source.packages(), path, cachedir = cachedir)
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
@@ -292,7 +282,7 @@ class Mash:
                 break
         return rc
     
-    def doDepSolveAndMultilib(self, arch, cachedir, fork = True):
+    def doDepSolveAndMultilib(self, arch, cachedir):
         
         do_multi = self.config.multilib
         
@@ -309,17 +299,13 @@ class Mash:
         
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)
         cachedir = os.path.join(tmpdir,".createrepo-cache")
-        if fork:
-            pid = os.fork()
+        pid = os.fork()
             if pid:
                 return pid
         import yum
                 
         if arch not in masharch.biarch.keys():
-            if fork:
-                os._exit(0)
-            else:
-                return
+            os._exit(0)
         else:
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
         pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
@@ -409,11 +395,10 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._makeMetadata(repodir, cachedir, comps = True, repoview = True, execute = fork)
+            self._makeMetadata(repodir, cachedir, comps = True, repoview = True)
 
         shutil.rmtree(tmproot, ignore_errors = True)
-        if fork:
-            os._exit(0)
+        os._exit(0)
         
     def doMultilib(self):
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)
@@ -421,7 +406,7 @@ enabled=1
         pids = []
         for arch in self.config.arches:
         
-            pid = self.doDepSolveAndMultilib(arch, cachedir, fork = self.config.fork)
+            pid = self.doDepSolveAndMultilib(arch, cachedir)
             pids.append(pid)
 
         print "Waiting for depsolve and createrepo to finish..."

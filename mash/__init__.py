@@ -76,7 +76,7 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _makeMetadata(self, path, cachedir, comps = False, repoview = False)
+    def _makeMetadata(self, path, cachedir, comps = False, repoview = False):
         createrepo_cmd = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "--update", "-o", path]
         repoview_cmd = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
         if comps and self.config.compsfile:
@@ -102,8 +102,8 @@ class Mash:
             
             
             pid = os.fork()
-              if pid:
-                  return pid
+            if pid:
+                return pid
             
             for pkg in list:
                 filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
@@ -300,8 +300,8 @@ class Mash:
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)
         cachedir = os.path.join(tmpdir,".createrepo-cache")
         pid = os.fork()
-            if pid:
-                return pid
+        if pid:
+            return pid
         import yum
                 
         if arch not in masharch.biarch.keys():

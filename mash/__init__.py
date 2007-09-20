@@ -76,30 +76,32 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _runCreateRepo(self, path, cachedir, comps = False, execute = False):
-        command = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "--update", "-o", path]
+    def _makeMetadata(self, path, cachedir, comps = False, repoview = False, execute = False):
+        createrepo_cmd = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "--update", "-o", path]
+        repoview_cmd = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
         if comps and self.config.compsfile:
-            command = command + [ "-g", self.config.compsfile ]
+            createrepo_cmd = createrepo_cmd + [ "-g", self.config.compsfile ]
         if self.config.use_sqlite:
-            command = command + [ "-d" ]
+            createrepo_cmd = createrepo_cmd + [ "-d" ]
         if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
-            command = command + [ "-x", "debug/*" ]    
-        command = command + [ path ]
-        if execute:
-            os.execv("/usr/bin/createrepo", command)
+            createrepo_cmd = createrepo_cmd + [ "-x", "debug/*" ]    
+        createrepo_cmd = createrepo_cmd + [ path ]
+        if repoview:
+            pid = subprocess.Popen(createrepo_cmd).pid
+            (p, status) = os.waitpid(pid, 0)
+            
+            if execute:
+                os.execv("/usr/bin/repoview", repoview_cmd)
+            else:
+                pid = subprocess.Popen(repoview_cmd).pid
+                (p, status) = os.waitpid(pid, 0)
         else:
-            pid = subprocess.Popen(command).pid
-            (p, status) = os.waitpid(pid,0)
-            return status
-
-    def _runCreateRepoview(self, path, arch, execute = False):
-        command = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
-        if execute:
-            os.execv("/usr/bin/repoview", command)
-        else:
-            pid = subprocess.Popen(command).pid
-            (p, status) = os.waitpid(pid,0)
-            return status
+            if execute:
+                os.execv("/usr/bin/createrepo", createrepo_cmd)
+            else:
+                pid = subprocess.Popen(createrepo_cmd).pid
+                (p, status) = os.waitpid(pid,0)
+                return status
 
     def doCompose(self):
         def _write_files(list, path, comps = False, cachedir = None, fork = True):
@@ -148,7 +150,7 @@ class Mash:
                 rpath = os.path.dirname(os.path.normpath(path))
             else:
                 rpath = path
-            status = self._runCreateRepo(rpath, cachedir, comps, execute = fork)
+            status = self._makeMetadata(rpath, cachedir, comps, repoview = True, execute = fork)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -407,8 +409,7 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._runCreateRepo(repodir, cachedir, comps = True, execute = fork)
-            self._runCreateRepoview(repodir, arch, execute = fork)
+            self._makeMetadata(repodir, cachedir, comps = True, repoview = True, execute = fork)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         if fork:

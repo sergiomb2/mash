@@ -1,4 +1,70 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 15:05:33 2007 -0400
+
+    update to 0.2.6
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 15:03:22 2007 -0400
+
+    fix syntax
+
+ mash/__init__.py |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 14:54:34 2007 -0400
+
+    make forking mandatory. kill the machine. kill it dead!
+
+ configs/mash.conf |    1 -
+ mash/__init__.py  |   49 +++++++++++++++++--------------------------------
+ mash/config.py    |    2 --
+ 3 files changed, 17 insertions(+), 35 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 14:38:45 2007 -0400
+
+    move repoview to the createrepo call
+
+ mash/__init__.py |   47 ++++++++++++++++++++++++-----------------------
+ 1 files changed, 24 insertions(+), 23 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 14:25:29 2007 -0400
+
+    wire up the config options
+
+ mash/config.py |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+Merge: a46665e... 89123b5...
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 10:07:04 2007 -0400
+
+    Merge branch 'master' of ssh://git.fedoraproject.org/git/hosted/mash
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Thu Sep 20 09:49:11 2007 -0400
+
+    Patch from jens to fix gtkimm multilib.
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 18 11:48:01 2007 -0400
+
+    update changelog for 0.2.5
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Tue Sep 18 11:47:55 2007 -0400
 
     update to 0.2.5

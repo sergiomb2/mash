@@ -140,7 +140,7 @@ class Mash:
                 rpath = os.path.dirname(os.path.normpath(path))
             else:
                 rpath = path
-            status = self._makeMetadata(rpath, cachedir, comps, repoview = True)
+            status = self._makeMetadata(rpath, cachedir, comps, repoview = False)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -395,7 +395,7 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._makeMetadata(repodir, cachedir, comps = True, repoview = True)
+            self._makeMetadata(repodir, cachedir, comps = True, repoview = False)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         os._exit(0)

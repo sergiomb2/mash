@@ -1,4 +1,30 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Sep 21 15:36:30 2007 -0400
+
+    bump to 0.2.7
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Fri Sep 21 15:36:34 2007 -0400
+
+    Disable repoview for now, not working
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 15:06:02 2007 -0400
+
+    update changelog for 0.2.6
+
+ ChangeLog |   66 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 66 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu Sep 20 15:05:33 2007 -0400
 
     update to 0.2.6

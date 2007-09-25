@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.2.7
+Version:        0.2.8
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Tue Sep 25 2007 Bill Nottingham <notting@redhat.com> 0.2.8-1
+- libflashsupport (#305541)
+
 * Fri Sep 21 2007 Bill Nottingham <notting@redhat.com> 0.2.7-1
 - disable repoview for now
 

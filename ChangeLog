@@ -1,4 +1,23 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 25 15:34:48 2007 -0400
+
+    whitelist libflashsupport (#305541)
+
+ mash.py          |    2 +-
+ mash.spec        |    5 ++++-
+ mash/multilib.py |    2 +-
+ setup.py         |    2 +-
+ 4 files changed, 7 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Sep 21 15:36:37 2007 -0400
+
+    update changelog for 0.2.7
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Fri Sep 21 15:36:30 2007 -0400
 
     bump to 0.2.7

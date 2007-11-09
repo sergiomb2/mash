@@ -209,6 +209,18 @@ class Mash:
         # now deal with noarch
         for pkg in noarch:
             for target_arch in self.config.arches:
+
+                # if excludearch is not set this build likely has no src.rpm
+                # so set excludearch and exclusivearch from the binary
+                if pkg['build_id'] not in excludearch:
+                    path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
+                    fn = open(path, 'r')
+                    hdr = koji.get_rpm_header(fn)
+                    excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
+                    exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
+                    fn.close()
+                    continue
+
                 if (excludearch[pkg['build_id']] and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
                         (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], exclusivearch[pkg['build_id']])):
                     print "Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch)

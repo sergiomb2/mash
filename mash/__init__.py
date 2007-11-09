@@ -371,21 +371,19 @@ enabled=1
 
         filelist = []
             
-        for pkg in os.listdir(pkgdir):
-            if not pkg.endswith('.rpm'):
+        for pkg in yumbase.pkgSack:
+            pname = "%s-%s-%s.%s.rpm" % (pkg.name, pkg.version, pkg.release, pkg.arch)
+            if not os.path.exists(os.path.join(pkgdir, pname)):
+                print "WARNING: Could not open %s" % (pname,)
                 continue
-            try:
-                ypkg = yum.YumLocalPackage(ts = yumbase.ts, filename = os.path.join(pkgdir, pkg))
-                if ypkg.arch in masharch.compat[arch]:
-                    yumbase.tsInfo.addInstall(ypkg)
-                    filelist.append(pkg)
-                elif do_multi and method.select(ypkg):
-                    yumbase.tsInfo.addInstall(ypkg)
-                    print "Adding package %s for multlib" %  (pkg,)
-                    filelist.append(pkg)
-            except:
-                print "WARNING: Could not open %s" % (pkg,)
-                
+            if pkg.arch in masharch.compat[arch]:
+                yumbase.tsInfo.addInstall(pkg)
+                filelist.append(pname)
+            elif do_multi and method.select(pkg):
+                yumbase.tsInfo.addInstall(pkg)
+                print "Adding package %s for multilib" % (pkg,)
+                filelist.append(pname)
+
         (rc, errors) = yumbase.resolveDeps()
         if errors:
             pass

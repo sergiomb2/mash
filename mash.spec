@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.2.8
+Version:        0.2.9
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Fri Nov  9 2007 Bill Nottingham <notting@redhat.com> 0.2.9-1
+- handle noarch excludearch for packages without source
+  rpms (<rob.myers@gtri.gatech.edu>)
+- use yum's pkgSack, not yumLocalPackage
+
 * Tue Sep 25 2007 Bill Nottingham <notting@redhat.com> 0.2.8-1
 - libflashsupport (#305541)
 

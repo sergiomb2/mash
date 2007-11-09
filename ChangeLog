@@ -1,4 +1,48 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 9 15:59:51 2007 -0500
+
+    bump to 0.2.9
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 9 15:58:29 2007 -0500
+
+    use the pkgsack, not yumLocalPackage. Speeds things up
+    quite a bit (suggested by ffesti)
+
+ mash/__init__.py |   26 ++++++++++++--------------
+ 1 files changed, 12 insertions(+), 14 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 9 13:05:01 2007 -0500
+
+    handle noarch excludearch for packages w/o source rpms (<rob.myers@gtri.gatech.edu>)
+
+ mash/__init__.py |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Oct 22 14:46:36 2007 -0400
+
+    add f8 configs from lmacken
+
+ configs/f8-updates-testing.mash |   15 +++++++++++++++
+ configs/f8-updates.mash         |   15 +++++++++++++++
+ 2 files changed, 30 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 25 15:35:36 2007 -0400
+
+    update changelog for 0.2.8
+
+ ChangeLog |   19 +++++++++++++++++++
+ 1 files changed, 19 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Tue Sep 25 15:34:48 2007 -0400
 
     whitelist libflashsupport (#305541)
@@ -1063,15 +1107,13 @@ Date:   Thu May 10 22:26:18 2007 -0400
 
     various packaging fixes. bump version.
 
- AUTHORS           |    2 +
- configs/mash.conf |    3 +-
- mash.py           |   50 ++++++++
- mash.spec         |    3 +-
- mash/__init__.py  |  356 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- mash/mash.py      |  356 -----------------------------------------------------
- mashbin           |   53 --------
- setup.py          |    4 +-
- 8 files changed, 413 insertions(+), 414 deletions(-)
+ AUTHORS                       |    2 ++
+ configs/mash.conf             |    3 +--
+ mashbin => mash.py            |   39 ++++++++++++++++++---------------------
+ mash.spec                     |    3 ++-
+ mash/{mash.py => __init__.py} |    0 
+ setup.py                      |    4 ++--
+ 6 files changed, 25 insertions(+), 26 deletions(-)
 
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu May 10 21:53:56 2007 -0400

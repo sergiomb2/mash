@@ -17,7 +17,7 @@ class MultilibMethod:
     def __init__(self):
         self.name = 'base'
     def select(self, po):
-        prefer_64 = [ 'gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace', 'valgrind']
+        prefer_64 = [ 'gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace' ]
         if po.arch.find('64') != -1:
             if po.name in prefer_64:
                 return True
@@ -66,7 +66,7 @@ class RuntimeMultilibMethod(MultilibMethod):
     
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
-        whitelist = [ 'libgnat', 'wine', 'wine-arts', 'nspluginwrapper' ]
+        whitelist = [ 'libgnat', 'wine', 'wine-arts', 'nspluginwrapper', 'libflashsupport', 'valgrind' ]
         if po.name in whitelist:
             return True
         if MultilibMethod.select(self,po):

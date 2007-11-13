@@ -1,4 +1,185 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 9 15:59:51 2007 -0500
+
+    bump to 0.2.9
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 9 15:58:29 2007 -0500
+
+    use the pkgsack, not yumLocalPackage. Speeds things up
+    quite a bit (suggested by ffesti)
+
+ mash/__init__.py |   26 ++++++++++++--------------
+ 1 files changed, 12 insertions(+), 14 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 9 13:05:01 2007 -0500
+
+    handle noarch excludearch for packages w/o source rpms (<rob.myers@gtri.gatech.edu>)
+
+ mash/__init__.py |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Oct 22 14:46:36 2007 -0400
+
+    add f8 configs from lmacken
+
+ configs/f8-updates-testing.mash |   15 +++++++++++++++
+ configs/f8-updates.mash         |   15 +++++++++++++++
+ 2 files changed, 30 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 25 15:35:36 2007 -0400
+
+    update changelog for 0.2.8
+
+ ChangeLog |   19 +++++++++++++++++++
+ 1 files changed, 19 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 25 15:34:48 2007 -0400
+
+    whitelist libflashsupport (#305541)
+
+ mash.py          |    2 +-
+ mash.spec        |    5 ++++-
+ mash/multilib.py |    2 +-
+ setup.py         |    2 +-
+ 4 files changed, 7 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Sep 21 15:36:37 2007 -0400
+
+    update changelog for 0.2.7
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Sep 21 15:36:30 2007 -0400
+
+    bump to 0.2.7
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Fri Sep 21 15:36:34 2007 -0400
+
+    Disable repoview for now, not working
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 15:06:02 2007 -0400
+
+    update changelog for 0.2.6
+
+ ChangeLog |   66 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 66 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 15:05:33 2007 -0400
+
+    update to 0.2.6
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 15:03:22 2007 -0400
+
+    fix syntax
+
+ mash/__init__.py |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 14:54:34 2007 -0400
+
+    make forking mandatory. kill the machine. kill it dead!
+
+ configs/mash.conf |    1 -
+ mash/__init__.py  |   49 +++++++++++++++++--------------------------------
+ mash/config.py    |    2 --
+ 3 files changed, 17 insertions(+), 35 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 14:38:45 2007 -0400
+
+    move repoview to the createrepo call
+
+ mash/__init__.py |   47 ++++++++++++++++++++++++-----------------------
+ 1 files changed, 24 insertions(+), 23 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 14:25:29 2007 -0400
+
+    wire up the config options
+
+ mash/config.py |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+Merge: a46665e... 89123b5...
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 20 10:07:04 2007 -0400
+
+    Merge branch 'master' of ssh://git.fedoraproject.org/git/hosted/mash
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Thu Sep 20 09:49:11 2007 -0400
+
+    Patch from jens to fix gtkimm multilib.
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 18 11:48:01 2007 -0400
+
+    update changelog for 0.2.5
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 18 11:47:55 2007 -0400
+
+    update to 0.2.5
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Sep 18 11:41:09 2007 -0400
+
+    move valgrind to whitelist (#294761)
+
+ mash/multilib.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 17 16:15:27 2007 -0400
+
+    update changelog for 0.2.4
+
+ ChangeLog |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Sep 17 16:14:53 2007 -0400
 
     - repoview support (<jkeating@redhat.com>)
@@ -926,15 +1107,13 @@ Date:   Thu May 10 22:26:18 2007 -0400
 
     various packaging fixes. bump version.
 
- AUTHORS           |    2 +
- configs/mash.conf |    3 +-
- mash.py           |   50 ++++++++
- mash.spec         |    3 +-
- mash/__init__.py  |  356 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- mash/mash.py      |  356 -----------------------------------------------------
- mashbin           |   53 --------
- setup.py          |    4 +-
- 8 files changed, 413 insertions(+), 414 deletions(-)
+ AUTHORS                       |    2 ++
+ configs/mash.conf             |    3 +--
+ mashbin => mash.py            |   39 ++++++++++++++++++---------------------
+ mash.spec                     |    3 ++-
+ mash/{mash.py => __init__.py} |    0 
+ setup.py                      |    4 ++--
+ 6 files changed, 25 insertions(+), 26 deletions(-)
 
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu May 10 21:53:56 2007 -0400

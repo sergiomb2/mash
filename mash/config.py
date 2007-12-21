@@ -22,6 +22,7 @@ from yum import config
 class MashConfig(config.BaseConfig):
     symlink = config.BoolOption(False)
     rpm_path = config.Option('Mash')
+    repodata_path = config.Option()
     source_path = config.Option('source/SRPMS')
     debuginfo = config.BoolOption(True)
     debuginfo_path = config.Option('%(arch)s/debug')
@@ -44,6 +45,7 @@ class MashDistroConfig(config.BaseConfig):
     name = config.Option()
     symlink = config.Inherit(MashConfig.symlink)
     rpm_path = config.Inherit(MashConfig.rpm_path)
+    repodata_path = config.Inherit(MashConfig.repodata_path)
     source_path = config.Inherit(MashConfig.source_path)
     debuginfo = config.Inherit(MashConfig.debuginfo)
     debuginfo_path = config.Inherit(MashConfig.debuginfo_path)
@@ -88,6 +90,8 @@ def readMainConfig(conf):
                 thisdistro.populate(parser, sect, config)
                 if not thisdistro.name:
                     thisdistro.name = sect
+                if not thisdistro.repodata_path:
+                    thisdistro.repodata_path = os.path.dirname(thisdistro.rpm_path)
                 thisdistro.keys = map(string.lower, thisdistro.keys)
                 config.distros.append(thisdistro)
     return config

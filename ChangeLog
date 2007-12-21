@@ -1,4 +1,32 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Nov 19 16:32:48 2007 -0500
+
+    update to 0.2.10
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 16 15:31:10 2007 -0500
+
+    handle non Packages/ repositories better (#350391)
+
+ configs/development.mash |    1 +
+ mash/__init__.py         |   27 ++++++++++++---------------
+ mash/config.py           |    4 ++++
+ 3 files changed, 17 insertions(+), 15 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Nov 9 16:00:15 2007 -0500
+
+    update changelog for 0.2.9
+
+ ChangeLog |   60 +++++++++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 files changed, 51 insertions(+), 9 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Fri Nov 9 15:59:51 2007 -0500
 
     bump to 0.2.9

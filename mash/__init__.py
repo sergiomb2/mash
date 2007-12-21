@@ -95,7 +95,7 @@ class Mash:
             os.execv("/usr/bin/createrepo", createrepo_cmd)
 
     def doCompose(self):
-        def _write_files(list, path, comps = False, cachedir = None):
+        def _write_files(list, path, repo_path, comps = False, cachedir = None):
             
             print "Writing out files for %s..." % (path,)
             os.makedirs(path)
@@ -135,12 +135,7 @@ class Mash:
                     except:
                         shutil.copyfile(src, dst)
                         
-            # deep, abiding, HAAACK
-            if os.path.basename(os.path.normpath(path)) == "Packages":
-                rpath = os.path.dirname(os.path.normpath(path))
-            else:
-                rpath = path
-            status = self._makeMetadata(rpath, cachedir, comps, repoview = False)
+            status = self._makeMetadata(repo_path, cachedir, comps, repoview = False)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -267,17 +262,20 @@ class Mash:
         pids = []
         for arch in self.config.arches:
             path = os.path.join(outputdir, self.config.rpm_path % { 'arch':arch })
-            pid = _write_files(packages[arch].packages(), path, cachedir = cachedir, comps = True)
+            repo_path = os.path.join(outputdir, self.config.repodata_path % { 'arch':arch })
+            print path
+            print repo_path
+            pid = _write_files(packages[arch].packages(), path, repo_path, cachedir = cachedir, comps = True)
             pids.append(pid)
             
             if self.config.debuginfo:
                 path = os.path.join(outputdir, self.config.debuginfo_path % { 'arch': arch })
-                pid = _write_files(debug[arch].packages(), path, cachedir = cachedir)
+                pid = _write_files(debug[arch].packages(), path, path, cachedir = cachedir)
                 pids.append(pid)
                 
             
         path = os.path.join(outputdir, self.config.source_path)
-        pid = _write_files(source.packages(), path, cachedir = cachedir)
+        pid = _write_files(source.packages(), path, path, cachedir = cachedir)
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
@@ -321,9 +319,8 @@ class Mash:
         else:
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
         pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
-        repodir = os.path.dirname(pkgdir)
+        repodir = os.path.join(self.config.workdir, self.config.name, self.config.repodata_path % {'arch':arch})
         tmproot = os.path.join(tmpdir, "%s-%s.tmp" % (self.config.name, arch))
-        yumcachedir = os.path.join(tmproot, "yumcache")
             
         yumbase = yum.YumBase()
         archlist = masharch.compat[arch]
@@ -342,7 +339,7 @@ pkgpolicy=newest
 exactarch=1
 gpgcheck=0
 reposdir=/dev/null
-cachedir=%s
+cachedir=/yumcache
 installroot=%s
 logfile=/yum.log
 
@@ -351,9 +348,9 @@ name=%s
 baseurl=file://%s
 enabled=1
 
-""" % (yumcachedir, tmproot, self.config.name, arch, self.config.name, repodir)
+""" % (tmproot, self.config.name, arch, self.config.name, repodir)
         shutil.rmtree(tmproot, ignore_errors = True)
-        os.makedirs(yumcachedir)
+        os.makedirs(os.path.join(tmproot,"yumcache"))
         os.makedirs(os.path.join(tmproot,'var/lib/rpm'))
         yconfig_path = os.path.join(tmproot, 'yum.conf-%s-%s' % (self.config.name, arch))
         f = open(yconfig_path, 'w')

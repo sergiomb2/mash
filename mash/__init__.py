@@ -135,7 +135,7 @@ class Mash:
                     except:
                         shutil.copyfile(src, dst)
                         
-            status = self._makeMetadata(repo_path, cachedir, comps, repoview = False)
+            status = self._makeMetadata(repo_path, cachedir, comps, repoview = True)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -402,7 +402,7 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._makeMetadata(repodir, cachedir, comps = True, repoview = False)
+            self._makeMetadata(repodir, cachedir, comps = True, repoview = True)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         os._exit(0)

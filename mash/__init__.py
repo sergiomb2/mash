@@ -17,11 +17,14 @@ import string
 import subprocess
 import sys
 
+
 try:
     import koji
 except:
     import brew as koji
 import rpm
+import createrepo
+import urlgrabber
 
 import arch as masharch
 import multilib
@@ -110,32 +113,38 @@ class Mash:
                 
                 dst = os.path.join(path, filename)
                 
+                if os.path.exists(dst):
+                    continue
+                
                 z = pkg.copy()
                 z['name'] = builds_hash[pkg['build_id']]['package_name']
                 z['version'] = builds_hash[pkg['build_id']]['version']
                 z['release'] = builds_hash[pkg['build_id']]['release']
                 
-                src = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
-                
-                if not os.path.exists(src):
-                    src = os.path.join(koji.pathinfo.build(z), koji.pathinfo.rpm(pkg))
-                    
-                if not os.path.exists(src):
-                    print "WARNING: can't find package %s as %s" % (nevra(pkg), src)
+                # WARNING: this has improper knowledge of koji filesystem layout
+                srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
+                try:
+                    result = urlgrabber.grabber.urlgrab(srcurl, dst)
+                except:
+                    srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.rpm(pkg))
+                    try:
+                        result = urlgrabber.grabber.urlgrab(srcurl, dst)
+                    except:
+                        print "WARNING: can't download %s from %s" % (nevra(pkg), srcurl)
                     continue
-                
-                if self.config.symlink:
-                    try:
-                        os.symlink(src, dst)
-                    except:
-                        print "couldn't link %s to %s (%d %d)" % (src, dst, os.path.exists(src), os.path.exists(os.path.dirname(dst)))
-                else:
-                    try:
-                        os.link(src, dst)
-                    except:
-                        shutil.copyfile(src, dst)
+                if result != dst:
+                    if self.config.symlink:
+                        try:
+                            os.symlink(result, dst)
+                        except:
+                            print "couldn't link %s to %s (%d %d)" % (result, dst, os.path.exists(result), os.path.exists(os.path.dirname(dst)))
+                    else:
+                        try:
+                            os.link(result, dst)
+                        except:
+                            shutil.copyfile(src, dst)
                         
-            status = self._makeMetadata(repo_path, cachedir, comps, repoview = True)
+            status = self._makeMetadata(repo_path, cachedir, comps, repoview = False)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -153,6 +162,7 @@ class Mash:
         
         (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, rpmsigs = True)
         builds_hash = dict([(x['build_id'], x) for x in buildlist])
+        koji.pathinfo.topdir = self.config.repodir
         
         print "Sorting packages..."
         
@@ -175,10 +185,18 @@ class Mash:
                 continue
 
             if arch == 'src':
-                path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
-                fn = open(path, 'r')
-                hdr = koji.get_rpm_header(fn)
                 source.add(pkg)
+                path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
+                fn = urlgrabber.grabber.urlopen(path)
+                try:
+                    fn.fileno = fn.fo.fp.fileno
+                except:
+                    pass
+                try:
+                    hdr = koji.get_rpm_header(fn)
+                except:
+                    print "Couldn't read header from %s, %s" % (path, fn)
+                    continue
                 excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
                 exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
                 fn.close()
@@ -209,8 +227,16 @@ class Mash:
                 # so set excludearch and exclusivearch from the binary
                 if pkg['build_id'] not in excludearch:
                     path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
-                    fn = open(path, 'r')
-                    hdr = koji.get_rpm_header(fn)
+                    fn = urlgrabber.grabber.urlopen(path)
+                    try:
+                      fn.fileno = fn.fo.fp.fileno
+                    except:
+                      pass
+                    try:
+                        hdr = koji.get_rpm_header(fn)
+                    except:
+                        print "Couldn't read header from %s, %s" % (path, fn)
+                        continue
                     excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
                     exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
                     fn.close()
@@ -242,10 +268,6 @@ class Mash:
                     z['version'] = builds_hash[pkg['build_id']]['version']
                     z['release'] = builds_hash[pkg['build_id']]['release']
                     p = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
-                    if not os.path.exists(p):
-                        print "WARNING: package %s has cached signatures (%s), but no signed RPM" % (nevra(pkg), key)
-                        if self.config.strict_keys:
-                            exit = 1
         if exit:
             sys.exit(1)
         
@@ -257,7 +279,6 @@ class Mash:
         cachedir = os.path.join(tmpdir,".createrepo-cache")
         shutil.rmtree(cachedir, ignore_errors = True)
         os.makedirs(cachedir)
-        koji.pathinfo.topdir = self.config.repodir
         
         pids = []
         for arch in self.config.arches:
@@ -402,7 +423,7 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._makeMetadata(repodir, cachedir, comps = True, repoview = True)
+            self._makeMetadata(repodir, cachedir, comps = True, repoview = False)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         os._exit(0)

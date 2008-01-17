@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.2.10
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -9,7 +9,7 @@ License:        GPL
 URL:            http://people.redhat.com/notting/mash/
 Source0:        http://people.redhat.com/notting/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       yum, createrepo, koji
+Requires:       yum, createrepo >= 0.9.2, koji
 Conflicts:	pungi < 1.0.0
 BuildRequires:  python-devel
 BuildArch:      noarch
@@ -34,7 +34,6 @@ mv $RPM_BUILD_ROOT/%{_bindir}/mash.py $RPM_BUILD_ROOT/%{_bindir}/mash
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING README TODO
@@ -44,6 +43,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Thu Jan 17 2008 Bill Nottingham <notting@redhat.com> 0.3.0-1
+- use createrepo's python API
+- allow running without local koji storage
+
 * Mon Nov 19 2007 Bill Nottingham <notting@redhat.com> 0.2.10-1
 - handle non Packages/ repositories better (#350391)
 

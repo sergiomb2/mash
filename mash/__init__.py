@@ -80,29 +80,32 @@ class Mash:
         self.session = koji.ClientSession(config.buildhost, {})
 
     def _makeMetadata(self, path, cachedir, comps = False, repoview = False):
-        createrepo_cmd = ["/usr/bin/createrepo","-p", "-q", "-c", cachedir, "--update", "-o", path]
-        repoview_cmd = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
-        if comps and self.config.compsfile:
-            createrepo_cmd = createrepo_cmd + [ "-g", self.config.compsfile ]
+        conf = createrepo.MetaDataConfig()
+        conf.cachedir = cachedir
+        conf.update  = True
+        conf.outputdir = path
+        conf.directory = path
         if self.config.use_sqlite:
-            createrepo_cmd = createrepo_cmd + [ "-d" ]
+            conf.database = True
+        if comps and self.config.compsfile:
+           conf.groupfile = self.config.compsfile
         if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
-            createrepo_cmd = createrepo_cmd + [ "-x", "debug/*" ]    
-        createrepo_cmd = createrepo_cmd + [ path ]
+            conf.excludes.append("debug/*")
+        repomatic = createrepo.MetaDataGenerator(conf)
+        repoview_cmd = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
+        repomatic.doPkgMetadata()
+        repomatic.doRepoMetadata()
+        repomatic.doFinalMove()
         if repoview:
-            pid = subprocess.Popen(createrepo_cmd).pid
-            (p, status) = os.waitpid(pid, 0)
-            
             os.execv("/usr/bin/repoview", repoview_cmd)
         else:
-            os.execv("/usr/bin/createrepo", createrepo_cmd)
+            os._exit(0)
 
     def doCompose(self):
         def _write_files(list, path, repo_path, comps = False, cachedir = None):
             
             print "Writing out files for %s..." % (path,)
             os.makedirs(path)
-            
             
             pid = os.fork()
             if pid:
@@ -112,9 +115,6 @@ class Mash:
                 filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
                 
                 dst = os.path.join(path, filename)
-                
-                if os.path.exists(dst):
-                    continue
                 
                 z = pkg.copy()
                 z['name'] = builds_hash[pkg['build_id']]['package_name']
@@ -284,8 +284,6 @@ class Mash:
         for arch in self.config.arches:
             path = os.path.join(outputdir, self.config.rpm_path % { 'arch':arch })
             repo_path = os.path.join(outputdir, self.config.repodata_path % { 'arch':arch })
-            print path
-            print repo_path
             pid = _write_files(packages[arch].packages(), path, repo_path, cachedir = cachedir, comps = True)
             pids.append(pid)
             

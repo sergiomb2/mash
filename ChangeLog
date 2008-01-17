@@ -1,4 +1,60 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 17 16:33:07 2008 -0500
+
+    Update to 0.3.0
+
+ mash.py   |    2 +-
+ mash.spec |    9 ++++++---
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 17 16:31:11 2008 -0500
+
+    use new createrepo API
+
+ mash/__init__.py |   32 +++++++++++++++-----------------
+ 1 files changed, 15 insertions(+), 17 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Sat Jan 12 10:34:14 2008 -0500
+
+    repodir is now a URL
+
+ configs/mash.conf |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Jan 11 17:01:51 2008 -0500
+
+    Use URLs for repodir; allows working with remote koji
+
+ mash/__init__.py |   79 ++++++++++++++++++++++++++++++++++--------------------
+ 1 files changed, 50 insertions(+), 29 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Fri Dec 21 18:10:28 2007 -0500
+
+    re-enable repoview
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Merge: 2817d9f... 5a9f0e0...
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Fri Dec 21 18:07:44 2007 -0500
+
+    Merge branch 'master' of git://git.fedoraproject.org/git/hosted/mash
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Nov 19 16:32:54 2007 -0500
+
+    update changelog for 0.2.10
+
+ ChangeLog |   28 ++++++++++++++++++++++++++++
+ 1 files changed, 28 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Nov 19 16:32:48 2007 -0500
 
     update to 0.2.10
@@ -17,6 +73,12 @@ Date:   Fri Nov 16 15:31:10 2007 -0500
  mash/__init__.py         |   27 ++++++++++++---------------
  mash/config.py           |    4 ++++
  3 files changed, 17 insertions(+), 15 deletions(-)
+
+Merge: 8738d26... 616ddb8...
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Tue Nov 13 10:05:58 2007 -0500
+
+    Merge branch 'master' of git://git.fedoraproject.org/git/hosted/mash
 
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Fri Nov 9 16:00:15 2007 -0500
@@ -159,6 +221,12 @@ Date:   Thu Sep 20 14:25:29 2007 -0400
  mash/config.py |    4 ++++
  1 files changed, 4 insertions(+), 0 deletions(-)
 
+Merge: f8b1067... 89123b5...
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Thu Sep 20 11:58:08 2007 -0400
+
+    Merge branch 'master' of git://git.fedoraproject.org/git/hosted/mash
+
 Merge: a46665e... 89123b5...
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu Sep 20 10:07:04 2007 -0400
@@ -172,6 +240,14 @@ Date:   Thu Sep 20 09:49:11 2007 -0400
 
  mash/multilib.py |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Wed Sep 19 16:39:29 2007 -0400
+
+    Set up the config file stuff correctly.
+
+ mash/config.py |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Tue Sep 18 11:48:01 2007 -0400

@@ -38,7 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING README TODO
 %config(noreplace) %{_sysconfdir}/mash
-%{python_sitelib}/mash
+%{python_sitelib}/mash*
 %{_bindir}/*
 %{_datadir}/mash
 

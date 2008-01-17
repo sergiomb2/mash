@@ -1,4 +1,20 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 17 16:35:18 2008 -0500
+
+    fix build
+
+ mash.spec |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 17 16:33:14 2008 -0500
+
+    update changelog for 0.3.0
+
+ ChangeLog |   76 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 76 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu Jan 17 16:33:07 2008 -0500
 
     Update to 0.3.0

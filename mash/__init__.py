@@ -140,7 +140,7 @@ class Mash:
                         try:
                             os.link(result, dst)
                         except:
-                            shutil.copyfile(src, dst)
+                            shutil.copyfile(result, dst)
                         
             status = self._makeMetadata(repo_path, cachedir, comps, repoview = False)
 

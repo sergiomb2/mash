@@ -13,8 +13,6 @@
 
 import os
 import shutil
-import string
-import subprocess
 import sys
 
 

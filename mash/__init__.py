@@ -321,7 +321,7 @@ class Mash:
                        'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method]()
         except KeyError:
             print "Invalid multilib method %s" % (self.config.multilib_method,)
-            do_multi = false
+            do_multi = False
             return
         
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)

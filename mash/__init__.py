@@ -83,6 +83,7 @@ class Mash:
         conf.update  = True
         conf.outputdir = path
         conf.directory = path
+        conf.quiet = True
         if self.config.use_sqlite:
             conf.database = True
         if comps and self.config.compsfile:

@@ -77,7 +77,7 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _makeMetadata(self, path, cachedir, arch, comps = False):
+    def _makeMetadata(self, path, cachedir, arch, comps = False, repoview = True):
         conf = createrepo.MetaDataConfig()
         conf.cachedir = cachedir
         conf.update  = True
@@ -93,7 +93,7 @@ class Mash:
         repomatic.doPkgMetadata()
         repomatic.doRepoMetadata()
         repomatic.doFinalMove()
-        if self.config.use_repoview:
+        if repoview and self.config.use_repoview:
             repoview_cmd = ["/usr/bin/repoview","-q", "--title",
                             self.config.repoviewtitle % { 'arch':arch }, "-u",
                             self.config.repoviewurl % { 'arch':arch }, path]
@@ -143,7 +143,7 @@ class Mash:
                             os.link(result, dst)
                         except:
                             shutil.copyfile(result, dst)
-                        
+
             status = self._makeMetadata(repo_path, cachedir, arch, comps)
 
         def has_any(l1, l2):
@@ -423,7 +423,7 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._makeMetadata(repodir, cachedir, arch, comps = True)
+            self._makeMetadata(repodir, cachedir, arch, comps = True, repoview = False)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         os._exit(0)

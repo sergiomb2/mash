@@ -77,7 +77,7 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _makeMetadata(self, path, cachedir, comps = False, repoview = False):
+    def _makeMetadata(self, path, cachedir, arch, comps = False):
         conf = createrepo.MetaDataConfig()
         conf.cachedir = cachedir
         conf.update  = True
@@ -90,17 +90,19 @@ class Mash:
         if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
             conf.excludes.append("debug/*")
         repomatic = createrepo.MetaDataGenerator(conf)
-        repoview_cmd = ["/usr/bin/repoview","-q", "--title", self.config.repoviewtitle % { 'arch':arch }, "-u", self.config.repoviewurl % { 'arch':arch }, path]
         repomatic.doPkgMetadata()
         repomatic.doRepoMetadata()
         repomatic.doFinalMove()
-        if repoview:
+        if self.config.use_repoview:
+            repoview_cmd = ["/usr/bin/repoview","-q", "--title",
+                            self.config.repoviewtitle % { 'arch':arch }, "-u",
+                            self.config.repoviewurl % { 'arch':arch }, path]
             os.execv("/usr/bin/repoview", repoview_cmd)
         else:
             os._exit(0)
 
     def doCompose(self):
-        def _write_files(list, path, repo_path, comps = False, cachedir = None):
+        def _write_files(list, path, repo_path, comps = False, cachedir = None, arch = None):
             
             print "Writing out files for %s..." % (path,)
             os.makedirs(path)
@@ -142,7 +144,7 @@ class Mash:
                         except:
                             shutil.copyfile(result, dst)
                         
-            status = self._makeMetadata(repo_path, cachedir, comps, repoview = False)
+            status = self._makeMetadata(repo_path, cachedir, arch, comps)
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -282,17 +284,19 @@ class Mash:
         for arch in self.config.arches:
             path = os.path.join(outputdir, self.config.rpm_path % { 'arch':arch })
             repo_path = os.path.join(outputdir, self.config.repodata_path % { 'arch':arch })
-            pid = _write_files(packages[arch].packages(), path, repo_path, cachedir = cachedir, comps = True)
+            pid = _write_files(packages[arch].packages(), path, repo_path,
+                               cachedir = cachedir, comps = True, arch = arch)
             pids.append(pid)
             
             if self.config.debuginfo:
                 path = os.path.join(outputdir, self.config.debuginfo_path % { 'arch': arch })
-                pid = _write_files(debug[arch].packages(), path, path, cachedir = cachedir)
+                pid = _write_files(debug[arch].packages(), path, path,
+                                   cachedir = cachedir, arch = arch)
                 pids.append(pid)
                 
             
         path = os.path.join(outputdir, self.config.source_path)
-        pid = _write_files(source.packages(), path, path, cachedir = cachedir)
+        pid = _write_files(source.packages(), path, path, cachedir = cachedir, arch = 'SRPMS')
         pids.append(pid)
         
         print "Waiting for createrepo to finish..."
@@ -419,7 +423,7 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             print "Running createrepo on %s..." %(repodir),
-            self._makeMetadata(repodir, cachedir, comps = True, repoview = False)
+            self._makeMetadata(repodir, cachedir, arch, comps = True)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         os._exit(0)

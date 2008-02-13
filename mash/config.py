@@ -37,6 +37,7 @@ class MashConfig(config.BaseConfig):
     repodir = config.Option('/mnt/koji')
     compsfile = config.Option()
     use_sqlite = config.BoolOption(True)
+    use_repoview = config.BoolOption(False)
     repoviewurl = config.Option('http://localhost/%(arch)s')
     repoviewtitle = config.Option('"Mash - %(arch)s"')
     distros = []
@@ -61,6 +62,7 @@ class MashDistroConfig(config.BaseConfig):
     workdir = config.Inherit(MashConfig.workdir)
     compsfile = config.Inherit(MashConfig.compsfile)
     use_sqlite = config.Inherit(MashConfig.use_sqlite)
+    use_repoview = config.BoolOption(False)
     repoviewurl = config.Inherit(MashConfig.repoviewurl)
     repoviewtitle = config.Inherit(MashConfig.repoviewtitle)
 

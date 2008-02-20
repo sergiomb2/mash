@@ -384,7 +384,7 @@ enabled=1
         yumbase.doRpmDBSetup()
         # Nggh.
         yumbase.ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
-        yumbase.doSackSetup(archlist = archlist, thisrepo=self.config.name)
+        yumbase.doSackSetup(archlist = archlist, thisrepo='%s-%s' % (self.config.name, arch))
         yumbase.doSackFilelistPopulate()
 
         filelist = []

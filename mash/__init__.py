@@ -241,7 +241,6 @@ class Mash:
                     excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
                     exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
                     fn.close()
-                    continue
 
                 if (excludearch[pkg['build_id']] and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
                         (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], exclusivearch[pkg['build_id']])):

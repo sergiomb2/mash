@@ -1,4 +1,30 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Feb 22 11:11:38 2008 -0500
+
+    update to 0.3.2
+
+ mash.py   |    2 +-
+ mash.spec |    5 +++--
+ setup.py  |    2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Feb 22 11:11:07 2008 -0500
+
+    -- fix typo that broke handling of unsigned packages
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Feb 22 11:02:29 2008 -0500
+
+    update changelog for 0.3.1
+
+ ChangeLog |   88 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 88 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Fri Feb 22 11:02:10 2008 -0500
 
     update to 0.3.1

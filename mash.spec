@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.3.1
+Version:        0.3.2
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,7 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
-* Fri Feb 22 2008 Bill Nottingham <notting@redhat.com> 0.3.1-1
+* Fri Feb 22 2008 Bill Nottingham <notting@redhat.com> 0.3.2-1
+- fix typo that broke handling of unsigned packages
 - fix yum api usage (#433555, <peter@pramberger.at>)
 - fix noarch w/o src.rpm logic (#433551, <peter@pramberger.at>)
 - Add a 'use_repoview' option that allows us to toggle repoview generation. (<lmacken@redhat.com>)

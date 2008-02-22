@@ -132,7 +132,7 @@ class Mash:
                         result = urlgrabber.grabber.urlgrab(srcurl, dst)
                     except:
                         print "WARNING: can't download %s from %s" % (nevra(pkg), srcurl)
-                    continue
+                        continue
                 if result != dst:
                     if self.config.symlink:
                         try:

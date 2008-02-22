@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.3.0
+Version:        0.3.1
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Fri Feb 22 2008 Bill Nottingham <notting@redhat.com> 0.3.1-1
+- fix yum api usage (#433555, <peter@pramberger.at>)
+- fix noarch w/o src.rpm logic (#433551, <peter@pramberger.at>)
+- Add a 'use_repoview' option that allows us to toggle repoview generation. (<lmacken@redhat.com>)
+- Tell createrepo to be quiet (<lmacken@redhat.com>)
+- Don't re-generate repoview after multilib solving. (<lmacken@redhat.com>)
+- Fix our "failsafe" shutil.copyfile call (<lmacken@redhat.com>)
+
 * Thu Jan 17 2008 Bill Nottingham <notting@redhat.com> 0.3.0-1
 - use createrepo's python API
 - allow running without local koji storage

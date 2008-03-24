@@ -35,8 +35,8 @@ def formatRPMChangeLogs(hdr, num = 3):
    if len(names) == 1:
         times = [times]
    for i in range(0, num):
-      if num > len(names) -1:
-	continue
+      if i > len(names) -1:
+	break
       s.append("* %s %s" %(time.strftime(timeformat, time.gmtime(times[i])),
                            names[i]))
       s.append("%s\n" %(text[i]))

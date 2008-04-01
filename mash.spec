@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.3.2
+Version:        0.3.3
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Tue Apr  1 2008 Bill Nottingham <notting@redhat.com> 0.3.3-1
+- add gtk modules to multilib list (#439949)
+
 * Fri Feb 22 2008 Bill Nottingham <notting@redhat.com> 0.3.2-1
 - fix typo that broke handling of unsigned packages
 - fix yum api usage (#433555, <peter@pramberger.at>)

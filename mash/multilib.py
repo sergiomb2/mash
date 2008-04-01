@@ -95,6 +95,9 @@ class RuntimeMultilibMethod(MultilibMethod):
 	    # gtk2-engines
 	    if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/engines'):
 		return True
+            # accessibility
+            if fnmatch(dirname, '/usr/lib*/gtk-2.0/modules'):
+                return True
 	    # scim-bridge-gtk	
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/immodules'):
                 return True

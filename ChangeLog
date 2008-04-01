@@ -1,4 +1,38 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Apr 1 00:10:16 2008 -0400
+
+    0.3.3
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Apr 1 00:09:05 2008 -0400
+
+    add gtk modules (accessiblity, bug-buddy (#439949))
+
+ mash/multilib.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Mar 24 13:06:54 2008 -0400
+
+    fix changelog parsing <ville.skytta@iki.fi>
+
+ utils/treediff |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Feb 22 11:11:45 2008 -0500
+
+    update changelog for 0.3.2
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Fri Feb 22 11:11:38 2008 -0500
 
     update to 0.3.2

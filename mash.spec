@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.3.3
+Version:        0.3.4
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Fri Apr 11 2008 Bill Nottingham <notting@redhat.com> 0.3.4-1
+- add alsa plugins to multilib list (#338211)
+
 * Tue Apr  1 2008 Bill Nottingham <notting@redhat.com> 0.3.3-1
 - add gtk modules to multilib list (#439949)
 

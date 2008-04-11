@@ -89,6 +89,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # nss
             if dirname in [ '/lib', '/lib64' ] and filename.startswith('libnss_'):
                 return True
+            # alsa
+            if dirname in [ '/usr/lib/alsa-lib', '/usr/lib64/alsa-lib' ]:
+                return True
             # mysql, qt, etc.
             if dirname == '/etc/ld.so.conf.d' and filename.endswith('.conf'):
                 return True

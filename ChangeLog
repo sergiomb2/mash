@@ -1,4 +1,30 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Apr 29 22:42:35 2008 -0400
+
+    0.3.6
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Apr 29 22:40:26 2008 -0400
+
+    adjust to current qt path
+
+ mash/multilib.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Apr 14 17:04:23 2008 -0400
+
+    update changelog for 0.3.5
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Apr 14 17:04:17 2008 -0400
 
     0.3.5

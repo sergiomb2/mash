@@ -104,8 +104,8 @@ class RuntimeMultilibMethod(MultilibMethod):
 	    # scim-bridge-gtk	
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/immodules'):
                 return True
-            # scim-qtimm
-            if fnmatch(dirname, '/usr/lib*/qt-*/plugins/inputmethods'):
+            # scim-qt*
+            if fnmatch(dirname, '/usr/lib*/qt*/plugins/inputmethods'):
                 return True
 	    
         return False

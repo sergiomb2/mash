@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.3.5
+Version:        0.3.6
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Tue Apr 29 2008 Bill Nottingham <notting@redhat.com> 0.3.6-1
+- adjust qt path to catch scim-bridge-qt
+
 * Mon Apr 14 2008 Bill Nottingham <notting@redhat.com> 0.3.5-1
 - add pulseaudio-utils as well
 

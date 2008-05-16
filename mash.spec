@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.3.6
+Version:        0.3.7
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mash
 
 %changelog
+* Fri May 16 2008 Bill Nottingham <notting@redhat.com> 0.3.7-1
+- add F9 updates configuration
+
 * Tue Apr 29 2008 Bill Nottingham <notting@redhat.com> 0.3.6-1
 - adjust qt path to catch scim-bridge-qt
 

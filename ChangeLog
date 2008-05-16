@@ -1,4 +1,31 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 16 14:51:06 2008 -0400
+
+    0.3.7
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 16 14:49:14 2008 -0400
+
+    add f9 updates configs
+
+ configs/f9-updates-testing.mash |   16 ++++++++++++++++
+ configs/f9-updates.mash         |   16 ++++++++++++++++
+ 2 files changed, 32 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Apr 29 22:42:41 2008 -0400
+
+    update changelog for 0.3.6
+
+ ChangeLog |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Tue Apr 29 22:42:35 2008 -0400
 
     0.3.6

@@ -23,11 +23,15 @@ except:
 import rpm
 import createrepo
 import urlgrabber
+import time
 
 import arch as masharch
 import multilib
 
 import rpmUtils.arch
+
+def timestamp():
+    print "%s: " % (time.ctime(),),
 
 def nevra(pkg):
     return '%s-%s:%s-%s.%s' % (pkg['name'],pkg['epoch'],pkg['version'],pkg['release'],pkg['arch'])
@@ -105,6 +109,8 @@ class Mash:
     def doCompose(self):
         def _write_files(list, path, repo_path, comps = False, cachedir = None, arch = None):
             
+            if self.config.timestamp:
+                timestamp()
             print "Writing out files for %s..." % (path,)
             os.makedirs(path)
             
@@ -159,12 +165,16 @@ class Mash:
         
         # Get package list. This is an expensive operation.
         
+        if self.config.timestamp:
+            timestamp()
         print "Getting package lists for %s..." % (self.config.tag)
         
         (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, rpmsigs = True)
         builds_hash = dict([(x['build_id'], x) for x in buildlist])
         koji.pathinfo.topdir = self.config.repodir
         
+        if self.config.timestamp:
+            timestamp()
         print "Sorting packages..."
         
         packages = {}
@@ -249,6 +259,8 @@ class Mash:
                 else:
                     packages[target_arch].add(pkg)
 
+        if self.config.timestamp:
+            timestamp()
         print "Checking signatures..."
         
         # Do some checking
@@ -293,6 +305,8 @@ class Mash:
         pid = _write_files(source.packages(), path, path, cachedir = cachedir, arch = 'SRPMS')
         pids.append(pid)
         
+        if self.config.timestamp:
+            timestamp()
         print "Waiting for createrepo to finish..."
         rc = 0
         while 1:
@@ -332,6 +346,8 @@ class Mash:
         if arch not in masharch.biarch.keys():
             os._exit(0)
         else:
+            if self.config.timestamp:
+                timestamp()
             print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
         pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
         repodir = os.path.join(self.config.workdir, self.config.name, self.config.repodata_path % {'arch':arch})
@@ -396,6 +412,9 @@ enabled=1
                 print "Adding package %s for multilib" % (pkg,)
                 filelist.append(pname)
 
+        if self.config.timestamp:
+            timestamp
+        print "Resolving depenencies for arch %s" % (arch,)
         (rc, errors) = yumbase.resolveDeps()
         if do_multi:
             for f in yumbase.tsInfo.getMembers():
@@ -411,6 +430,8 @@ enabled=1
                     os.unlink(os.path.join(pkgdir, pkg))
             
             shutil.rmtree(tmproot, ignore_errors = True)
+            if self.config.timestamp:
+                timestamp()
             print "Running createrepo on %s..." %(repodir),
             self._makeMetadata(repodir, cachedir, arch, comps = True, repoview = False)
 
@@ -426,6 +447,8 @@ enabled=1
             pid = self.doDepSolveAndMultilib(arch, cachedir)
             pids.append(pid)
 
+        if self.config.timestamp:
+            timestamp()
         print "Waiting for depsolve and createrepo to finish..."
         rc = 0
         while 1:

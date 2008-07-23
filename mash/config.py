@@ -40,6 +40,7 @@ class MashConfig(config.BaseConfig):
     use_repoview = config.BoolOption(False)
     repoviewurl = config.Option('http://localhost/%(arch)s')
     repoviewtitle = config.Option('"Mash - %(arch)s"')
+    timestamp = config.BoolOption('false')
     distros = []
     
 class MashDistroConfig(config.BaseConfig):
@@ -58,6 +59,7 @@ class MashDistroConfig(config.BaseConfig):
     keys = config.Inherit(MashConfig.keys)
     strict_keys = config.Inherit(MashConfig.strict_keys)
     buildhost = config.Inherit(MashConfig.buildhost)
+    timestamp = config.Inherit(MashConfig.timestamp)
     repodir = config.Inherit(MashConfig.repodir)
     workdir = config.Inherit(MashConfig.workdir)
     compsfile = config.Inherit(MashConfig.compsfile)

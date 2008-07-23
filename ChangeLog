@@ -1,4 +1,72 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jul 22 23:39:49 2008 -0400
+
+    Bump to 0.4.0.
+
+ mash.py   |    2 +-
+ mash.spec |    9 +++++++--
+ setup.py  |    2 +-
+ 3 files changed, 9 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jul 22 23:39:36 2008 -0400
+
+    Make the cache dir if it doesn't exist.
+
+ mash/__init__.py |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jul 22 23:27:21 2008 -0400
+
+    Add caching for HTTP repositories.
+    
+    This involves:
+    1) removing symlink support, as it's rather pointless
+    2) use the cache for ExcludeArch/ExclusiveArch source rpm checking
+    3) Filter the package list by key before doing any sorting, to avoid checking
+       both the signed and unsigned versions of source RPMs
+
+ configs/mash.conf |    1 -
+ mash/__init__.py  |  177 ++++++++++++++++++++++++++++++++++-------------------
+ mash/config.py    |    4 +-
+ 3 files changed, 116 insertions(+), 66 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jul 22 23:25:30 2008 -0400
+
+    Add more timestamping points.
+
+ mash/__init__.py |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jul 22 23:24:30 2008 -0400
+
+    Add support for profiling via timestamping.
+
+ mash.py          |    4 ++++
+ mash/__init__.py |   23 +++++++++++++++++++++++
+ mash/config.py   |    2 ++
+ 3 files changed, 29 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jul 22 23:18:01 2008 -0400
+
+    Remove dead code.
+
+ mash/__init__.py |   11 -----------
+ 1 files changed, 0 insertions(+), 11 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 16 14:51:24 2008 -0400
+
+    update changelog for 0.3.7
+
+ ChangeLog |   27 +++++++++++++++++++++++++++
+ 1 files changed, 27 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Fri May 16 14:51:06 2008 -0400
 
     0.3.7

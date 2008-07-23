@@ -262,12 +262,6 @@ class Mash:
                     print "WARNING: package %s is not signed with a preferred key (signed with %s)" % (nevra(pkg), key)
                     if self.config.strict_keys:
                         exit = 1
-                else:
-                    z = pkg.copy()
-                    z['name'] = builds_hash[pkg['build_id']]['package_name']
-                    z['version'] = builds_hash[pkg['build_id']]['version']
-                    z['release'] = builds_hash[pkg['build_id']]['release']
-                    p = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
         if exit:
             sys.exit(1)
         
@@ -403,11 +397,6 @@ enabled=1
                 filelist.append(pname)
 
         (rc, errors) = yumbase.resolveDeps()
-        if errors:
-            pass
-            #print "Unresolved dependencies on %s:" % (arch,)
-            #for error in errors:
-            #    print error
         if do_multi:
             for f in yumbase.tsInfo.getMembers():
                 file = os.path.basename(f.po.localPkg())

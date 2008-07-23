@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.3.7
+Version:        0.4.0
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -30,7 +30,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT/%{_bindir}/mash.py $RPM_BUILD_ROOT/%{_bindir}/mash
- 
+mkdir -p $RPM_BUILD_ROOT/var/cache/mash
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -41,8 +41,13 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/mash*
 %{_bindir}/*
 %{_datadir}/mash
+/var/cache/mash
 
 %changelog
+* Tue Jul 22 2008 Bill Nottingham <notting@redhat.com> 0.4.0-1
+- add simple timestamping for profiling usage
+- add support for caching non-local koji repositories
+
 * Fri May 16 2008 Bill Nottingham <notting@redhat.com> 0.3.7-1
 - add F9 updates configuration
 

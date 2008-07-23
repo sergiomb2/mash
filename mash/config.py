@@ -20,7 +20,6 @@ from ConfigParser import RawConfigParser
 from yum import config
 
 class MashConfig(config.BaseConfig):
-    symlink = config.BoolOption(False)
     rpm_path = config.Option('Mash')
     repodata_path = config.Option()
     source_path = config.Option('source/SRPMS')
@@ -33,6 +32,7 @@ class MashConfig(config.BaseConfig):
     configdir = config.Option('/etc/mash')
     strict_keys = config.BoolOption(False)
     workdir = config.Option('/var/tmp/mash')
+    cachedir = config.Option('/var/cache/mash')
     buildhost = config.Option()
     repodir = config.Option('/mnt/koji')
     compsfile = config.Option()
@@ -45,7 +45,6 @@ class MashConfig(config.BaseConfig):
     
 class MashDistroConfig(config.BaseConfig):
     name = config.Option()
-    symlink = config.Inherit(MashConfig.symlink)
     rpm_path = config.Inherit(MashConfig.rpm_path)
     repodata_path = config.Inherit(MashConfig.repodata_path)
     source_path = config.Inherit(MashConfig.source_path)
@@ -62,6 +61,7 @@ class MashDistroConfig(config.BaseConfig):
     timestamp = config.Inherit(MashConfig.timestamp)
     repodir = config.Inherit(MashConfig.repodir)
     workdir = config.Inherit(MashConfig.workdir)
+    cachedir = config.Inherit(MashConfig.cachedir)
     compsfile = config.Inherit(MashConfig.compsfile)
     use_sqlite = config.Inherit(MashConfig.use_sqlite)
     use_repoview = config.BoolOption(False)

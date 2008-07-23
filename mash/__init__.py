@@ -27,6 +27,7 @@ import time
 
 import arch as masharch
 import multilib
+import yum
 
 import rpmUtils.arch
 
@@ -67,7 +68,7 @@ class PackageList:
             self._packages[tag] = _better_sig(self._packages[tag], package)
         else:
             self._packages[tag] = package
-    
+
     def remove(self, package):
         tag = nevra(package)
         if self._packages.has_key(tag):
@@ -81,9 +82,9 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
 
-    def _makeMetadata(self, path, cachedir, arch, comps = False, repoview = True):
+    def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True):
         conf = createrepo.MetaDataConfig()
-        conf.cachedir = cachedir
+        conf.cachedir = repocache
         conf.update  = True
         conf.outputdir = path
         conf.directory = path
@@ -107,7 +108,67 @@ class Mash:
             os._exit(0)
 
     def doCompose(self):
-        def _write_files(list, path, repo_path, comps = False, cachedir = None, arch = None):
+        def _matches(pkg, path):
+            try:
+                po = yum.packages.YumLocalPackage(self.rpmts, path)
+                if po.name != pkg['name']:
+                    return False
+                if po.arch != pkg['arch']:
+                    return False
+                if po.version != pkg['version']:
+                    return False
+                if po.release != pkg['release']:
+                    return False
+                if pkg['epoch']:
+                    if po.epoch != pkg['epoch']:
+                        return False
+                elif po.epoch != '0':
+                    return False
+
+                if po.hdr.sprintf("%{PKGID}") != pkg['payloadhash']:
+                    return False
+                (err, (sigtype, sigdate, sigid)) = rpmUtils.miscutils.getSigInfo(po.hdr)
+                if pkg['sigkey'] and pkg['sigkey'] != sigid[-8:]:
+                    return False
+                return True
+            except:
+                return False
+
+        def _install(pkg, path):
+              result = None
+              filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
+
+              dst = os.path.join(path, filename)
+              # Check cache for package
+              if self.config.cachedir:
+                  cachepath = os.path.join(self.config.cachedir, filename)
+                  if os.path.exists(cachepath) and _matches(pkg, cachepath):
+                      result = cachepath
+              if not result:
+                  z = pkg.copy()
+                  z['name'] = builds_hash[pkg['build_id']]['package_name']
+                  z['version'] = builds_hash[pkg['build_id']]['version']
+                  z['release'] = builds_hash[pkg['build_id']]['release']
+
+                  # WARNING: this has improper knowledge of koji filesystem layout
+                  srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
+                  try:
+                      result = urlgrabber.grabber.urlgrab(srcurl, cachepath)
+                  except:
+                      srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.rpm(pkg))
+                      try:
+                          result = urlgrabber.grabber.urlgrab(srcurl, cachepath)
+                      except:
+                          print "WARNING: can't download %s from %s" % (nevra(pkg), srcurl)
+                          return
+
+              if result != dst:
+                  try:
+                      os.link(result, dst)
+                  except:
+                      shutil.copyfile(result, dst)
+
+        def _write_files(list, path, repo_path, comps = False, repocache = None, arch = None):
             
             if self.config.timestamp:
                 timestamp()
@@ -117,41 +178,28 @@ class Mash:
             pid = os.fork()
             if pid:
                 return pid
-            
             for pkg in list:
-                filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
-                
-                dst = os.path.join(path, filename)
-                
-                z = pkg.copy()
-                z['name'] = builds_hash[pkg['build_id']]['package_name']
-                z['version'] = builds_hash[pkg['build_id']]['version']
-                z['release'] = builds_hash[pkg['build_id']]['release']
-                
-                # WARNING: this has improper knowledge of koji filesystem layout
-                srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
-                try:
-                    result = urlgrabber.grabber.urlgrab(srcurl, dst)
-                except:
-                    srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.rpm(pkg))
-                    try:
-                        result = urlgrabber.grabber.urlgrab(srcurl, dst)
-                    except:
-                        print "WARNING: can't download %s from %s" % (nevra(pkg), srcurl)
-                        continue
-                if result != dst:
-                    if self.config.symlink:
-                        try:
-                            os.symlink(result, dst)
-                        except:
-                            print "couldn't link %s to %s (%d %d)" % (result, dst, os.path.exists(result), os.path.exists(os.path.dirname(dst)))
-                    else:
-                        try:
-                            os.link(result, dst)
-                        except:
-                            shutil.copyfile(result, dst)
+                _install(pkg, path)
 
-            status = self._makeMetadata(repo_path, cachedir, arch, comps)
+            status = self._makeMetadata(repo_path, repocache, arch, comps)
+
+        def _get_reference(pkg, builds_hash):
+            result = None
+            filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
+            if self.config.cachedir:
+                cachepath = os.path.join(self.config.cachedir, filename)
+                if os.path.exists(cachepath) and _matches(pkg, cachepath):
+                    result = cachepath
+
+            if not result:
+                if pkg['sigkey']:
+                    path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.signed(pkg, pkg['sigkey']))
+                else:
+                    path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
+                result = urlgrabber.grabber.urlgrab(path,cachepath)
+
+            fd = open(result)
+            return fd
 
         def has_any(l1, l2):
             if type(l1) not in (type(()), type([])):
@@ -170,8 +218,13 @@ class Mash:
         print "Getting package lists for %s..." % (self.config.tag)
         
         (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, rpmsigs = True)
+        # filter by key
+        biglist = PackageList(self.config)
+        for pkg in pkglist:
+            biglist.add(pkg)
         builds_hash = dict([(x['build_id'], x) for x in buildlist])
         koji.pathinfo.topdir = self.config.repodir
+        self.rpmts = rpmUtils.transaction.initReadOnlyTransaction()
         
         if self.config.timestamp:
             timestamp()
@@ -188,7 +241,7 @@ class Mash:
             debug[arch] = PackageList(self.config)
             
         # Sort into lots of buckets.
-        for pkg in pkglist:
+        for pkg in biglist.packages():
             arch = pkg['arch']
             if arch == 'noarch':
                 # Stow it in a list for later
@@ -197,16 +250,16 @@ class Mash:
 
             if arch == 'src':
                 source.add(pkg)
-                path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
-                fn = urlgrabber.grabber.urlopen(path)
-                try:
-                    fn.fileno = fn.fo.fp.fileno
-                except:
-                    pass
+
+                if self.config.timestamp:
+                    timestamp()
+                print "Checking %s for Exclude/ExclusiveArch" % (nevra(pkg),)
+                fn = _get_reference(pkg, builds_hash)
                 try:
                     hdr = koji.get_rpm_header(fn)
                 except:
                     print "Couldn't read header from %s, %s" % (path, fn)
+                    fn.close()
                     continue
                 excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
                 exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
@@ -237,16 +290,15 @@ class Mash:
                 # if excludearch is not set this build likely has no src.rpm
                 # so set excludearch and exclusivearch from the binary
                 if pkg['build_id'] not in excludearch:
-                    path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
-                    fn = urlgrabber.grabber.urlopen(path)
-                    try:
-                      fn.fileno = fn.fo.fp.fileno
-                    except:
-                      pass
+                    if self.config.timestamp:
+                        timestamp()
+                    print "Checking %s for Exclude/ExclusiveArch" % (pkg,)
+                    fn = _get_reference(pkg, builds_hash)
                     try:
                         hdr = koji.get_rpm_header(fn)
                     except:
                         print "Couldn't read header from %s, %s" % (path, fn)
+                        fn.close()
                         continue
                     excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
                     exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
@@ -282,27 +334,27 @@ class Mash:
         shutil.rmtree(outputdir, ignore_errors = True)
         os.makedirs(outputdir)
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)
-        cachedir = os.path.join(tmpdir,".createrepo-cache")
-        shutil.rmtree(cachedir, ignore_errors = True)
-        os.makedirs(cachedir)
+        repocache = os.path.join(tmpdir,".createrepo-cache")
+        shutil.rmtree(repocache, ignore_errors = True)
+        os.makedirs(repocache)
         
         pids = []
         for arch in self.config.arches:
             path = os.path.join(outputdir, self.config.rpm_path % { 'arch':arch })
             repo_path = os.path.join(outputdir, self.config.repodata_path % { 'arch':arch })
             pid = _write_files(packages[arch].packages(), path, repo_path,
-                               cachedir = cachedir, comps = True, arch = arch)
+                               repocache = repocache, comps = True, arch = arch)
             pids.append(pid)
             
             if self.config.debuginfo:
                 path = os.path.join(outputdir, self.config.debuginfo_path % { 'arch': arch })
                 pid = _write_files(debug[arch].packages(), path, path,
-                                   cachedir = cachedir, arch = arch)
+                                   repocache = repocache, arch = arch)
                 pids.append(pid)
                 
             
         path = os.path.join(outputdir, self.config.source_path)
-        pid = _write_files(source.packages(), path, path, cachedir = cachedir, arch = 'SRPMS')
+        pid = _write_files(source.packages(), path, path, repocache = repocache, arch = 'SRPMS')
         pids.append(pid)
         
         if self.config.timestamp:
@@ -321,7 +373,7 @@ class Mash:
                 break
         return rc
     
-    def doDepSolveAndMultilib(self, arch, cachedir):
+    def doDepSolveAndMultilib(self, arch, repocache):
         
         do_multi = self.config.multilib
         
@@ -337,11 +389,10 @@ class Mash:
             return
         
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)
-        cachedir = os.path.join(tmpdir,".createrepo-cache")
+        repocache = os.path.join(tmpdir,".createrepo-cache")
         pid = os.fork()
         if pid:
             return pid
-        import yum
                 
         if arch not in masharch.biarch.keys():
             os._exit(0)
@@ -439,18 +490,18 @@ enabled=1
             if self.config.timestamp:
                 timestamp()
             print "Running createrepo on %s..." %(repodir),
-            self._makeMetadata(repodir, cachedir, arch, comps = True, repoview = False)
+            self._makeMetadata(repodir, repocache, arch, comps = True, repoview = False)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         os._exit(0)
         
     def doMultilib(self):
         tmpdir = "/tmp/mash-%s/" % (self.config.name,)
-        cachedir = os.path.join(tmpdir,".createrepo-cache")
+        repocache = os.path.join(tmpdir,".createrepo-cache")
         pids = []
         for arch in self.config.arches:
         
-            pid = self.doDepSolveAndMultilib(arch, cachedir)
+            pid = self.doDepSolveAndMultilib(arch, repocache)
             pids.append(pid)
 
         if self.config.timestamp:

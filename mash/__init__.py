@@ -409,6 +409,8 @@ enabled=1
                 filelist.append(pname)
             elif do_multi and method.select(pkg):
                 yumbase.tsInfo.addInstall(pkg)
+                if self.config.timestamp:
+                    timestamp()
                 print "Adding package %s for multilib" % (pkg,)
                 filelist.append(pname)
 
@@ -421,11 +423,15 @@ enabled=1
                 file = os.path.basename(f.po.localPkg())
                 
                 if file not in filelist:
+                    if self.config.timestamp:
+                        timestamp()
                     print "added %s" % (file,)
                     filelist.append(file)
                     
             for pkg in os.listdir(pkgdir):
                 if pkg.endswith('.rpm') and pkg not in filelist:
+                    if self.config.timestamp:
+                        timestamp()
                     print "removing %s" % (pkg,)
                     os.unlink(os.path.join(pkgdir, pkg))
             
@@ -462,5 +468,7 @@ enabled=1
             if len(pids) == 0:
                 break
         shutil.rmtree(tmpdir, ignore_errors = True)
+        if self.config.timestamp:
+            timestamp()
         return rc
         

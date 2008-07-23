@@ -210,9 +210,10 @@ class Mash:
                 if I in l1:
                     return 1
             return 0
-        
+
+        if self.config.cachedir and not os.path.exists(self.config.cachedir):
+            os.makedirs(self.config.cachedir, 0755)
         # Get package list. This is an expensive operation.
-        
         if self.config.timestamp:
             timestamp()
         print "Getting package lists for %s..." % (self.config.tag)

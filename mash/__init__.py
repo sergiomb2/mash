@@ -470,7 +470,7 @@ enabled=1
                 filelist.append(pname)
 
         if self.config.timestamp:
-            timestamp
+            timestamp()
         print "Resolving depenencies for arch %s" % (arch,)
         (rc, errors) = yumbase.resolveDeps()
         if do_multi:

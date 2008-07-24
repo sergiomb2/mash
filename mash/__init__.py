@@ -181,6 +181,9 @@ class Mash:
             for pkg in list:
                 _install(pkg, path)
 
+            if self.config.timestamp:
+                timestamp()
+            print "Running createrepo for %s..." % (path,)
             status = self._makeMetadata(repo_path, repocache, arch, comps)
 
         def _get_reference(pkg, builds_hash):

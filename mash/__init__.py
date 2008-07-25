@@ -153,6 +153,10 @@ class Mash:
                   # WARNING: this has improper knowledge of koji filesystem layout
                   srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.signed(pkg, pkg['sigkey']))
                   try:
+                      os.mkdir(os.path.dirname(cachepath))
+                  except:
+                      pass
+                  try:
                       result = urlgrabber.grabber.urlgrab(srcurl, cachepath)
                   except:
                       srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.rpm(pkg))
@@ -199,6 +203,10 @@ class Mash:
                     path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.signed(pkg, pkg['sigkey']))
                 else:
                     path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
+                try:
+                    os.mkdir(os.path.dirname(cachepath))
+                except:
+                    pass
                 result = urlgrabber.grabber.urlgrab(path,cachepath)
 
             fd = open(result)

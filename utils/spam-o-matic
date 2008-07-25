@@ -12,8 +12,6 @@ from optparse import OptionParser
 from yum.constants import *
 from yum.misc import getCacheDir
 
-import koji
-
 # HAAACK
 import imp
 sys.modules['repoclosure'] = imp.load_source("repoclosure","/usr/bin/repoclosure")
@@ -21,8 +19,6 @@ import repoclosure
 
 owners = {}
 deps = {}
-
-kojihost = "http://koji.fedoraproject.org/kojihub"
 
 def generateConfig(distdir, arch):
     if not os.path.exists(os.path.join(distdir, arch)):

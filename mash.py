@@ -30,8 +30,6 @@ def main():
       help="configuration file to use")
     parser.add_option("-f","--compsfile", default="", dest="compsfile",
       help="comps file to use")
-    parser.add_option("-t","--timestamp", action="store_true", dest="timestamp",
-      default=False, help="output timestamps for testing")
     (opts, args) = parser.parse_args()
     
     if len(args) < 1:
@@ -53,8 +51,6 @@ def main():
         conf.compsfile = opts.compsfile
         for dist in conf.distros:
             dist.compsfile = opts.compsfile
-    if opts.timestamp:
-        conf.timestamp = True
         
     dists = []
     for dist in conf.distros:

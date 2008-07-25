@@ -12,6 +12,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 import os
+import logging
 import shutil
 import sys
 
@@ -30,9 +31,6 @@ import multilib
 import yum
 
 import rpmUtils.arch
-
-def timestamp():
-    print "%s: " % (time.ctime(),),
 
 def nevra(pkg):
     return '%s-%s:%s-%s.%s' % (pkg['name'],pkg['epoch'],pkg['version'],pkg['release'],pkg['arch'])
@@ -81,6 +79,17 @@ class Mash:
     def __init__(self, config):
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
+        self._setupLogger()
+
+    def _setupLogger(self):
+        self.logger = logging.getLogger('mash')
+        formatter = logging.Formatter('%(asctime)s %(name)s: %(message)s', '%Y-%m-%d %X')
+        console = logging.StreamHandler(sys.stdout)
+        console.setFormatter(formatter)
+        console.setLevel(logging.INFO)
+        self.logger.addHandler(console)
+        self.logger.setLevel(logging.DEBUG)
+        self.logger.propagate = False
 
     def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True):
         conf = createrepo.MetaDataConfig()
@@ -173,10 +182,7 @@ class Mash:
                       shutil.copyfile(result, dst)
 
         def _write_files(list, path, repo_path, comps = False, repocache = None, arch = None):
-            
-            if self.config.timestamp:
-                timestamp()
-            print "Writing out files for %s..." % (path,)
+            self.logger.info("Writing out files for %s..." % (path,))
             os.makedirs(path)
             
             pid = os.fork()
@@ -185,9 +191,7 @@ class Mash:
             for pkg in list:
                 _install(pkg, path)
 
-            if self.config.timestamp:
-                timestamp()
-            print "Running createrepo for %s..." % (path,)
+            self.logger.info("Running createrepo for %s..." % (path,))
             status = self._makeMetadata(repo_path, repocache, arch, comps)
 
         def _get_reference(pkg, builds_hash):
@@ -225,9 +229,7 @@ class Mash:
         if self.config.cachedir and not os.path.exists(self.config.cachedir):
             os.makedirs(self.config.cachedir, 0755)
         # Get package list. This is an expensive operation.
-        if self.config.timestamp:
-            timestamp()
-        print "Getting package lists for %s..." % (self.config.tag)
+        self.logger.info("Getting package lists for %s..." % (self.config.tag))
         
         (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, rpmsigs = True)
         # filter by key
@@ -238,9 +240,7 @@ class Mash:
         koji.pathinfo.topdir = self.config.repodir
         self.rpmts = rpmUtils.transaction.initReadOnlyTransaction()
         
-        if self.config.timestamp:
-            timestamp()
-        print "Sorting packages..."
+        self.logger.info("Sorting packages...")
         
         packages = {}
         debug = {}
@@ -263,9 +263,7 @@ class Mash:
             if arch == 'src':
                 source.add(pkg)
 
-                if self.config.timestamp:
-                    timestamp()
-                print "Checking %s for Exclude/ExclusiveArch" % (nevra(pkg),)
+                self.logger.debug("Checking %s for Exclude/ExclusiveArch" % (nevra(pkg),))
                 fn = _get_reference(pkg, builds_hash)
                 try:
                     hdr = koji.get_rpm_header(fn)
@@ -302,9 +300,7 @@ class Mash:
                 # if excludearch is not set this build likely has no src.rpm
                 # so set excludearch and exclusivearch from the binary
                 if pkg['build_id'] not in excludearch:
-                    if self.config.timestamp:
-                        timestamp()
-                    print "Checking %s for Exclude/ExclusiveArch" % (pkg,)
+                    self.logger.debug("Checking %s for Exclude/ExclusiveArch" % (pkg,))
                     fn = _get_reference(pkg, builds_hash)
                     try:
                         hdr = koji.get_rpm_header(fn)
@@ -323,9 +319,7 @@ class Mash:
                 else:
                     packages[target_arch].add(pkg)
 
-        if self.config.timestamp:
-            timestamp()
-        print "Checking signatures..."
+        self.logger.info("Checking signatures...")
         
         # Do some checking
         exit = 0
@@ -335,7 +329,7 @@ class Mash:
                 if key not in self.config.keys:
                     if key == '':
                         key = 'no key'
-                    print "WARNING: package %s is not signed with a preferred key (signed with %s)" % (nevra(pkg), key)
+                    self.logger.warning("WARNING: package %s is not signed with a preferred key (signed with %s)" % (nevra(pkg), key))
                     if self.config.strict_keys:
                         exit = 1
         if exit:
@@ -369,9 +363,7 @@ class Mash:
         pid = _write_files(source.packages(), path, path, repocache = repocache, arch = 'SRPMS')
         pids.append(pid)
         
-        if self.config.timestamp:
-            timestamp()
-        print "Waiting for createrepo to finish..."
+        self.logger.info("Waiting for createrepo to finish...")
         rc = 0
         while 1:
             try:
@@ -409,14 +401,13 @@ class Mash:
         if arch not in masharch.biarch.keys():
             os._exit(0)
         else:
-            if self.config.timestamp:
-                timestamp()
-            print "Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method)
+            self.logger.info("Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method))
         pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
         repodir = os.path.join(self.config.workdir, self.config.name, self.config.repodata_path % {'arch':arch})
         tmproot = os.path.join(tmpdir, "%s-%s.tmp" % (self.config.name, arch))
             
         yumbase = yum.YumBase()
+        yumbase.verbose_logger.setLevel(logging.ERROR)
         archlist = masharch.compat[arch]
         transaction_arch = arch
         if do_multi:
@@ -465,43 +456,32 @@ enabled=1
         for pkg in yumbase.pkgSack:
             pname = "%s-%s-%s.%s.rpm" % (pkg.name, pkg.version, pkg.release, pkg.arch)
             if not os.path.exists(os.path.join(pkgdir, pname)):
-                print "WARNING: Could not open %s" % (pname,)
+                self.logger.error("WARNING: Could not open %s" % (pname,))
                 continue
             if pkg.arch in masharch.compat[arch]:
                 yumbase.tsInfo.addInstall(pkg)
                 filelist.append(pname)
             elif do_multi and method.select(pkg):
                 yumbase.tsInfo.addInstall(pkg)
-                if self.config.timestamp:
-                    timestamp()
-                print "Adding package %s for multilib" % (pkg,)
+                self.logger.debug("Adding package %s for multilib" % (pkg,))
                 filelist.append(pname)
-
-        if self.config.timestamp:
-            timestamp()
-        print "Resolving depenencies for arch %s" % (arch,)
+        self.logger.info("Resolving depenencies for arch %s" % (arch,))
         (rc, errors) = yumbase.resolveDeps()
         if do_multi:
             for f in yumbase.tsInfo.getMembers():
                 file = os.path.basename(f.po.localPkg())
                 
                 if file not in filelist:
-                    if self.config.timestamp:
-                        timestamp()
-                    print "added %s" % (file,)
+                    self.logger.debug("added %s" % (file,))
                     filelist.append(file)
                     
             for pkg in os.listdir(pkgdir):
                 if pkg.endswith('.rpm') and pkg not in filelist:
-                    if self.config.timestamp:
-                        timestamp()
-                    print "removing %s" % (pkg,)
+                    self.logger.debug("removing %s" % (pkg,))
                     os.unlink(os.path.join(pkgdir, pkg))
             
             shutil.rmtree(tmproot, ignore_errors = True)
-            if self.config.timestamp:
-                timestamp()
-            print "Running createrepo on %s..." %(repodir),
+            self.logger.info("Running createrepo on %s..." %(repodir))
             self._makeMetadata(repodir, repocache, arch, comps = True, repoview = False)
 
         shutil.rmtree(tmproot, ignore_errors = True)
@@ -516,9 +496,7 @@ enabled=1
             pid = self.doDepSolveAndMultilib(arch, repocache)
             pids.append(pid)
 
-        if self.config.timestamp:
-            timestamp()
-        print "Waiting for depsolve and createrepo to finish..."
+        self.logger.info("Waiting for depsolve and createrepo to finish...")
         rc = 0
         while 1:
             try:
@@ -531,7 +509,6 @@ enabled=1
             if len(pids) == 0:
                 break
         shutil.rmtree(tmpdir, ignore_errors = True)
-        if self.config.timestamp:
-            timestamp()
+        self.logger.info("Depsolve and createrepo finished.")
         return rc
         

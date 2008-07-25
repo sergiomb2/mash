@@ -63,19 +63,6 @@ def libmunge(match):
     else:
         return "%s%s" % (match.groups()[0],match.groups()[1])
 
-def getOwner(pkg):
-    if pkg == None:
-        return None
-    session = koji.ClientSession(kojihost, {})
-    try:
-        p = session.listPackages(tagID = "dist-rawhide", pkgID = pkg, inherited = True)
-    except:
-        return None
-    if p:
-        return "%s@fedoraproject.org" % (p[0]['owner_name'],)
-    else:
-        return None
-
 def addOwner(list, pkg):
     if list.get(pkg):
         return True
@@ -83,7 +70,7 @@ def addOwner(list, pkg):
     if list.has_key(pkg):
         return False
 
-    f = getOwner(pkg)
+    f = "%s-owner@fedoraproject.org" % pkg
     list[pkg] = f
     if f:
         return True

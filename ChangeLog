@@ -1,4 +1,112 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 15 14:33:06 2008 -0400
+
+    Update to 0.4.1.
+
+ configs/rawhide.mash |    2 +-
+ mash.py              |    2 +-
+ mash.spec            |    5 ++++-
+ setup.py             |    2 +-
+ 4 files changed, 7 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 15 14:31:52 2008 -0400
+
+    Call it 'rawhide'.
+
+ configs/{development.mash => rawhide.mash} |    0
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 15 14:27:59 2008 -0400
+
+    Handle not having any keys in the configuration better.
+
+ mash/config.py |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 15 14:27:52 2008 -0400
+
+    Update keys.
+
+ configs/development.mash        |    2 +-
+ configs/f8-updates-testing.mash |    2 +-
+ configs/f8-updates.mash         |    2 +-
+ configs/f9-updates-testing.mash |    2 +-
+ configs/f9-updates.mash         |    2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Fri Jul 25 01:52:55 2008 -0400
+
+    Remove koji import, no longer needed.
+
+ utils/spam-o-matic |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Fri Jul 25 01:51:41 2008 -0400
+
+    Use the new aliases set up to contact the package watchers.
+    
+    This should speed things up and be more accurate than just the koji owner.
+
+ utils/spam-o-matic |   15 +--------------
+ 1 files changed, 1 insertions(+), 14 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Jul 25 14:32:30 2008 -0400
+
+    Timestamping by hand is dumb. Set up a proper logger.
+
+ mash.py          |    4 --
+ mash/__init__.py |   85 +++++++++++++++++++----------------------------------
+ mash/config.py   |    2 -
+ 3 files changed, 31 insertions(+), 60 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Jul 25 14:31:18 2008 -0400
+
+    Make the hashed directory. Will cause empty dirs in cache if we're using
+    file://, but not much we can do about that right now.
+
+ mash/__init__.py |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Jul 25 12:31:31 2008 -0400
+
+    Hash cached packages by name, otherwise you may end up with 25000 files in a directory.
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Jul 23 22:23:42 2008 -0400
+
+    Typo fix.
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Jul 23 22:18:51 2008 -0400
+
+    One more place for timestamping.
+
+ mash/__init__.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jul 22 23:40:20 2008 -0400
+
+    update changelog for 0.4.0
+
+ ChangeLog |   68 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 68 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Tue Jul 22 23:39:49 2008 -0400
 
     Bump to 0.4.0.
@@ -1552,7 +1660,7 @@ Date:   Thu May 10 22:26:18 2007 -0400
  configs/mash.conf             |    3 +--
  mashbin => mash.py            |   39 ++++++++++++++++++---------------------
  mash.spec                     |    3 ++-
- mash/{mash.py => __init__.py} |    0 
+ mash/{mash.py => __init__.py} |    0
  setup.py                      |    4 ++--
  6 files changed, 25 insertions(+), 26 deletions(-)
 

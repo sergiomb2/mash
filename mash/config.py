@@ -73,6 +73,8 @@ def readMainConfig(conf):
     config.populate(parser, 'defaults')
     config.parser = parser
     config.keys = map(string.lower, config.keys)
+    if len(config.keys) == 0:
+        config.keys = ['']
     
     for section in config.parser.sections():
         if section == 'defaults':
@@ -81,6 +83,8 @@ def readMainConfig(conf):
         thisdistro = MashDistroConfig()
         thisdistro.populate(parser, section)
         thisdistro.keys = map(string.lower, thisdistro.keys)
+        if len(thisdistro.keys) == 0:
+            thisdistro.keys = ['']
         config.distros.append(thisdistro)
     
     if os.path.isdir(config.configdir):
@@ -95,6 +99,8 @@ def readMainConfig(conf):
                 if not thisdistro.repodata_path:
                     thisdistro.repodata_path = os.path.dirname(thisdistro.rpm_path)
                 thisdistro.keys = map(string.lower, thisdistro.keys)
+                if len(thisdistro.keys) == 0:
+                    thisdistro.keys = ['']
                 config.distros.append(thisdistro)
     return config
 

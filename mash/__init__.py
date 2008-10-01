@@ -325,6 +325,8 @@ class Mash:
         exit = 0
         for arch in self.config.arches:
             for pkg in packages[arch].packages() + debug[arch].packages():
+                if pkg['sigkey'] == None:
+                    pkg['sigkey'] = ''
                 key = pkg['sigkey'].lower()
                 if key not in self.config.keys:
                     if key == '':
@@ -382,7 +384,8 @@ class Mash:
         do_multi = self.config.multilib
         
         try:
-            method = { 'devel'   : multilib.DevelMultilibMethod,
+            method = { 'base'    : multilib.MultilibMethod,
+                       'devel'   : multilib.DevelMultilibMethod,
                        'file'    : multilib.FileMultilibMethod,
                        'all'     : multilib.AllMultilibMethod,
                        'none'    : multilib.NoMultilibMethod,

@@ -103,8 +103,7 @@ def assignBlame(resolver, dep, guilty):
     list = []
     
     # The dep itself
-    if addOwner(guilty, dep):
-        list.append(dep)
+    list.append(dep)
 
     # Something that provides the dep
     __addpackages(resolver.whatProvides(dep, None, None))

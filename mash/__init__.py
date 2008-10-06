@@ -387,6 +387,7 @@ class Mash:
             method = { 'base'    : multilib.MultilibMethod,
                        'devel'   : multilib.DevelMultilibMethod,
                        'file'    : multilib.FileMultilibMethod,
+                       'kernel'  : multilib.KernelMultilibMethod,
                        'all'     : multilib.AllMultilibMethod,
                        'none'    : multilib.NoMultilibMethod,
                        'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method]()

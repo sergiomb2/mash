@@ -59,6 +59,17 @@ class FileMultilibMethod(MultilibMethod):
             if fnmatch(po.name, item):
                 return True
         return False
+
+class KernelMultilibMethod:
+    def __init__(self):
+        self.name = 'base'
+    def select(self, po):
+        if po.arch.find('64') != -1:
+            if po.name.startswith('kernel'):
+                for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
+                    if p_name == 'kernel' or p_name == 'kernel-devel':
+                        return True
+        return False
             
 class RuntimeMultilibMethod(MultilibMethod):
     def __init__(self):

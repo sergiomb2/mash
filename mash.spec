@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.4.1
+Version:        0.4.2
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Oct 15 2008 Bill Nottingham <notting@redhat.com> 0.4.2-1
+- Enable unique repoadata file names (<jkeating@redhat.com>)
+- Add a kernel multilib policy for sparc (<dennis@ausil.us>)
+- Fix base multilib policy, and packages with no key (<dennis@ausil.us>)
+
 * Mon Sep 15 2008 Bill Nottingham <notting@redhat.com> 0.4.1-1
 - Adjust for new keys
 

@@ -1,4 +1,91 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Oct 15 11:32:13 2008 -0400
+
+    0.4.2
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Oct 15 11:30:22 2008 -0400
+
+    Rather than require a new createrepo, wrap unique_md_filenames in try/except.
+
+ mash/__init__.py |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+Merge: 6955d5f... df50ca5...
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Oct 15 11:27:29 2008 -0400
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/mash
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Wed Oct 15 08:26:06 2008 -0700
+
+    Enable unique repodata file names, should help with proxies and such.
+
+ mash/__init__.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Oct 9 10:59:45 2008 -0400
+
+    Remove obsolete treediff.
+    
+    Fixes #466162, sort of.
+
+ utils/treediff |   97 --------------------------------------------------------
+ 1 files changed, 0 insertions(+), 97 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Mon Oct 6 14:43:42 2008 -0700
+
+    Don't try to send a mail directly to the dep, let the resolver figure
+    out the package that owns the dep and send the mail there instead.
+
+ utils/spam-o-matic |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Oct 6 11:21:34 2008 -0400
+
+    Add a kernel multilib policy. <dennis@ausil.us>
+    
+    For sparc we really only want the 64 bit kernel in the 32 bit tree;
+    everything else can live in the 64 bit tree.
+
+ mash/__init__.py |    1 +
+ mash/multilib.py |   11 +++++++++++
+ 2 files changed, 12 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Oct 1 11:02:44 2008 -0400
+
+    Fix base multilib and packages with no key. (<dennis@ausil.us>)
+
+ mash/__init__.py |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Sep 25 13:58:43 2008 -0400
+
+    Rename the actual output directory back. <jkeating@redhat.com>)
+
+ configs/rawhide.mash |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Sep 15 14:33:36 2008 -0400
+
+    update changelog for 0.4.1
+
+ ChangeLog |  110 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 109 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Sep 15 14:33:06 2008 -0400
 
     Update to 0.4.1.

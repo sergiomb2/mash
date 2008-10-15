@@ -98,6 +98,7 @@ class Mash:
         conf.outputdir = path
         conf.directory = path
         conf.quiet = True
+        conf.unique_md_filenames = True
         if self.config.use_sqlite:
             conf.database = True
         if comps and self.config.compsfile:

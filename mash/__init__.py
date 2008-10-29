@@ -216,7 +216,15 @@ class Mash:
                     os.mkdir(os.path.dirname(cachepath))
                 except:
                     pass
-                result = urlgrabber.grabber.urlgrab(path,cachepath)
+                try:
+                    result = urlgrabber.grabber.urlgrab(path, cachepath)
+                except:
+                    path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
+                    try:
+                        result = urlgrabber.grabber.urlgrab(path, cachepath)
+                    except:
+                        print "WARNING: can't download %s from %s" % (nevra(pkg), srcurl)
+                        return None
 
             fd = open(result)
             return fd

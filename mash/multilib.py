@@ -118,6 +118,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # scim-qt*
             if fnmatch(dirname, '/usr/lib*/qt*/plugins/inputmethods'):
                 return True
+            # gstreamer
+            if fnmatch(dirname, '/usr/lib*/gstreamer-*'):
+                return True
 	    
         return False
 

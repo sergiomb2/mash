@@ -113,10 +113,12 @@ class Mash:
         repomatic.doPkgMetadata()
         repomatic.doRepoMetadata()
         repomatic.doFinalMove()
+        self.logger.info("createrepo: finished %s" % (path,))
         if repoview and self.config.use_repoview:
             repoview_cmd = ["/usr/bin/repoview","-q", "--title",
                             self.config.repoviewtitle % { 'arch':arch }, "-u",
                             self.config.repoviewurl % { 'arch':arch }, path]
+            self.logger.info("Running repoview for %s" % (path,))
             os.execv("/usr/bin/repoview", repoview_cmd)
         else:
             os._exit(0)
@@ -196,7 +198,7 @@ class Mash:
             for pkg in list:
                 _install(pkg, path)
 
-            self.logger.info("Running createrepo for %s..." % (path,))
+            self.logger.info("createrepo: starting %s..." % (path,))
             status = self._makeMetadata(repo_path, repocache, arch, comps)
 
         def _get_reference(pkg, builds_hash):

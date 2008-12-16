@@ -380,7 +380,7 @@ class Mash:
         pid = _write_files(source.packages(), path, path, repocache = repocache, arch = 'SRPMS')
         pids.append(pid)
         
-        self.logger.info("Waiting for createrepo to finish...")
+        self.logger.info("Waiting for file copy and createrepo to finish...")
         rc = 0
         while 1:
             try:

@@ -2,11 +2,11 @@ from distutils.core import setup
 import glob
 
 setup(name='mash',
-      version='0.4.2',
+      version='0.4.3',
       description='Build system -> repository tool',
       author='Bill Nottingham',
       author_email='notting@redhat.com',
-      url='http://people.redhat.com/notting/mash/',
+      url='https://fedorahosted.org/releases/m/a/mash/',
       license='GPLv2',
       packages=['mash'],
       scripts = ['mash.py'],

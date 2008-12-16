@@ -180,7 +180,7 @@ class Mash:
                       try:
                           result = urlgrabber.grabber.urlgrab(srcurl, cachepath)
                       except:
-                          print "WARNING: can't download %s from %s" % (nevra(pkg), srcurl)
+                          self.logger.errror("WARNING: can't download %s from %s" % (nevra(pkg), srcurl))
                           return
 
               if result != dst:
@@ -229,7 +229,7 @@ class Mash:
                     try:
                         result = urlgrabber.grabber.urlgrab(path, cachepath)
                     except:
-                        print "WARNING: can't download %s from %s" % (nevra(pkg), path)
+                        self.logger.error("WARNING: can't download %s from %s" % (nevra(pkg), path))
                         return None
 
             fd = open(result)
@@ -304,7 +304,6 @@ class Mash:
         # Get excludearch/exclusivearch lists for noarch packages
         for pkg in noarch.packages():
             srcpkg = src_hash[pkg['build_id']]
-            print "getting %s srpm" % (srcpkg['name'])
             self.logger.debug("Checking %s for Exclude/ExclusiveArch" % (nevra(pkg),))
             fn = _get_reference(srcpkg, builds_hash)
             # if build has no source rpm, check the binary
@@ -313,7 +312,7 @@ class Mash:
             try:
                 hdr = koji.get_rpm_header(fn)
             except:
-                print "Couldn't read header from %s (%s)" % (pkg, fn)
+                self.logger.error("Couldn't read header from %s (%s)" % (pkg, fn))
                 fn.close()
                 continue
             exclusivearch[pkg['build_id']] = hdr['EXCLUDEARCH']
@@ -325,7 +324,7 @@ class Mash:
             for target_arch in self.config.arches:
                 if (excludearch[pkg['build_id']] and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
                         (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], [arch for arch in exclusivearch[pkg['build_id']] if arch != 'noarch'])):
-                    print "Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch)
+                    self.logger.debug("Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch))
                     continue
                 else:
                     packages[target_arch].add(pkg)
@@ -403,7 +402,7 @@ class Mash:
                        'none'    : multilib.NoMultilibMethod,
                        'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method]()
         except KeyError:
-            print "Invalid multilib method %s" % (self.config.multilib_method,)
+            self.logger.error("Invalid multilib method %s" % (self.config.multilib_method,))
             do_multi = False
             return
         

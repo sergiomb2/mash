@@ -91,10 +91,11 @@ class Mash:
         self.logger.setLevel(logging.DEBUG)
         self.logger.propagate = False
 
-    def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True):
+    def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True, gofast = False):
         conf = createrepo.MetaDataConfig()
         conf.cachedir = repocache
         conf.update  = True
+        conf.skip_stat = gofast
         conf.outputdir = path
         conf.directory = path
         conf.quiet = True
@@ -353,10 +354,10 @@ class Mash:
             sys.exit(1)
         
         # Make the trees
-        outputdir = os.path.join(self.config.workdir, self.config.name)
+        outputdir = os.path.join(self.config.outputdir, self.config.name)
         shutil.rmtree(outputdir, ignore_errors = True)
         os.makedirs(outputdir)
-        tmpdir = "/tmp/mash-%s/" % (self.config.name,)
+        tmpdir = "%s/mash-%s/" % (self.config.workdir, self.config.name,)
         repocache = os.path.join(tmpdir,".createrepo-cache")
         shutil.rmtree(repocache, ignore_errors = True)
         os.makedirs(repocache)
@@ -411,7 +412,7 @@ class Mash:
             do_multi = False
             return
         
-        tmpdir = "/tmp/mash-%s/" % (self.config.name,)
+        tmpdir = "%s/mash-%s/" % (self.config.workdir, self.config.name,)
         repocache = os.path.join(tmpdir,".createrepo-cache")
         pid = os.fork()
         if pid:
@@ -421,8 +422,8 @@ class Mash:
             os._exit(0)
         else:
             self.logger.info("Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method))
-        pkgdir = os.path.join(self.config.workdir, self.config.name, self.config.rpm_path % {'arch':arch})
-        repodir = os.path.join(self.config.workdir, self.config.name, self.config.repodata_path % {'arch':arch})
+        pkgdir = os.path.join(self.config.outputdir, self.config.name, self.config.rpm_path % {'arch':arch})
+        repodir = os.path.join(self.config.outputdir, self.config.name, self.config.repodata_path % {'arch':arch})
         tmproot = os.path.join(tmpdir, "%s-%s.tmp" % (self.config.name, arch))
             
         yumbase = yum.YumBase()
@@ -501,13 +502,13 @@ enabled=1
             
             shutil.rmtree(tmproot, ignore_errors = True)
             self.logger.info("Running createrepo on %s..." %(repodir))
-            self._makeMetadata(repodir, repocache, arch, comps = True, repoview = False)
+            self._makeMetadata(repodir, repocache, arch, comps = True, repoview = False, gofast = True)
 
         shutil.rmtree(tmproot, ignore_errors = True)
         os._exit(0)
         
     def doMultilib(self):
-        tmpdir = "/tmp/mash-%s/" % (self.config.name,)
+        tmpdir = "%s/mash-%s/" % (self.config.workdir, self.config.name,)
         repocache = os.path.join(tmpdir,".createrepo-cache")
         pids = []
         for arch in self.config.arches:

@@ -44,9 +44,9 @@ def main():
     conf = mash.config.readMainConfig(opts.config)
     
     if opts.outputdir != "":
-        conf.workdir = opts.outputdir
+        conf.outputdir = opts.outputdir
         for dist in conf.distros:
-            dist.workdir = opts.outputdir
+            dist.outputdir = opts.outputdir
     if opts.compsfile != "":
         conf.compsfile = opts.compsfile
         for dist in conf.distros:
@@ -65,13 +65,13 @@ def main():
             else:
                 (p, status) = os.waitpid(pid,0)
             if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
-                print "mash failed in %s" % os.path.join(conf.workdir, dist.name)
+                print "mash failed in %s" % os.path.join(conf.outputdir, dist.name)
                 sys.exit(1)
             rc = themash.doMultilib()
             if rc:
-                print "mash failed in %s" % os.path.join(conf.workdir, dist.name)
+                print "mash failed in %s" % os.path.join(conf.outputdir, dist.name)
                 sys.exit(1)
-            print "mash done in %s" % os.path.join(conf.workdir, dist.name)
+            print "mash done in %s" % os.path.join(conf.outputdir, dist.name)
             sys.exit(0)
 
     print "ERROR: No configuration named '%s'!\n" % (args[0],)

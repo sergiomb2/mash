@@ -30,6 +30,8 @@ def main():
       help="configuration file to use")
     parser.add_option("-f","--compsfile", default="", dest="compsfile",
       help="comps file to use")
+    parser.add_option("-p","--previous", default="", dest="previous",
+      help="previous mash run to use as basis for createrepo")
     (opts, args) = parser.parse_args()
     
     if len(args) < 1:
@@ -49,7 +51,10 @@ def main():
     if opts.compsfile != "":
         for dist in conf.distros:
             dist.compsfile = opts.compsfile
-        
+    if opts.previous != "":
+        for dist in conf.distros:
+            dist.previous = opts.previous
+
     dists = []
     for dist in conf.distros:
         if dist.name == args[0]:

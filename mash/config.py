@@ -67,6 +67,7 @@ class MashDistroConfig(config.BaseConfig):
     use_repoview = config.BoolOption(False)
     repoviewurl = config.Inherit(MashConfig.repoviewurl)
     repoviewtitle = config.Inherit(MashConfig.repoviewtitle)
+    previous = None
 
 def readMainConfig(conf):
     config = MashConfig()

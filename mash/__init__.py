@@ -199,6 +199,9 @@ class Mash:
             for pkg in list:
                 _install(pkg, path)
 
+            if self.config.previous:
+                previous_path = "%s/%s/repodata" % (self.config.previous, path.replace("%s/%s" % (self.config.outputdir, self.config.name), ""))
+                shutil.copytree(previous_path, "%s/repodata" % (repo_path,))
             self.logger.info("createrepo: starting %s..." % (path,))
             status = self._makeMetadata(repo_path, repocache, arch, comps)
 

@@ -225,7 +225,7 @@ class Mash:
                     try:
                         result = urlgrabber.grabber.urlgrab(path, cachepath)
                     except:
-                        print "WARNING: can't download %s from %s" % (nevra(pkg), srcurl)
+                        print "WARNING: can't download %s from %s" % (nevra(pkg), path)
                         return None
 
             fd = open(result)
@@ -283,7 +283,7 @@ class Mash:
                 try:
                     hdr = koji.get_rpm_header(fn)
                 except:
-                    print "Couldn't read header from %s, %s" % (path, fn)
+                    print "Couldn't read header from %s (%s)" % (pkg, fn,)
                     fn.close()
                     continue
                 excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']

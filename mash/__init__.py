@@ -321,8 +321,8 @@ class Mash:
 
         for pkg in noarch.packages():
             for target_arch in self.config.arches:
-                if (excludearch[pkg['build_id']] and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
-                        (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], [arch for arch in exclusivearch[pkg['build_id']] if arch != 'noarch'])):
+                if (excludearch.has_key(pkg['build_id']) and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
+                        (exclusivearch.has_key(pkg['build_id']) and not has_any(masharch.compat[target_arch], [arch for arch in exclusivearch[pkg['build_id']] if arch != 'noarch'])):
                     self.logger.debug("Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch))
                     continue
                 else:

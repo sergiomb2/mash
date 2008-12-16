@@ -14,6 +14,8 @@ all:
 	@echo "Nothing to do"
 
 tag:
+	@git tag -a -m "Tag as $(TAG)" $(TAG)
+	@echo "Tagged as $(TAG)"
 
 archive: clean
 	@rm -rf ${PKGNAME}-$(VERSION)/

@@ -318,7 +318,6 @@ class Mash:
             exclusivearch[pkg['build_id']] = hdr['EXCLUDEARCH']
             exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
             fn.close()
-            continue
 
         for pkg in noarch.packages():
             for target_arch in self.config.arches:

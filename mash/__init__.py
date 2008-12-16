@@ -265,7 +265,7 @@ class Mash:
         debug = {}
         excludearch = {}
         exclusivearch = {}
-        noarch = []
+        noarch = PackageList(self.config)
         source = PackageList(self.config)
         for arch in self.config.arches:
             packages[arch] = PackageList(self.config)
@@ -276,25 +276,13 @@ class Mash:
             arch = pkg['arch']
             if arch == 'noarch':
                 # Stow it in a list for later
-                noarch.append(pkg)
+                noarch.add(pkg)
                 continue
 
             if arch == 'src':
                 source.add(pkg)
-
-                self.logger.debug("Checking %s for Exclude/ExclusiveArch" % (nevra(pkg),))
-                fn = _get_reference(pkg, builds_hash)
-                try:
-                    hdr = koji.get_rpm_header(fn)
-                except:
-                    print "Couldn't read header from %s (%s)" % (pkg, fn,)
-                    fn.close()
-                    continue
-                excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
-                exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
-                fn.close()
                 continue
-             
+
             if pkg['name'].find('-debuginfo') != -1:
                 for target_arch in self.config.arches:
                     if arch in masharch.compat[target_arch]:
@@ -311,26 +299,30 @@ class Mash:
                 if self.config.multilib and masharch.biarch.has_key(target_arch):
                     if arch in masharch.compat[masharch.biarch[target_arch]]:
                         packages[target_arch].add(pkg)
-                    
-        # now deal with noarch
-        for pkg in noarch:
+
+        src_hash = dict([(x['build_id'],x) for x in source.packages()])
+        # Get excludearch/exclusivearch lists for noarch packages
+        for pkg in noarch.packages():
+            srcpkg = src_hash[pkg['build_id']]
+            print "getting %s srpm" % (srcpkg['name'])
+            self.logger.debug("Checking %s for Exclude/ExclusiveArch" % (nevra(pkg),))
+            fn = _get_reference(srcpkg, builds_hash)
+            # if build has no source rpm, check the binary
+            if fn == None:
+                fn = _get_reference(pkg, builds_hash)
+            try:
+                hdr = koji.get_rpm_header(fn)
+            except:
+                print "Couldn't read header from %s (%s)" % (pkg, fn)
+                fn.close()
+                continue
+            exclusivearch[pkg['build_id']] = hdr['EXCLUDEARCH']
+            exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
+            fn.close()
+            continue
+
+        for pkg in noarch.packages():
             for target_arch in self.config.arches:
-
-                # if excludearch is not set this build likely has no src.rpm
-                # so set excludearch and exclusivearch from the binary
-                if pkg['build_id'] not in excludearch:
-                    self.logger.debug("Checking %s for Exclude/ExclusiveArch" % (pkg,))
-                    fn = _get_reference(pkg, builds_hash)
-                    try:
-                        hdr = koji.get_rpm_header(fn)
-                    except:
-                        print "Couldn't read header from %s, %s" % (path, fn)
-                        fn.close()
-                        continue
-                    excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
-                    exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
-                    fn.close()
-
                 if (excludearch[pkg['build_id']] and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
                         (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], [arch for arch in exclusivearch[pkg['build_id']] if arch != 'noarch'])):
                     print "Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch)

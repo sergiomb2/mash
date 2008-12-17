@@ -137,7 +137,7 @@ class Mash:
                 if po.release != pkg['release']:
                     return False
                 if pkg['epoch']:
-                    if po.epoch != pkg['epoch']:
+                    if int(po.epoch) != pkg['epoch']:
                         return False
                 elif po.epoch != '0':
                     return False

@@ -180,7 +180,7 @@ class Mash:
                       try:
                           result = urlgrabber.grabber.urlgrab(srcurl, cachepath)
                       except:
-                          self.logger.errror("WARNING: can't download %s from %s" % (nevra(pkg), srcurl))
+                          self.logger.error("WARNING: can't download %s from %s" % (nevra(pkg), srcurl))
                           return
 
               if result != dst:

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.4.5
+Version:        0.4.6
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Dec 17 2008 Bill Nottingham <notting@redhat.com> 0.4.6-1
+- Fix -p/--previous for certain repository layouts
+
 * Tue Dec 16 2008 Bill Nottingham <notting@redhat.com> 0.4.5-1
 - fix caching bug with respect to epochs
 - work with both python createrepo API and commandline createrepo

@@ -22,12 +22,12 @@ try:
 except:
     import brew as koji
 import rpm
-import createrepo
 import urlgrabber
 import time
 
 import arch as masharch
 import multilib
+import metadata
 import yum
 
 import rpmUtils.arch
@@ -92,28 +92,15 @@ class Mash:
         self.logger.propagate = False
 
     def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True, gofast = False):
-        conf = createrepo.MetaDataConfig()
-        conf.cachedir = repocache
-        conf.update  = True
-        conf.skip_stat = gofast
-        conf.outputdir = path
-        conf.directory = path
-        conf.quiet = True
-        # Requires: createrepo >= 0.9.4
-        try:
-            conf.unique_md_filenames = True
-        except:
-            pass
-        if self.config.use_sqlite:
-            conf.database = True
+        md = metadata.Metadata()
+        md.set_cachedir(repocache)
+        md.set_skipstat(gofast)
+        md.set_database(self.config.use_sqlite)
         if comps and self.config.compsfile:
-           conf.groupfile = self.config.compsfile
+            md.set_comps(self.config.compsfile)
         if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
-            conf.excludes.append("debug/*")
-        repomatic = createrepo.MetaDataGenerator(conf)
-        repomatic.doPkgMetadata()
-        repomatic.doRepoMetadata()
-        repomatic.doFinalMove()
+            md.set_excludes("debug/*")
+        md.run(path)
         self.logger.info("createrepo: finished %s" % (path,))
         if repoview and self.config.use_repoview:
             repoview_cmd = ["/usr/bin/repoview","-q", "--title",

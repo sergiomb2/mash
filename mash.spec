@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.4.4
+Version:        0.4.5
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -9,7 +9,7 @@ License:        GPL
 URL:            http://people.redhat.com/notting/mash/
 Source0:        http://people.redhat.com/notting/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       yum, createrepo >= 0.9.2, koji
+Requires:       yum, createrepo, koji
 Conflicts:	pungi < 1.0.0
 BuildRequires:  python-devel
 BuildArch:      noarch
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Tue Dec 16 2008 Bill Nottingham <notting@redhat.com> 0.4.5-1
+- fix caching bug with respect to epochs
+- work with both python createrepo API and commandline createrepo
+
 * Tue Dec 16 2008 Bill Nottingham <notting@redhat.com> 0.4.4-1
 - Mark gstreamer plugins as multilib (#252173)
 - Some more multilib devel blacklisting, including php. (#342851)

@@ -129,7 +129,11 @@ def generateSpam(pkgname, sendmail = True):
             brokendeps = subpackage[arch]
             for dep in brokendeps:
                 for blame in dep[2]:
-                    party = owners[blame]
+                    # We might not have an owner here for virtual deps
+                    try:
+                        party = owners[blame]
+                    except:
+                        continue
                     if party != guilty and party not in conspirators:
                         conspirators.append(party)
 

@@ -32,7 +32,8 @@ class MetadataOld:
         self.args.append('-d')
 
     def set_skipstat(self, skip):
-        self.args.append('--skip-stat')
+        if skip:
+            self.args.append('--skip-stat')
 
     def set_previous(self, previous):
         self.previous = previous

@@ -190,7 +190,9 @@ class Mash:
 
             previous_path = None
             if self.config.previous:
-                previous_path = "%s/%s/repodata" % (self.config.previous, repo_path.replace("%s/%s" % (self.config.outputdir, self.config.name), ""))
+                prefix = os.path.join(self.config.outputdir, self.config.name, "")
+                suffix = repo_path.replace(prefix, "")
+                previous_path = os.path.join(self.config.previous, suffix, "repodata")
             self.logger.info("createrepo: starting %s..." % (path,))
             status = self._makeMetadata(repo_path, repocache, arch, comps, previous = previous_path)
 

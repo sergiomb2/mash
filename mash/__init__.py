@@ -253,8 +253,6 @@ class Mash:
         
         packages = {}
         debug = {}
-        excludearch = {}
-        exclusivearch = {}
         noarch = PackageList(self.config)
         source = PackageList(self.config)
         for arch in self.config.arches:
@@ -291,6 +289,8 @@ class Mash:
                         packages[target_arch].add(pkg)
 
         src_hash = dict([(x['build_id'],x) for x in source.packages()])
+        excludearch = dict([(x['build_id'],'') for x in source.packages()])
+        exclusivearch = excludearch.copy()
         # Get excludearch/exclusivearch lists for noarch packages
         for pkg in noarch.packages():
             srcpkg = src_hash[pkg['build_id']]
@@ -305,15 +305,15 @@ class Mash:
                 self.logger.error("Couldn't read header from %s (%s)" % (pkg, fn))
                 fn.close()
                 continue
-            exclusivearch[pkg['build_id']] = hdr['EXCLUDEARCH']
+            excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
             exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']
             fn.close()
 
         for pkg in noarch.packages():
             for target_arch in self.config.arches:
-                if (excludearch.has_key(pkg['build_id']) and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
-                        (exclusivearch.has_key(pkg['build_id']) and not has_any(masharch.compat[target_arch], [arch for arch in exclusivearch[pkg['build_id']] if arch != 'noarch'])):
-                    self.logger.debug("Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch))
+                if (excludearch[pkg['build_id']] and has_any(masharch.compat[target_arch], excludearch[pkg['build_id']])) or \
+                        (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], [arch for arch in exclusivearch[pkg['build_id']] if arch != 'noarch'])):
+                    self.logger.info("Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch))
                     continue
                 else:
                     packages[target_arch].add(pkg)

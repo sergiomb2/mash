@@ -91,8 +91,8 @@ class Mash:
         self.logger.setLevel(logging.DEBUG)
         self.logger.propagate = False
 
-    def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True, gofast = False):
-        md = metadata.Metadata()
+    def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True, gofast = False, previous = None):
+        md = metadata.Metadata(self.logger)
         md.set_cachedir(repocache)
         md.set_skipstat(gofast)
         md.set_database(self.config.use_sqlite)
@@ -100,6 +100,8 @@ class Mash:
             md.set_comps(self.config.compsfile)
         if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
             md.set_excludes("debug/*")
+        if previous:
+            md.set_previous(previous)
         md.run(path)
         self.logger.info("createrepo: finished %s" % (path,))
         if repoview and self.config.use_repoview:
@@ -186,14 +188,11 @@ class Mash:
             for pkg in list:
                 _install(pkg, path)
 
+            previous_path = None
             if self.config.previous:
                 previous_path = "%s/%s/repodata" % (self.config.previous, repo_path.replace("%s/%s" % (self.config.outputdir, self.config.name), ""))
-                try:
-                    shutil.copytree(previous_path, "%s/repodata" % (repo_path,))
-                except:
-                    self.logger.error("Couldn't copy repodata from %s" % (previous_path,))
             self.logger.info("createrepo: starting %s..." % (path,))
-            status = self._makeMetadata(repo_path, repocache, arch, comps)
+            status = self._makeMetadata(repo_path, repocache, arch, comps, previous = previous_path)
 
         def _get_reference(pkg, builds_hash):
             result = None

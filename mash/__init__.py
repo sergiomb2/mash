@@ -98,8 +98,10 @@ class Mash:
         md.set_database(self.config.use_sqlite)
         if comps and self.config.compsfile:
             md.set_comps(self.config.compsfile)
-        if self.config.debuginfo_path == os.path.join(self.config.rpm_path, 'debug'):
-            md.set_excludes("debug/*")
+        d = os.path.join(self.config.rpm_path,"")
+        if self.config.debuginfo_path.startswith(d):
+            exclude = os.path.join(self.config.debuginfo_path.replace(d, ""), "*")
+            md.set_excludes(exclude)
         if previous:
             md.set_previous(previous)
         md.run(path)

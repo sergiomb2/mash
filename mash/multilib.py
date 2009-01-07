@@ -121,6 +121,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # gstreamer
             if fnmatch(dirname, '/usr/lib*/gstreamer-*'):
                 return True
+            # xine-lib
+            if fnmatch(dirname, '/usr/lib*/xine/plugins/*'):
+                return True
 	    
         return False
 

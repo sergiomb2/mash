@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.4.8
+Version:        0.4.9
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Jan  8 2009 Bill Nottingham <notting@redhat.com> 0.4.9-1
+- error out if strict_keys is set and we can't download the signed package
+
 * Thu Dec 18 2008 Bill Nottingham <notting@redhat.com> 0.4.8-1
 - Fix debuginfo exclusion
 - Fix --skip-stat with old createrepo

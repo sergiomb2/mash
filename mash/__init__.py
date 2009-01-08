@@ -167,18 +167,22 @@ class Mash:
                   try:
                       result = urlgrabber.grabber.urlgrab(srcurl, cachepath)
                   except:
+                      if self.config.strict_keys:
+                          self.logger.error("ERROR: can't download %s from signed path %s" % (nevra(pkg), srcurl))
+                          return 1
                       srcurl = os.path.join(koji.pathinfo.build(z), koji.pathinfo.rpm(pkg))
                       try:
                           result = urlgrabber.grabber.urlgrab(srcurl, cachepath)
                       except:
-                          self.logger.error("WARNING: can't download %s from %s" % (nevra(pkg), srcurl))
-                          return
+                          self.logger.error("ERROR: can't download %s from %s" % (nevra(pkg), srcurl))
+                          return 1
 
               if result != dst:
                   try:
                       os.link(result, dst)
                   except:
                       shutil.copyfile(result, dst)
+              return 0
 
         def _write_files(list, path, repo_path, comps = False, repocache = None, arch = None):
             self.logger.info("Writing out files for %s..." % (path,))
@@ -187,9 +191,13 @@ class Mash:
             pid = os.fork()
             if pid:
                 return pid
+            rc = 0
             for pkg in list:
-                _install(pkg, path)
+                rc = rc + _install(pkg, path)
 
+            if rc > 0:
+                self.logger.info("Can't find all files for %s, aborting" %(path,))
+                os._exit(1)
             previous_path = None
             if self.config.previous:
                 prefix = os.path.join(self.config.outputdir, self.config.name, "")
@@ -218,11 +226,13 @@ class Mash:
                 try:
                     result = urlgrabber.grabber.urlgrab(path, cachepath)
                 except:
+                    if self.config.strict_keys and pkg['sigkey']:
+                        self.logger.error("ERROR: can't download %s from signed path %s" % (nevra(pkg), path))
                     path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
                     try:
                         result = urlgrabber.grabber.urlgrab(path, cachepath)
                     except:
-                        self.logger.error("WARNING: can't download %s from %s" % (nevra(pkg), path))
+                        self.logger.error("ERROR: can't download %s from %s" % (nevra(pkg), path))
                         return None
 
             fd = open(result)
@@ -305,8 +315,9 @@ class Mash:
             try:
                 hdr = koji.get_rpm_header(fn)
             except:
-                self.logger.error("Couldn't read header from %s (%s)" % (pkg, fn))
-                fn.close()
+                self.logger.error("Couldn't read header from %s (%s)" % (nevra(pkg), fn))
+                if fn:
+                    fn.close()
                 continue
             excludearch[pkg['build_id']] = hdr['EXCLUDEARCH']
             exclusivearch[pkg['build_id']] = hdr['EXCLUSIVEARCH']

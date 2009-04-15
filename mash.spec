@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.4.9
+Version:        0.5.0
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Apr 15 2009 Bill Nottingham <notting@redhat.com> 0.5.0-1
+- Add support for generating deltas with createrepo
+- add F11 key to config (<jkeating@redhat.com>)
+- various multlib updates (#485242, etc.)
+
 * Thu Jan  8 2009 Bill Nottingham <notting@redhat.com> 0.4.9-1
 - error out if strict_keys is set and we can't download the signed package
 

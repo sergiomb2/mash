@@ -128,9 +128,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             if fnmatch(dirname, '/usr/lib*/xine/plugins/*'):
                 return True
 	    # kde/qt widget styles
-	    if fnmarch(dirname, '/usr/lib*/qt*/plugins/styles/*'):
+	    if fnmatch(dirname, '/usr/lib*/qt*/plugins/styles/*'):
 	        return True
-	    if fnmarch(dirname, '/usr/lib*/kde*/plugins/styles/*'):
+	    if fnmatch(dirname, '/usr/lib*/kde*/plugins/styles/*'):
 	        return True
         return False
 

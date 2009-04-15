@@ -43,3 +43,4 @@ clean:
 	@rm -rf dist
 	@rm -f MANIFEST
 	@find . -name "*~" -exec rm -f {} \;
+	@find . -name "*.pyc" -exec rm -f {} \;

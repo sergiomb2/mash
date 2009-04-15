@@ -1,4 +1,434 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Apr 15 12:11:00 2009 -0400
+
+    0.5.0
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Apr 15 12:09:01 2009 -0400
+
+    Remove pyc files with 'make clean'.
+
+ Makefile |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Apr 15 12:08:28 2009 -0400
+
+    Enable deltas for rawhide.
+
+ configs/rawhide.mash |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Apr 15 10:36:09 2009 -0400
+
+    Use 'deltapath' to distinguish it more from the previous (repodata) path.
+
+ mash/metadata.py |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Apr 15 00:13:28 2009 -0400
+
+    Initial deltarpm support.
+
+ mash/__init__.py |    6 ++++--
+ mash/config.py   |    2 ++
+ mash/metadata.py |   12 ++++++++++++
+ 3 files changed, 18 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Apr 14 23:40:52 2009 -0400
+
+    Fix typo.
+
+ mash/multilib.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Mon Mar 9 22:32:54 2009 -0700
+
+    Add the F11 Test key to the rawhide config
+
+ configs/rawhide.mash |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Mar 9 11:11:41 2009 -0400
+
+    Add a blacklist for the runtime method, add tomcat-native to it.
+    
+    https://fedorahosted.org/rel-eng/ticket/1320
+
+ mash/multilib.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Feb 25 17:03:06 2009 -0500
+
+    Add lmms-vst.
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Feb 12 10:57:14 2009 -0500
+
+    Add more multilib - KDE/QT style plugins. (#485242)
+
+ mash/multilib.py |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 8 13:14:43 2009 -0500
+
+    0.4.9
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Jan 8 11:23:28 2009 -0500
+
+    Catch when koji claims there are signed packages, but they aren't written out.
+    
+    Otherwise we'll fall back to the unsigned ones, and bad things happen.
+
+ mash/__init__.py |   23 +++++++++++++++++------
+ 1 files changed, 17 insertions(+), 6 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Jan 7 15:50:04 2009 -0500
+
+    Add xine-lib plugins (#446140)
+
+ mash/multilib.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 23:31:32 2008 -0500
+
+    0.4.8
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 23:12:00 2008 -0500
+
+    Fix debuginfo exclusion.
+    
+    Where it broke before:
+    
+    - debuginfo_path specified ending with '/
+    - debuginfo_path of a form other than 'debug'
+
+ mash/__init__.py |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 17:38:35 2008 -0500
+
+    Fix --skip-stat with old createrepo.
+
+ mash/metadata.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 16:57:25 2008 -0500
+
+    Use os.path.join for saner pathnames.
+    
+    Also, make it a tad more legible.
+
+ mash/__init__.py |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 16:57:13 2008 -0500
+
+    Go back to old tagging paradigm.
+
+ Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 15:22:45 2008 -0500
+
+    Move copying of metadata to update from to the metadata class.
+    
+    This is so we can use the new update_from support in createrepo.
+
+ mash/__init__.py |   13 ++++++-------
+ mash/metadata.py |   39 ++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 40 insertions(+), 12 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 00:57:37 2008 -0500
+
+    0.4.7
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 18 00:56:41 2008 -0500
+
+    Fix noarch excludearch/exclusivearch handling.
+    
+    We now actually put noarch packages in the tree. Progress!
+
+ mash/__init__.py |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Dec 17 15:05:14 2008 -0500
+
+    0.4.6
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Dec 17 14:40:40 2008 -0500
+
+    Use the correct path for the old repodata that we're copying.
+    
+    Also, wrap it in try/except, so we don't fall over completely.
+
+ mash/__init__.py |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Tue Dec 16 19:39:20 2008 -0800
+
+    Fix an issue where spam-o-matic was trying to email the owners
+    of virtual provides, and this wasn't working.  Go back to old
+    behaviour of only mailing explicit package names.
+
+ utils/spam-o-matic |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 21:53:43 2008 -0500
+
+    0.4.5
+
+ mash.py   |    2 +-
+ mash.spec |    8 ++++++--
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 21:51:59 2008 -0500
+
+    Move metadata generation to a meta-class that can work with both old and new createrepo.
+
+ mash/__init__.py |   29 +++++------------
+ mash/metadata.py |   93 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 101 insertions(+), 21 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 21:29:57 2008 -0500
+
+    Fix typo.
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 21:29:08 2008 -0500
+
+    Fix mismatch between koji type and yum type that was causing false cache misses.
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 16:18:30 2008 -0500
+
+    0.4.4
+
+ mash.py   |    2 +-
+ mash.spec |    4 ++--
+ setup.py  |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 16:17:57 2008 -0500
+
+    Fix excludearch/exclusivearch logic.
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 15:55:30 2008 -0500
+
+    Remove extraneous 'continue'.
+
+ mash/__init__.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 14:52:38 2008 -0500
+
+    Remove RELEASE from tag.
+
+ Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 14:51:30 2008 -0500
+
+    Actually do something on 'tag'.
+
+ Makefile |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 14:50:19 2008 -0500
+
+    0.4.3
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    4 ++--
+ 3 files changed, 9 insertions(+), 4 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 14:45:01 2008 -0500
+
+    Use logger consistently.
+
+ mash/__init__.py |   11 +++++------
+ 1 files changed, 5 insertions(+), 6 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 14:41:41 2008 -0500
+
+    Rework checking of source rpms for ExcludeArch/ExclusiveArch for noarch packages.
+    
+    Instead of reading *every* source RPM, only do it for those that pertain
+    to noarch packages. Furthermore, fix it so we don't read the same source
+    RPM multiple times for each key that it happens to be signed with (oops).
+
+ mash/__init__.py |   58 +++++++++++++++++++++++------------------------------
+ 1 files changed, 25 insertions(+), 33 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 13:46:37 2008 -0500
+
+    Allow passing of a previous tree, to be used with createrepo --update.
+
+ mash.py          |    7 ++++++-
+ mash/__init__.py |    3 +++
+ mash/config.py   |    1 +
+ 3 files changed, 10 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 11 18:44:01 2008 -0500
+
+    Minor clean up.
+
+ mash.py |    8 +++-----
+ 1 files changed, 3 insertions(+), 5 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 13:44:21 2008 -0500
+
+    Differentiate output directory from a work directory.
+    
+    This will be used later for createrepo output.
+
+ mash.py          |   10 +++++-----
+ mash/__init__.py |   17 +++++++++--------
+ mash/config.py   |    2 ++
+ 3 files changed, 16 insertions(+), 13 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 11:31:19 2008 -0500
+
+    Clarify output message
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Dec 16 11:00:55 2008 -0500
+
+    Fix a few tracebacks in the error path.
+
+ mash/__init__.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Dec 11 18:22:55 2008 -0500
+
+    Add a little more createrepo logging.
+
+ mash/__init__.py |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Dec 5 14:09:54 2008 -0500
+
+    Some more multilib devel blacklisting, including php. (#342851)
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Dec 5 14:07:19 2008 -0500
+
+    Mark gstreamer plugins as multilib (#252173)
+
+ mash/multilib.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Author: Jesse Keating <jkeating@redhat.com>
+Date:   Mon Dec 1 16:58:26 2008 -0800
+
+    Handle noarch packages with ExclusiveArch better
+    
+    ExclusiveArch also has to contain 'noarch' for noarch packages, however
+    'noarch' is a compat arch for every arch, therefor we thought any
+    noarch package that has ExclusiveArch was suitable for every arch.  This
+    was wrong, we need to filter 'noarch' out of the ExclusiveArches when checking.
+
+ mash/__init__.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Oct 29 11:54:55 2008 -0400
+
+    Fall back to the unsigned path when checking ExcludeArch/ExclusiveArch, as well.
+
+ mash/__init__.py |   10 +++++++++-
+ 1 files changed, 9 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Oct 15 11:33:18 2008 -0400
+
+    update changelog for 0.4.2
+
+ ChangeLog |   87 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 87 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Wed Oct 15 11:32:13 2008 -0400
 
     0.4.2
@@ -16,7 +446,7 @@ Date:   Wed Oct 15 11:30:22 2008 -0400
  mash/__init__.py |    6 +++++-
  1 files changed, 5 insertions(+), 1 deletions(-)
 
-Merge: 6955d5f... df50ca5...
+Merge: 6955d5f df50ca5
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Wed Oct 15 11:27:29 2008 -0400
 
@@ -572,7 +1002,7 @@ Date:   Fri Dec 21 18:10:28 2007 -0500
  mash/__init__.py |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-Merge: 2817d9f... 5a9f0e0...
+Merge: 2817d9f 5a9f0e0
 Author: Jesse Keating <jkeating@redhat.com>
 Date:   Fri Dec 21 18:07:44 2007 -0500
 
@@ -606,7 +1036,7 @@ Date:   Fri Nov 16 15:31:10 2007 -0500
  mash/config.py           |    4 ++++
  3 files changed, 17 insertions(+), 15 deletions(-)
 
-Merge: 8738d26... 616ddb8...
+Merge: 8738d26 616ddb8
 Author: Jesse Keating <jkeating@redhat.com>
 Date:   Tue Nov 13 10:05:58 2007 -0500
 
@@ -753,13 +1183,13 @@ Date:   Thu Sep 20 14:25:29 2007 -0400
  mash/config.py |    4 ++++
  1 files changed, 4 insertions(+), 0 deletions(-)
 
-Merge: f8b1067... 89123b5...
+Merge: f8b1067 89123b5
 Author: Jesse Keating <jkeating@redhat.com>
 Date:   Thu Sep 20 11:58:08 2007 -0400
 
     Merge branch 'master' of git://git.fedoraproject.org/git/hosted/mash
 
-Merge: a46665e... 89123b5...
+Merge: a46665e 89123b5
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu Sep 20 10:07:04 2007 -0400
 
@@ -1437,7 +1867,7 @@ Date:   Thu May 24 17:19:10 2007 -0400
  mash/__init__.py |    3 +++
  1 files changed, 3 insertions(+), 0 deletions(-)
 
-Merge: b0093eb... d7e19b6...
+Merge: b0093eb d7e19b6
 Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu May 24 12:54:05 2007 -0400
 

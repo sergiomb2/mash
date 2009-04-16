@@ -1,4 +1,52 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Apr 16 13:45:28 2009 -0400
+
+    0.5.1
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Apr 16 13:40:32 2009 -0400
+
+    Further deltarpm fixes.
+    
+    Allow lists of directories to delta against, either via -d command line
+    option, or delta_dirs config file option. Default to any directory passed
+    in with -p if neither is set.
+    
+    Copy in prior deltas from the previous directory if they still match
+    the package set, so that we don't lose all deltas if we recompose with
+    the same content.
+    
+    Pass the delta flag on the second post-multilib createrepo call as well,
+    to make sure that the metadata ends up in repomd.xml.
+
+ mash.py          |    7 ++++++
+ mash/__init__.py |    8 +++---
+ mash/config.py   |    2 +
+ mash/metadata.py |   59 ++++++++++++++++++++++++++++++++++++++++-------------
+ 4 files changed, 57 insertions(+), 19 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Apr 16 13:38:10 2009 -0400
+
+    Rework Qt/KDE plugins support (#495947)
+
+ mash/multilib.py |   11 ++++-------
+ 1 files changed, 4 insertions(+), 7 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Apr 15 12:11:24 2009 -0400
+
+    update changelog for 0.5.0
+
+ ChangeLog |  442 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 436 insertions(+), 6 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Wed Apr 15 12:11:00 2009 -0400
 
     0.5.0

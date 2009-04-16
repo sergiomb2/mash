@@ -91,7 +91,7 @@ class Mash:
         self.logger.setLevel(logging.DEBUG)
         self.logger.propagate = False
 
-    def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True, gofast = False, previous = None, delta = False):
+    def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True, gofast = False, previous = None):
         md = metadata.Metadata(self.logger)
         md.set_cachedir(repocache)
         md.set_skipstat(gofast)
@@ -102,8 +102,8 @@ class Mash:
         if self.config.debuginfo_path.startswith(d):
             exclude = os.path.join(self.config.debuginfo_path.replace(d, ""), "*")
             md.set_excludes(exclude)
-        if delta and previous and self.config.delta:
-            md.set_delta(previous[:-9])
+        if self.config.delta:
+            md.set_delta(self.config.delta_dirs)
         if previous:
             md.set_previous(previous)
         md.run(path)
@@ -206,7 +206,7 @@ class Mash:
                 suffix = repo_path.replace(prefix, "")
                 previous_path = os.path.join(self.config.previous, suffix, "repodata")
             self.logger.info("createrepo: starting %s..." % (path,))
-            status = self._makeMetadata(repo_path, repocache, arch, comps, previous = previous_path, delta = True)
+            status = self._makeMetadata(repo_path, repocache, arch, comps, previous = previous_path)
 
         def _get_reference(pkg, builds_hash):
             result = None

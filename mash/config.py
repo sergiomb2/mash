@@ -42,6 +42,7 @@ class MashConfig(config.BaseConfig):
     repoviewurl = config.Option('http://localhost/%(arch)s')
     repoviewtitle = config.Option('"Mash - %(arch)s"')
     delta = config.BoolOption(False)
+    delta_dirs = config.ListOption()
     distros = []
     
 class MashDistroConfig(config.BaseConfig):
@@ -69,6 +70,7 @@ class MashDistroConfig(config.BaseConfig):
     repoviewurl = config.Inherit(MashConfig.repoviewurl)
     repoviewtitle = config.Inherit(MashConfig.repoviewtitle)
     delta = config.Inherit(MashConfig.delta)
+    delta_dirs = config.Inherit(MashConfig.delta_dirs)
     previous = None
 
 def readMainConfig(conf):

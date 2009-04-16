@@ -3,6 +3,7 @@ import os
 import shutil
 
 import rpm
+import rpmUtils
 
 usenew = True
 try:
@@ -35,7 +36,7 @@ class MetadataOld:
         if skip:
             self.args.append('--skip-stat')
 
-    def set_delta(self, deltapath):
+    def set_delta(self, deltapaths):
         # Sorry, can't do that here.
         pass
 
@@ -79,29 +80,57 @@ class MetadataNew:
     def set_skipstat(self, skip):
         self.conf.skip_stat = skip
 
-    def set_delta(self, deltapath):
+    def set_delta(self, deltapaths):
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
               self.conf.deltas = True
-              self.conf.oldpackage_paths = [deltapath]
+              self.conf.oldpackage_paths = deltapaths
 
     def set_previous(self, previous):
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
               self.conf.update_md_path = previous
-        else:
-              self.previous = previous
+        self.previous = previous
+
+    def _copy_in_deltas(self, path):
+        ts = rpm.TransactionSet()
+
+        def _matches(file, list):
+            hdr = rpmUtils.miscutils.hdrFromPackage(ts, file)
+            fname = '%s-%s-%s.%s.rpm' % (hdr['name'], hdr['version'], hdr['release'], hdr['arch'])
+            if fname in list:
+                return True
+            return False
+
+        def _copy(file, path):
+            if not os.path.exists('%s/drpms' % (path,)):
+                os.mkdir('%s/drpms' % (path,))
+            destpath = '%s/drpms/%s' % (path, os.path.basename(file))
+            try:
+                os.link(file, destpath)
+            except OSError:
+                shutil.copy(file, destpath)
+
+        filelist = map(os.path.basename, self.repomatic.getFileList(self.conf.directory, '.rpm'))
+        deltalist = self.repomatic.getFileList('%s/../drpms' % (self.previous,), '.drpm')
+        for file in deltalist:
+            fullpath = '%s/../drpms/%s' % (self.previous, file)
+            if _matches(fullpath, filelist):
+                _copy(fullpath, path)
 
     def run(self, path):
         self.conf.outputdir = path
         self.conf.directory = path
+        self.repomatic = createrepo.MetaDataGenerator(self.conf)
         if self.previous:
-            try:
-                shutil.copytree(self.previous, "%s/repodata" % (path,))
-            except OSError:
-                self.logger.error("Couldn't copy repodata from %s" % (self.previous,))
-        repomatic = createrepo.MetaDataGenerator(self.conf)
-        repomatic.doPkgMetadata()
-        repomatic.doRepoMetadata()
-        repomatic.doFinalMove()
+            if not self.conf.update_md_path:
+                try:
+                    shutil.copytree(self.previous, "%s/repodata" % (path,))
+                except OSError:
+                    self.logger.error("Couldn't copy repodata from %s" % (self.previous,))
+            if self.conf.deltas:
+                self._copy_in_deltas(path)
+        self.repomatic.doPkgMetadata()
+        self.repomatic.doRepoMetadata()
+        self.repomatic.doFinalMove()
 
 class Metadata:
     def __init__(self, logger):
@@ -125,8 +154,8 @@ class Metadata:
     def set_skipstat(self, skip):
         self.obj.set_skipstat(skip)
 
-    def set_delta(self, deltapath):
-        self.obj.set_delta(deltapath)
+    def set_delta(self, deltapaths):
+        self.obj.set_delta(deltapaths)
 
     def set_previous(self, previous):
         self.obj.set_previous(previous)

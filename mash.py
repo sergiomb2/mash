@@ -32,6 +32,8 @@ def main():
       help="comps file to use")
     parser.add_option("-p","--previous", default="", dest="previous",
       help="previous mash run to use as basis for createrepo")
+    parser.add_option("-d","--delta", action='append', dest="delta",
+      help="previous directory to use for deltarpm creation")
     (opts, args) = parser.parse_args()
     
     if len(args) < 1:
@@ -51,9 +53,14 @@ def main():
     if opts.compsfile != "":
         for dist in conf.distros:
             dist.compsfile = opts.compsfile
+    if opts.delta != []:
+        for dist in conf.distros:
+            dist.delta_dirs = opts.delta
     if opts.previous != "":
         for dist in conf.distros:
             dist.previous = opts.previous
+            if not dist.delta_dirs:
+                dist.delta_dirs = [opts.previous]
 
     dists = []
     for dist in conf.distros:

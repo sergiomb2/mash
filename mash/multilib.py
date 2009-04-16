@@ -118,8 +118,10 @@ class RuntimeMultilibMethod(MultilibMethod):
 	    # scim-bridge-gtk	
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/immodules'):
                 return True
-            # scim-qt*
-            if fnmatch(dirname, '/usr/lib*/qt*/plugins/inputmethods'):
+            # qt/kde fun
+            if fnmatch(dirname, '/usr/lib*/qt*/plugins/*'):
+                return True
+            if fnmatch(dirname, '/usr/lib*/kde*/plugins/*'):
                 return True
             # gstreamer
             if fnmatch(dirname, '/usr/lib*/gstreamer-*'):
@@ -127,11 +129,6 @@ class RuntimeMultilibMethod(MultilibMethod):
             # xine-lib
             if fnmatch(dirname, '/usr/lib*/xine/plugins/*'):
                 return True
-	    # kde/qt widget styles
-	    if fnmatch(dirname, '/usr/lib*/qt*/plugins/styles/*'):
-	        return True
-	    if fnmatch(dirname, '/usr/lib*/kde*/plugins/styles/*'):
-	        return True
         return False
 
 class DevelMultilibMethod(RuntimeMultilibMethod):

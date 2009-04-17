@@ -84,6 +84,7 @@ class MetadataNew:
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
               self.conf.deltas = True
               self.conf.oldpackage_paths = deltapaths
+              self.conf.max_delta_rpm_size = 300000000
 
     def set_previous(self, previous):
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:

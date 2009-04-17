@@ -1,4 +1,30 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Apr 17 15:12:08 2009 -0400
+
+    update to 0.5.2
+
+ mash.py   |    2 +-
+ mash.spec |    5 ++++-
+ setup.py  |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri Apr 17 14:58:00 2009 -0400
+
+    Set max rpm size for deltarpms, so we don't crash the compose box. (#496242)
+
+ mash/metadata.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu Apr 16 13:45:40 2009 -0400
+
+    update changelog for 0.5.1
+
+ ChangeLog |   48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 48 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Thu Apr 16 13:45:28 2009 -0400
 
     0.5.1

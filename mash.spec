@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.1
+Version:        0.5.2
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Fri Apr 17 2009 Bill Nottingham <notting@redhat.com> 0.5.2-1
+- set a max size for deltarpm-able packages (#496242)
+
 * Thu Apr 16 2009 Bill Nottingham <notting@redhat.com> 0.5.1-1
 - delta fixes
 - handle qt/kde plugins better (#495947)

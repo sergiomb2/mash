@@ -102,8 +102,9 @@ class Mash:
         if self.config.debuginfo_path.startswith(d):
             exclude = os.path.join(self.config.debuginfo_path.replace(d, ""), "*")
             md.set_excludes(exclude)
-        if self.config.delta:
-            md.set_delta(self.config.delta_dirs)
+        if comps:
+            if self.config.delta:
+                md.set_delta(self.config.delta_dirs)
         if previous:
             md.set_previous(previous)
         md.run(path)

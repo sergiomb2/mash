@@ -1,9 +1,11 @@
 
+import locale
 import os
 import shutil
 
 import rpm
 import rpmUtils
+import rpmUtils.miscutils
 
 usenew = True
 try:
@@ -92,13 +94,23 @@ class MetadataNew:
         self.previous = previous
 
     def _copy_in_deltas(self, path):
-        ts = rpm.TransactionSet()
+        ts = rpmUtils.transaction.initReadOnlyTransaction()
+
+        def _sigmatches(hdr, filename):
+            newhdr = rpmUtils.miscutils.hdrFromPackage(ts, filename)
+            locale.setlocale(locale.LC_ALL, 'C')
+            string = '%|DSAHEADER?{%{DSAHEADER:pgpsig}}:{%|RSAHEADER?{%{RSAHEADER:pgpsig}}:{%|SIGGPG?{%{SIGGPG:pgpsig}}:{%|SIGPGP?{%{SIGPGP:pgpsig}}:{(none)}|}|}|}|'
+            siginfo1 = hdr.sprintf(string)
+            siginfo2 = newhdr.sprintf(string)
+            if siginfo1 == siginfo2:
+                return True
 
         def _matches(file, list):
             hdr = rpmUtils.miscutils.hdrFromPackage(ts, file)
             fname = '%s-%s-%s.%s.rpm' % (hdr['name'], hdr['version'], hdr['release'], hdr['arch'])
-            if fname in list:
-                return True
+            if fname in list.keys():
+                if _sigmatches(hdr, list[fname]):
+                    return True
             return False
 
         def _copy(file, path):
@@ -110,7 +122,10 @@ class MetadataNew:
             except OSError:
                 shutil.copy(file, destpath)
 
-        filelist = map(os.path.basename, self.repomatic.getFileList(self.conf.directory, '.rpm'))
+        fulllist = self.repomatic.getFileList(self.conf.directory, '.rpm')
+        filelist = {}
+        for f in fulllist:
+            filelist[os.path.basename(f)] = os.path.join(self.conf.directory, f)
         deltalist = self.repomatic.getFileList('%s/../drpms' % (self.previous,), '.drpm')
         for file in deltalist:
             fullpath = '%s/../drpms/%s' % (self.previous, file)

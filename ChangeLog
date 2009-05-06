@@ -1,4 +1,45 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 6 14:46:21 2009 -0400
+
+    0.5.4
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 6 14:30:01 2009 -0400
+
+    Allow specifying the hash algorithm for createrepo to use.
+
+ mash/__init__.py |    1 +
+ mash/config.py   |    2 ++
+ mash/metadata.py |   10 ++++++++++
+ 3 files changed, 13 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 6 14:29:47 2009 -0400
+
+    Remove old configs; we don't need to ship these in the base package.
+
+ configs/f7-updates-testing.mash |   16 ----------------
+ configs/f7-updates.mash         |   16 ----------------
+ configs/f8-updates-testing.mash |   16 ----------------
+ configs/f8-updates.mash         |   16 ----------------
+ configs/f9-updates-testing.mash |   16 ----------------
+ configs/f9-updates.mash         |   16 ----------------
+ 6 files changed, 0 insertions(+), 96 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Apr 27 14:38:40 2009 -0400
+
+    update changelog for 0.5.3
+
+ ChangeLog |   34 ++++++++++++++++++++++++++++++++++
+ 1 files changed, 34 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Apr 27 14:38:25 2009 -0400
 
     0.5.3

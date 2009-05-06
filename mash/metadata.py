@@ -34,6 +34,10 @@ class MetadataOld:
     def set_database(self, db):
         self.args.append('-d')
 
+    def set_hash(self, hashtype):
+        # Sorry, can't do that here.
+        pass
+
     def set_skipstat(self, skip):
         if skip:
             self.args.append('--skip-stat')
@@ -78,6 +82,9 @@ class MetadataNew:
 
     def set_database(self, db):
         self.conf.database = db
+
+    def set_hash(self, hashtype):
+        self.conf.sumtype = hashtype
 
     def set_skipstat(self, skip):
         self.conf.skip_stat = skip
@@ -166,6 +173,9 @@ class Metadata:
 
     def set_database(self, db):
         self.obj.set_database(db)
+
+    def set_hash(self, hashtype):
+        self.obj.set_hash(hashtype)
 
     def set_skipstat(self, skip):
         self.obj.set_skipstat(skip)

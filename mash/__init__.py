@@ -96,6 +96,7 @@ class Mash:
         md.set_cachedir(repocache)
         md.set_skipstat(gofast)
         md.set_database(self.config.use_sqlite)
+        md.set_hash(self.config.hash)
         if comps and self.config.compsfile:
             md.set_comps(self.config.compsfile)
         d = os.path.join(self.config.rpm_path,"")

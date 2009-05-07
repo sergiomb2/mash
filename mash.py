@@ -48,6 +48,8 @@ def main():
     conf = mash.config.readMainConfig(opts.config)
     
     if opts.outputdir != "":
+        if opts.outputdir[0] != '/':
+            opts.outputdir = os.path.realpath(os.path.join(os.getcwd(), opts.outputdir))
         for dist in conf.distros:
             dist.outputdir = opts.outputdir
     if opts.compsfile != "":

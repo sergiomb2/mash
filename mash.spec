@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.4
+Version:        0.5.5
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Fri May  8 2009 Bill Nottingham <notting@redhat.com> 0.5.5-1
+- fix setting delta_dirs in config file
+- canonicalize -o option if passed as a relative path
+
 * Wed May  6 2009 Bill Nottingham <notting@redhat.com> 0.5.4-1
 - allow configuring createrepo hash type
 - remove old config files

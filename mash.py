@@ -23,7 +23,7 @@ import mash.config
     
 def main():
     usage = "usage: %prog [options] <configuration to build>"
-    parser = OptionParser(usage, version='%prog 0.5.4')
+    parser = OptionParser(usage, version='%prog 0.5.5')
     parser.add_option("-o","--outputdir",default="", dest="outputdir",
       help="output directory")
     parser.add_option("-c","--config", default="/etc/mash/mash.conf", dest="config",
@@ -59,6 +59,8 @@ def main():
         for dist in conf.distros:
             dist.delta_dirs = opts.delta
     if opts.previous != "":
+        if opts.previous[0] != '/':
+            opts.previous = os.path.realpath(os.path.join(os.getcwd(), opts.previous))
         for dist in conf.distros:
             dist.previous = opts.previous
             if not dist.delta_dirs:

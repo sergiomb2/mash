@@ -105,7 +105,11 @@ class Mash:
             md.set_excludes(exclude)
         if comps:
             if self.config.delta:
-                md.set_delta(self.config.delta_dirs)
+                paths = []
+                if self.config.delta_dirs:
+                    for dir in self.config.delta_dirs:
+                        paths.append(dir % {'arch': arch })
+                md.set_delta(paths)
         if previous:
             md.set_previous(previous)
         md.run(path)

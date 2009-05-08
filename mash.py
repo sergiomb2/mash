@@ -55,7 +55,7 @@ def main():
     if opts.compsfile != "":
         for dist in conf.distros:
             dist.compsfile = opts.compsfile
-    if opts.delta != []:
+    if opts.delta and opts.delta != []:
         for dist in conf.distros:
             dist.delta_dirs = opts.delta
     if opts.previous != "":

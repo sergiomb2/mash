@@ -1,4 +1,39 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 8 10:21:41 2009 -0400
+
+    0.5.5
+
+ mash.py   |    4 +++-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 8 10:16:42 2009 -0400
+
+    Fix handling of delta_dirs in config files, and arch interpolations therein.
+
+ mash.py          |    2 +-
+ mash/__init__.py |    6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Thu May 7 13:31:13 2009 -0400
+
+    Normalize -o option so it handles relative paths. (#499645)
+
+ mash.py |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed May 6 14:46:37 2009 -0400
+
+    update changelog for 0.5.4
+
+ ChangeLog |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 41 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Wed May 6 14:46:21 2009 -0400
 
     0.5.4

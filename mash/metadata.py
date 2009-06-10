@@ -102,6 +102,7 @@ class MetadataNew:
 
     def _copy_in_deltas(self, path):
         ts = rpmUtils.transaction.initReadOnlyTransaction()
+        ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
 
         def _sigmatches(hdr, filename):
             newhdr = rpmUtils.miscutils.hdrFromPackage(ts, filename)

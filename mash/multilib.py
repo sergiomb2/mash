@@ -115,8 +115,19 @@ class RuntimeMultilibMethod(MultilibMethod):
             # accessibility
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/modules'):
                 return True
+            if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/modules'):
+                return True
 	    # scim-bridge-gtk	
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/immodules'):
+                return True
+            if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/immodules'):
+                return True
+            # images
+            if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/loaders'):
+                return True
+            if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/printbackends'):
+                return True
+            if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/filesystems'):
                 return True
             # qt/kde fun
             if fnmatch(dirname, '/usr/lib*/qt*/plugins/*'):

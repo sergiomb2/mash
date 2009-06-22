@@ -440,7 +440,10 @@ class Mash:
             best_compat = masharch.compat[masharch.biarch[arch]][0]
             if rpmUtils.arch.archDifference(best_compat, arch) > 0:
                 transaction_arch = best_compat
-        rpmUtils.arch.canonArch = transaction_arch
+        if hasattr(rpmUtils.arch, 'ArchStorage'):
+            yumbase.preconf.arch = transaction_arch
+        else:
+            rpmUtils.arch.canonArch = transaction_arch
             
         yconfig = """
 [main]

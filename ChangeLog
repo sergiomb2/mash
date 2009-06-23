@@ -1,4 +1,65 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jun 23 11:08:44 2009 -0400
+
+    When using the previous path for deltas, add in the rpm path as well.
+    
+    Otherwise, for each arch, we iterate over all arches and source packages
+    looking for matches. This isn't very efficient.
+
+ mash.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 22 17:01:16 2009 -0400
+
+    Add wine multilib bits. (trac #1939)
+
+ mash/multilib.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 22 13:50:51 2009 -0400
+
+    0.5.6
+
+ mash.py   |    2 +-
+ mash.spec |    7 ++++++-
+ setup.py  |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 22 13:50:03 2009 -0400
+
+    Handle new yum arch-setting API. (<skvidal@fedoraproject.org>)
+
+ mash/__init__.py |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 22 13:05:43 2009 -0400
+
+    More gtk multilib. (#507165)
+
+ mash/multilib.py |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Wed Jun 10 14:51:50 2009 -0400
+
+    Set the transaction flags to not do various things, because that makes it slower.
+
+ mash/metadata.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Fri May 8 10:21:50 2009 -0400
+
+    update changelog for 0.5.5
+
+ ChangeLog |   35 +++++++++++++++++++++++++++++++++++
+ 1 files changed, 35 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Fri May 8 10:21:41 2009 -0400
 
     0.5.5

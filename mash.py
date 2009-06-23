@@ -64,7 +64,7 @@ def main():
         for dist in conf.distros:
             dist.previous = opts.previous
             if not dist.delta_dirs:
-                dist.delta_dirs = [opts.previous]
+                dist.delta_dirs = [os.path.join(opts.previous, dist.rpm_path)]
 
     dists = []
     for dist in conf.distros:

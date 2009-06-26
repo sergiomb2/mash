@@ -171,8 +171,6 @@ Subject: Broken dependencies: %s
             server.sendmail(fromaddr, toaddrs, msg)
         except:
             print 'sending mail failed'
-    else:
-        print msg
 
 def doit(dir, mail=True):
     for arch in os.listdir(dir):

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.7
+Version:        0.5.8
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Mon Jun 29 2009 Bill Nottingham <notting@redhat.com> 0.5.8-1
+- noarch packages can have debuginfo too (#508746)
+- remove wine-arts from multilib whitelist (not needed, doesn't exist)
+
 * Tue Jun 23 2009 Bill Nottingham <notting@redhat.com> 0.5.7-1
 - when using previous runs for deltas, only look in the appropriate arch dirs
 - wine multilib fixes

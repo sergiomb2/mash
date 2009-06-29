@@ -1,4 +1,38 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 29 13:53:21 2009 -0400
+
+    0.5.8
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 29 13:50:14 2009 -0400
+
+    With the new wine directory whitelist, we don't need to whitelist wine-arts (which doesn't exist these days anyway.)
+
+ mash/multilib.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 29 13:46:17 2009 -0400
+
+    noarch packages can have debuginfo, too. (#508746)
+
+ mash/__init__.py |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 29 13:36:52 2009 -0400
+
+    update changelog for 0.5.7
+
+ ChangeLog |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Mon Jun 29 13:36:27 2009 -0400
 
     0.5.7

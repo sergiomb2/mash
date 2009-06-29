@@ -338,7 +338,10 @@ class Mash:
                     self.logger.info("Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" % (pkg['name'], pkg['arch'], target_arch))
                     continue
                 else:
-                    packages[target_arch].add(pkg)
+                    if pkg['name'].find('-debuginfo') != -1:
+                        debug[target_arch].add(pkg)
+                    else:
+                        packages[target_arch].add(pkg)
 
         self.logger.info("Checking signatures...")
         

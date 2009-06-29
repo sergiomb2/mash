@@ -1,4 +1,22 @@
 Author: Bill Nottingham <notting@redhat.com>
+Date:   Mon Jun 29 13:36:27 2009 -0400
+
+    0.5.7
+
+ mash.py   |    2 +-
+ mash.spec |    6 +++++-
+ setup.py  |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
+Date:   Tue Jun 23 11:30:20 2009 -0400
+
+    update changelog for 0.5.7
+
+ ChangeLog |   61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 61 insertions(+), 0 deletions(-)
+
+Author: Bill Nottingham <notting@redhat.com>
 Date:   Tue Jun 23 11:08:44 2009 -0400
 
     When using the previous path for deltas, add in the rpm path as well.

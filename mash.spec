@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.6
+Version:        0.5.7
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Tue Jun 23 2009 Bill Nottingham <notting@redhat.com> 0.5.7-1
+- when using previous runs for deltas, only look in the appropriate arch dirs
+- wine multilib fixes
+
 * Mon Jun 22 2009 Bill Nottingham <notting@redhat.com> 0.5.6-1
 - more gtk2 multilib (#507165)
 - minor transaction speedups

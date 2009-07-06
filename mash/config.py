@@ -44,6 +44,7 @@ class MashConfig(config.BaseConfig):
     repoviewtitle = config.Option('"Mash - %(arch)s"')
     delta = config.BoolOption(False)
     delta_dirs = config.ListOption()
+    make_ancient = config.BoolOption(False)
     distros = []
     
 class MashDistroConfig(config.BaseConfig):
@@ -73,6 +74,7 @@ class MashDistroConfig(config.BaseConfig):
     repoviewtitle = config.Inherit(MashConfig.repoviewtitle)
     delta = config.Inherit(MashConfig.delta)
     delta_dirs = config.Inherit(MashConfig.delta_dirs)
+    make_ancient = config.Inherit(MashConfig.make_ancient)
     previous = None
 
 def readMainConfig(conf):

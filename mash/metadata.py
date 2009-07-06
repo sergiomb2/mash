@@ -13,11 +13,34 @@ try:
 except:
     usenew = False
 
+def _make_ancient(path, excludes, previous, logger):
+    args = [ "yum-arch", "-q", "-s" ]
+    for exclude in excludes:
+        args = args + [ "-x", exclude ]
+    args.append(path)
+    if previous:
+        previous = previous.replace("/repodata","/headers")
+        try:
+            shutil.copytree(previous, "%s/headers" % (path,))
+        except OSError:
+            logger.error("Couldn't copy repodata from %s" % (previous,))
+    pid = os.fork()
+    if not pid:
+        os.execv("/usr/bin/yum-arch", args)
+    else:
+        (p, status) = os.waitpid(pid, 0)
+    return status
+
 class MetadataOld:
     def __init__(self, logger):
         self.args = [ 'createrepo', '--update', '-q' ]
         self.previous = None
         self.logger = logger
+        self.excludes = []
+        self.ancient = False
+
+    def set_ancient(self, ancient):
+        self.ancient = ancient
 
     def set_cachedir(self, path):
         self.args.append('-c')
@@ -30,6 +53,7 @@ class MetadataOld:
     def set_excludes(self, excludes):
         self.args.append('-x')
         self.args.append(excludes)
+        self.excludes.append(excludes)
 
     def set_database(self, db):
         self.args.append('-d')
@@ -61,6 +85,8 @@ class MetadataOld:
             os.execv("/usr/bin/createrepo", self.args)
         else:
             (p, status) = os.waitpid(pid, 0)
+        if self.ancient:
+            _make_ancient(path, self.excludes, self.previous, self.logger)
 
 class MetadataNew:
     def __init__(self, logger):
@@ -68,8 +94,13 @@ class MetadataNew:
         self.conf.update = True
         self.conf.quiet = True
         self.conf.unique_md_filenames = True
+        self.conf.excludes = []
         self.previous = None
         self.logger = logger
+        self.ancient = False
+
+    def set_ancient(self, ancient):
+        self.ancient = ancient
 
     def set_cachedir(self, path):
         self.conf.cachedir = path
@@ -155,6 +186,8 @@ class MetadataNew:
         self.repomatic.doPkgMetadata()
         self.repomatic.doRepoMetadata()
         self.repomatic.doFinalMove()
+        if self.ancient:
+            _make_ancient(path, self.conf.excludes, self.previous, self.logger)
 
 class Metadata:
     def __init__(self, logger):
@@ -162,6 +195,9 @@ class Metadata:
             self.obj = MetadataNew(logger)
         else:
             self.obj = MetadataOld(logger)
+
+    def set_ancient(self, ancient):
+        self.obj.set_ancient(ancient)
 
     def set_cachedir(self, path):
         self.obj.set_cachedir(path)

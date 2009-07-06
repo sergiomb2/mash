@@ -93,6 +93,7 @@ class Mash:
 
     def _makeMetadata(self, path, repocache, arch, comps = False, repoview = True, gofast = False, previous = None):
         md = metadata.Metadata(self.logger)
+        md.set_ancient(self.config.make_ancient)
         md.set_cachedir(repocache)
         md.set_skipstat(gofast)
         md.set_database(self.config.use_sqlite)

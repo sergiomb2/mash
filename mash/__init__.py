@@ -190,7 +190,7 @@ class Mash:
                   try:
                       os.link(result, dst)
                   except:
-                      shutil.copyfile(result, dst)
+                      shutil.copy2(result, dst)
               return 0
 
         def _write_files(list, path, repo_path, comps = False, repocache = None, arch = None):

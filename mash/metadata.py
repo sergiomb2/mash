@@ -159,7 +159,7 @@ class MetadataNew:
             try:
                 os.link(file, destpath)
             except OSError:
-                shutil.copy(file, destpath)
+                shutil.copy2(file, destpath)
 
         fulllist = self.repomatic.getFileList(self.conf.directory, '.rpm')
         filelist = {}

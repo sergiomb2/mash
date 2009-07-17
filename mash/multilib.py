@@ -140,6 +140,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # xine-lib
             if fnmatch(dirname, '/usr/lib*/xine/plugins/*'):
                 return True
+            # oprofile
+            if fnmatch(dirname, '/usr/lib*/oprofile') and fnmatch(filename, '*.so.*'):
+                return True
             # wine
             if fnmatch(dirname, '/usr/lib*/wine') and filename.endswith('.so'):
                 return True

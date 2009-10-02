@@ -45,6 +45,8 @@ class MashConfig(config.BaseConfig):
     delta = config.BoolOption(False)
     delta_dirs = config.ListOption()
     make_ancient = config.BoolOption(False)
+    distro_tags = config.ListOption()
+    content_tags = config.ListOption()
     distros = []
     
 class MashDistroConfig(config.BaseConfig):
@@ -75,6 +77,8 @@ class MashDistroConfig(config.BaseConfig):
     delta = config.Inherit(MashConfig.delta)
     delta_dirs = config.Inherit(MashConfig.delta_dirs)
     make_ancient = config.Inherit(MashConfig.make_ancient)
+    distro_tags = config.Inherit(MashConfig.distro_tags)
+    content_tags = config.Inherit(MashConfig.content_tags)
     previous = None
 
 def readMainConfig(conf):

@@ -73,6 +73,14 @@ class MetadataOld:
     def set_previous(self, previous):
         self.previous = previous
 
+    def set_distro_tags(self, distro_tags):
+        # Sorry, can't do that here.
+        pass
+
+    def set_content_tags(self, content_tags):
+        # Sorry, can't do that here.
+        pass
+
     def run(self, path):
         self.args.append(path)
         if self.previous:
@@ -130,6 +138,12 @@ class MetadataNew:
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
               self.conf.update_md_path = previous
         self.previous = previous
+
+    def set_distro_tags(self, distro_tags):
+        self.conf.distro_tags = distro_tags
+
+    def set_content_tags(self, content_tags):
+        self.conf.content_tags = content_tags
 
     def _copy_in_deltas(self, path):
         ts = rpmUtils.transaction.initReadOnlyTransaction()

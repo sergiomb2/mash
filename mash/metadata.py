@@ -237,5 +237,11 @@ class Metadata:
     def set_previous(self, previous):
         self.obj.set_previous(previous)
 
+    def set_distro_tags(self, distro_tags):
+        self.obj.set_distro_tags(distro_tags)
+
+    def set_content_tags(self, content_tags):
+        self.obj.set_content_tags(distro_tags)
+
     def run(self, path):
         self.obj.run(path)

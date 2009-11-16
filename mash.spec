@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.9
+Version:        0.5.10
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Mon Nov 16 2009 Bill Nottingham <notting@redhat.com> 0.5.10-1
+- fix up distro_tags and content_tags
+- bump rawhide version
+- there is no ppc in Fedora rawhide anymore (<jkeating@redhat.com>)
+
 * Mon Oct  5 2009 Bill Nottingham <notting@redhat.com> 0.5.9-1
 - set dist_tags & content_tags when making metadata; update rawhide config
   (<jkeating@redhat.com>)

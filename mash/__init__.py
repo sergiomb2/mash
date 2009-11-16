@@ -114,11 +114,12 @@ class Mash:
         if previous:
             md.set_previous(previous)
         # Setup the distro tags
-        md.set_distro_tags(self.config.distro_tags)
+        if self.config.distro_tags:
+            md.set_distro_tags(self.config.distro_tags)
         # Setup the content tags based on what we're making
         if arch == 'SRPMS':
             md.set_content_tags(['source'])
-        elif path.endswith(self.config.debuginfo_path):
+        elif path.endswith(self.config.debuginfo_path % {'arch': arch}):
             md.set_content_tags(['debuginfo-%s' % arch])
         else:
             md.set_content_tags(['binary-%s' % arch])

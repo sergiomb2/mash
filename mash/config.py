@@ -45,7 +45,7 @@ class MashConfig(config.BaseConfig):
     delta = config.BoolOption(False)
     delta_dirs = config.ListOption()
     make_ancient = config.BoolOption(False)
-    distro_tags = config.ListOption()
+    distro_tags = config.Option()
     content_tags = config.ListOption()
     distros = []
     

@@ -140,7 +140,7 @@ class MetadataNew:
         self.previous = previous
 
     def set_distro_tags(self, distro_tags):
-        self.conf.distro_tags = distro_tags
+        self.conf.distro_tags = [distro_tags]
 
     def set_content_tags(self, content_tags):
         self.conf.content_tags = content_tags
@@ -238,10 +238,11 @@ class Metadata:
         self.obj.set_previous(previous)
 
     def set_distro_tags(self, distro_tags):
-        self.obj.set_distro_tags(distro_tags)
+        split_tag = distro_tags.split(' ',1)
+        self.obj.set_distro_tags(split_tag)
 
     def set_content_tags(self, content_tags):
-        self.obj.set_content_tags(distro_tags)
+        self.obj.set_content_tags(content_tags)
 
     def run(self, path):
         self.obj.run(path)

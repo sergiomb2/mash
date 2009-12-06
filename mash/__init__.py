@@ -166,6 +166,10 @@ class Mash:
               filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
 
               dst = os.path.join(path, filename)
+              if self.config.hash_packages:
+                  dst = os.path.join (path, pkg["name"][0], filename)
+              else:
+                  dst = os.path.join(path, filename)
               # Check cache for package
               if self.config.cachedir:
                   cachepath = os.path.join(self.config.cachedir, pkg['name'], filename)
@@ -197,6 +201,10 @@ class Mash:
                           return 1
 
               if result != dst:
+                  try:
+                      os.mkdir(os.path.dirname(dst))
+                  except:
+                      pass
                   try:
                       os.link(result, dst)
                   except:

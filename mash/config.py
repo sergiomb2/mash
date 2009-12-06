@@ -79,6 +79,7 @@ class MashDistroConfig(config.BaseConfig):
     make_ancient = config.Inherit(MashConfig.make_ancient)
     distro_tags = config.Inherit(MashConfig.distro_tags)
     content_tags = config.Inherit(MashConfig.content_tags)
+    hash_packages = config.BoolOption(False)
     previous = None
 
 def readMainConfig(conf):

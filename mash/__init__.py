@@ -11,6 +11,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+import glob
 import os
 import logging
 import shutil
@@ -505,7 +506,11 @@ enabled=1
             
         for pkg in yumbase.pkgSack:
             pname = "%s-%s-%s.%s.rpm" % (pkg.name, pkg.version, pkg.release, pkg.arch)
-            if not os.path.exists(os.path.join(pkgdir, pname)):
+            if self.config.hash_packages:
+                ppath = os.path.join(pkgdir, pkg.name[0], pname)
+            else:
+                ppath = os.path.join(pkgdir, pname)
+            if not os.path.exists(ppath):
                 self.logger.error("WARNING: Could not open %s" % (pname,))
                 continue
             if pkg.arch in masharch.compat[arch]:
@@ -524,9 +529,12 @@ enabled=1
                 if file not in filelist:
                     self.logger.debug("added %s" % (file,))
                     filelist.append(file)
-                    
-            for pkg in os.listdir(pkgdir):
-                if pkg.endswith('.rpm') and pkg not in filelist:
+
+            pkglist = os.listdir(pkgdir)
+            if self.config.hash_packages:
+                pkglist = pkglist + glob.glob("%s/?/*" % (pkgdir,))
+            for pkg in pkglist:
+                if pkg.endswith('.rpm') and os.path.basename(pkg) not in filelist:
                     self.logger.debug("removing %s" % (pkg,))
                     os.unlink(os.path.join(pkgdir, pkg))
             

@@ -166,7 +166,6 @@ class Mash:
               result = None
               filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
 
-              dst = os.path.join(path, filename)
               if self.config.hash_packages:
                   dst = os.path.join (path, pkg["name"][0], filename)
               else:
@@ -176,6 +175,8 @@ class Mash:
                   cachepath = os.path.join(self.config.cachedir, pkg['name'], filename)
                   if os.path.exists(cachepath) and _matches(pkg, cachepath):
                       result = cachepath
+              else:
+                  cachepath = dst
               if not result:
                   z = pkg.copy()
                   z['name'] = builds_hash[pkg['build_id']]['package_name']

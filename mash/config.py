@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; version 2 of the License.
@@ -45,6 +46,7 @@ class MashConfig(config.BaseConfig):
     delta = config.BoolOption(False)
     delta_dirs = config.ListOption()
     make_ancient = config.BoolOption(False)
+    latest = config.BoolOption(True)
     distro_tags = config.Option()
     content_tags = config.ListOption()
     distros = []
@@ -77,6 +79,7 @@ class MashDistroConfig(config.BaseConfig):
     delta = config.Inherit(MashConfig.delta)
     delta_dirs = config.Inherit(MashConfig.delta_dirs)
     make_ancient = config.Inherit(MashConfig.make_ancient)
+    latest = config.Inherit(MashConfig.latest)
     distro_tags = config.Inherit(MashConfig.distro_tags)
     content_tags = config.Inherit(MashConfig.content_tags)
     hash_packages = config.BoolOption(False)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; version 2 of the License.
@@ -282,7 +283,7 @@ class Mash:
         # Get package list. This is an expensive operation.
         self.logger.info("Getting package lists for %s..." % (self.config.tag))
         
-        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = True, rpmsigs = True)
+        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag, inherit = self.config.inherit, latest = self.config.latest, rpmsigs = True)
         # filter by key
         biglist = PackageList(self.config)
         for pkg in pkglist:

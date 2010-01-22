@@ -406,10 +406,10 @@ class Mash:
                                    repocache = repocache, arch = arch)
                 pids.append(pid)
                 
-            
-        path = os.path.join(outputdir, self.config.source_path)
-        pid = _write_files(source.packages(), path, path, repocache = repocache, arch = 'SRPMS')
-        pids.append(pid)
+        if self.config.source:
+            path = os.path.join(outputdir, self.config.source_path)
+            pid = _write_files(source.packages(), path, path, repocache = repocache, arch = 'SRPMS')
+            pids.append(pid)
         
         self.logger.info("Waiting for file copy and createrepo to finish...")
         rc = 0

@@ -55,6 +55,7 @@ class MashDistroConfig(config.BaseConfig):
     name = config.Option()
     rpm_path = config.Inherit(MashConfig.rpm_path)
     repodata_path = config.Inherit(MashConfig.repodata_path)
+    source = config.BoolOption(True)
     source_path = config.Inherit(MashConfig.source_path)
     debuginfo = config.Inherit(MashConfig.debuginfo)
     debuginfo_path = config.Inherit(MashConfig.debuginfo_path)

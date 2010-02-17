@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.11
+Version:        0.5.12
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,16 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Feb 17 2010 Bill Nottingham <notting@redhat.com> 0.5.12-1
+- adjust for branched trees and no-frozen-rawhide (<jkeating@redhat.com>)
+- allow for source repos to be optional (<jgregusk@redhat.com>)
+- allow for pulling all builds, not just latest (<kanarip@fedoraunity.org>)
+- enable hashed packages for rawhide
+
+* Fri Dec 18 2009 Bill Nottingham <notting@redhat.com> 0.5.11-1
+- allow package directories to be hashed by the package name
+  (adapted from <skvidal@fedoraproject.org>)
+
 * Mon Nov 16 2009 Bill Nottingham <notting@redhat.com> 0.5.10-1
 - fix up distro_tags and content_tags
 - bump rawhide version

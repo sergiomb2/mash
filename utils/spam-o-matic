@@ -42,12 +42,12 @@ distroverpkg=fedora-release
 reposdir=/dev/null
 keepcache=0
 
-[development-%s]
-name=Fedora Development Tree - %s
+[%s-%s]
+name=Fedora %s Tree - %s
 baseurl=file://%s/%s/%s
 enabled=1
 
-""" % (arch, arch, distdir, arch, subdir)
+""" % (treename, arch, treename, arch, distdir, arch, subdir)
     os.write(fd,confheader)
     os.close(fd)
     return conffile
@@ -139,8 +139,8 @@ def generateSpam(pkgname, sendmail = True):
 
     data = """
 
-%s has broken dependencies in the development tree:
-""" % (pkgname,)
+%s has broken dependencies in the %s tree:
+""" % (pkgname, treename)
 
     for s in package.keys():
         subpackage = package[s]
@@ -172,7 +172,7 @@ Subject: Broken dependencies: %s
         except:
             print 'sending mail failed'
 
-def doit(dir, mail=True):
+def doit(dir, treename, mail=True):
     for arch in os.listdir(dir):
         conffile = generateConfig(dir, arch)
         if not conffile:
@@ -232,6 +232,7 @@ if __name__ == '__main__':
 
     parser = OptionParser("usage: %prog [options] <directory>")
     parser.add_option("--nomail", action="store_true")
+    parser.add_option("--treename", default="rawhide")
     (options, args) = parser.parse_args(sys.argv[1:])
     if len(args) != 1:
         parser.error("incorrect number of arguments")
@@ -240,4 +241,4 @@ if __name__ == '__main__':
         mail = False
     else:
         mail = True
-    doit(args[0], mail)
+    doit(args[0], options.treename, mail)

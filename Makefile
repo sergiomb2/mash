@@ -17,7 +17,7 @@ tag:
 	@git tag -a -m "Tag as $(TAG)" $(TAG)
 	@echo "Tagged as $(TAG)"
 
-archive: clean
+archive: tag clean
 	@rm -rf ${PKGNAME}-$(VERSION)/
 	@python setup.py sdist > /dev/null
 	@echo "The archive is in dist/${PKGNAME}-$(VERSION).tar.gz"

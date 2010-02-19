@@ -168,7 +168,7 @@ class Mash:
               filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
 
               if self.config.hash_packages:
-                  dst = os.path.join (path, pkg["name"][0], filename)
+                  dst = os.path.join (path, pkg["name"][0].lower(), filename)
               else:
                   dst = os.path.join(path, filename)
               # Check cache for package
@@ -509,7 +509,7 @@ enabled=1
         for pkg in yumbase.pkgSack:
             pname = "%s-%s-%s.%s.rpm" % (pkg.name, pkg.version, pkg.release, pkg.arch)
             if self.config.hash_packages:
-                ppath = os.path.join(pkgdir, pkg.name[0], pname)
+                ppath = os.path.join(pkgdir, pkg.name[0].lower(), pname)
             else:
                 ppath = os.path.join(pkgdir, pname)
             if not os.path.exists(ppath):

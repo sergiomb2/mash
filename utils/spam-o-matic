@@ -20,7 +20,7 @@ import repoclosure
 owners = {}
 deps = {}
 
-def generateConfig(distdir, arch):
+def generateConfig(distdir, treename, arch):
     if not os.path.exists(os.path.join(distdir, arch)):
         return None
     if arch == 'source' or arch == 'SRPMS':
@@ -117,7 +117,7 @@ def assignBlame(resolver, dep, guilty):
 
     return list
 
-def generateSpam(pkgname, sendmail = True):
+def generateSpam(pkgname, treename, sendmail = True):
 
     package = deps[pkgname]
     guilty = owners[pkgname]
@@ -174,7 +174,7 @@ Subject: Broken dependencies: %s
 
 def doit(dir, treename, mail=True):
     for arch in os.listdir(dir):
-        conffile = generateConfig(dir, arch)
+        conffile = generateConfig(dir, treename, arch)
         if not conffile:
             continue
         if arch == 'i386':
@@ -226,7 +226,7 @@ def doit(dir, treename, mail=True):
 
     pkglist = deps.keys()
     for pkg in pkglist:
-        generateSpam(pkg, mail)
+        generateSpam(pkg, treename, mail)
 
 if __name__ == '__main__':
 

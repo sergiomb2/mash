@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.13
+Version:        0.5.14
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Tue Feb 23 2010 Bill Nottingham <notting@redhat.com> 0.5.14-1
+- further changes for NFR (<jkeating@redhat.com>)
+
 * Fri Feb 19 2010 Bill Nottingham <notting@redhat.com> 0.5.13-1
 - assorted fixes for no-frozen-rawhide
 - make package hash directories all lowercase

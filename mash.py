@@ -81,10 +81,11 @@ def main():
             if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
                 print "mash failed in %s" % os.path.join(dist.outputdir, dist.name)
                 sys.exit(1)
-            rc = themash.doMultilib()
-            if rc:
-                print "mash failed in %s" % os.path.join(dist.outputdir, dist.name)
-                sys.exit(1)
+            if themash.config.multilib:
+                rc = themash.doMultilib()
+                if rc:
+                    print "mash failed in %s" % os.path.join(dist.outputdir, dist.name)
+                    sys.exit(1)
             print "mash done in %s" % os.path.join(dist.outputdir, dist.name)
             sys.exit(0)
 

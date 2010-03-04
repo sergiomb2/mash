@@ -448,10 +448,7 @@ class Mash:
         if pid:
             return pid
                 
-        if arch not in masharch.biarch.keys():
-            os._exit(0)
-        else:
-            self.logger.info("Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method))
+        self.logger.info("Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method))
         pkgdir = os.path.join(self.config.outputdir, self.config.name, self.config.rpm_path % {'arch':arch})
         repodir = os.path.join(self.config.outputdir, self.config.name, self.config.repodata_path % {'arch':arch})
         tmproot = os.path.join(tmpdir, "%s-%s.tmp" % (self.config.name, arch))
@@ -552,9 +549,9 @@ enabled=1
         repocache = os.path.join(tmpdir,".createrepo-cache")
         pids = []
         for arch in self.config.arches:
-        
-            pid = self.doDepSolveAndMultilib(arch, repocache)
-            pids.append(pid)
+            if arch in masharch.biarch.keys():
+                pid = self.doDepSolveAndMultilib(arch, repocache)
+                pids.append(pid)
 
         self.logger.info("Waiting for depsolve and createrepo to finish...")
         rc = 0

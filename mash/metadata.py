@@ -19,9 +19,8 @@ def _make_ancient(path, excludes, previous, logger):
         args = args + [ "-x", exclude ]
     args.append(path)
     if previous:
-        previous = previous.replace("/repodata","/headers")
         try:
-            shutil.copytree(previous, "%s/headers" % (path,))
+            shutil.copytree("%s/headers" % (previous,), "%s/headers" % (path,))
         except OSError:
             logger.error("Couldn't copy repodata from %s" % (previous,))
     pid = os.fork()
@@ -85,7 +84,7 @@ class MetadataOld:
         self.args.append(path)
         if self.previous:
             try:
-                shutil.copytree(self.previous, "%s/repodata" % (path,))
+                shutil.copytree("%s/repodata" %(self.previous,), "%s/repodata" % (path,))
             except OSError:
                 self.logger.error("Couldn't copy repodata from %s" % (self.previous,))
         pid = os.fork()
@@ -192,7 +191,7 @@ class MetadataNew:
         if self.previous:
             if not self.conf.update_md_path:
                 try:
-                    shutil.copytree(self.previous, "%s/repodata" % (path,))
+                    shutil.copytree("%s/repodata" %(self.previous,), "%s/repodata" % (path,))
                 except OSError:
                     self.logger.error("Couldn't copy repodata from %s" % (self.previous,))
             if self.conf.deltas:

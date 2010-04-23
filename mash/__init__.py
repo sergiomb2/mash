@@ -168,7 +168,7 @@ class Mash:
               filename = '%(name)s-%(version)s-%(release)s.%(arch)s.rpm' % pkg
 
               if self.config.hash_packages:
-                  dst = os.path.join (path, pkg["name"][0].lower(), filename)
+                  dst = os.path.join(path, pkg["name"][0].lower(), filename)
               else:
                   dst = os.path.join(path, filename)
               # Check cache for package

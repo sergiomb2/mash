@@ -178,9 +178,9 @@ class MetadataNew:
         filelist = {}
         for f in fulllist:
             filelist[os.path.basename(f)] = os.path.join(self.conf.directory, f)
-        deltalist = self.repomatic.getFileList('%s/../drpms' % (self.previous,), '.drpm')
+        deltalist = self.repomatic.getFileList('%s/drpms' % (self.previous,), '.drpm')
         for file in deltalist:
-            fullpath = '%s/../drpms/%s' % (self.previous, file)
+            fullpath = '%s/drpms/%s' % (self.previous, file)
             if _matches(fullpath, filelist):
                 _copy(fullpath, path)
 

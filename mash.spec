@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.16
+Version:        0.5.17
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Fri Jun 25 2010 Bill Nottingham <notting@redhat.com> 0.5.17-1
+- fix copying of prior deltarpms, broken in 0.5.16 (#598584)
+
 * Wed Apr 21 2010 Bill Nottingham <notting@redhat.com> 0.5.16-1
 - fix use of prior repodata (<jkeating@redhat.com>)
 

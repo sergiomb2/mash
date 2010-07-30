@@ -16,4 +16,4 @@ repoviewtitle = "Fedora Rawhide - %(arch)s"
 arches = i386 x86_64
 delta = True
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:14 rawhide
+distro_tags = cpe:/o:fedoraproject:fedora:15 rawhide

@@ -24,9 +24,9 @@ compat = { "i386" : ("athlon", "i686", "i586", "i486", "i386", "noarch"),
            "sparc" : ("sparcv9v", "sparcv9", "sparcv8", "sparc", "noarch"),
            "sparc64" : ("sparc64v", "sparc64", "noarch"),
            "alpha" : ("alphaev6", "alphaev56", "alphaev5", "alpha", "noarch"),
+           "arm" : ("arm", "armv4l", "armv4tl", "armv5tel", "armv5tejl", "armv6l", "armv7l", "noarch"),
 }
 
 biarch = { "ppc" : "ppc64", "x86_64" : "i386", "sparc" : "sparc64", "s390x" : "s390" }
 
-           
            

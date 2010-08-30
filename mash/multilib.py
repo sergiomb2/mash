@@ -94,6 +94,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # libraries in standard dirs
             if dirname in libdirs and fnmatch(filename, '*.so.*'):
                 return True
+            # dri
+            if dirname in [ '/usr/lib/dri', '/usr/lib64/dri' ]:
+                return True
             # pam
             if dirname in [ '/lib/security', '/lib64/security' ]:
                 return True

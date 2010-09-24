@@ -112,6 +112,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # alsa
             if dirname in [ '/usr/lib/alsa-lib', '/usr/lib64/alsa-lib' ]:
                 return True
+            # lsb
+            if dirname == '/etc/lsb-release.d':
+                return True
             # mysql, qt, etc.
             if dirname == '/etc/ld.so.conf.d' and filename.endswith('.conf'):
                 return True

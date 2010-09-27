@@ -336,11 +336,13 @@ class Mash:
         exclusivearch = excludearch.copy()
         # Get excludearch/exclusivearch lists for noarch packages
         for pkg in noarch.packages():
-            srcpkg = src_hash[pkg['build_id']]
             self.logger.debug("Checking %s for Exclude/ExclusiveArch" % (nevra(pkg),))
-            fn = _get_reference(srcpkg, builds_hash)
+            srcpkg = src_hash.get(pkg['build_id'])
+
             # if build has no source rpm, check the binary
-            if fn == None:
+            if srcpkg:
+                fn = _get_reference(srcpkg, builds_hash)
+            else:
                 fn = _get_reference(pkg, builds_hash)
             try:
                 hdr = koji.get_rpm_header(fn)

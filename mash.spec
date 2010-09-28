@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.19
+Version:        0.5.20
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,17 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Tue Sep 28 2010 Bill Nottingham <notting@redhat.com> 0.5.20-1
+- solve multilib against parent repos if configured (#633136)
+- fix traceback when only binary RPMS exist (modified from #636697, <tguthmann@iseek.com.au>)
+- disable sigchecking on deltas in source, not via patch (#512454)
+- mark LSB-providing packages as multilib (#585858)
+- fix libmunge to catch more cases (#637172, <mschwendt@gmail.com>)
+- add krb5 plugin dir to multilib list (#632611)
+- add libstdc++-static as a multilib whitelist (#630581)
+- add dri as a multilib dir
+- arm arch compatiblitiy <dennis@ausil.us>
+
 * Fri Jul 30 2010 Bill Nottingham <notting@redhat.com> 0.5.19-1
 - retarget branched.mash at f14
 

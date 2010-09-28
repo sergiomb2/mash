@@ -486,6 +486,17 @@ baseurl=file://%s
 enabled=1
 
 """ % (tmproot, self.config.name, arch, self.config.name, repodir)
+        reponum=1
+        for repo in self.config.parent_repos:
+            reponame = 'parent%d' % (reponum,)
+            reponum = reponum + 1
+            yconfig = yconfig + """
+[%s-%s]
+name=%s
+baseurl=%s
+enabled=0
+
+""" % (reponame, arch, reponame, repo % {'arch':arch})
         shutil.rmtree(tmproot, ignore_errors = True)
         os.makedirs(os.path.join(tmproot,"yumcache"))
         os.makedirs(os.path.join(tmproot,'var/lib/rpm'))
@@ -521,6 +532,20 @@ enabled=1
                 yumbase.tsInfo.addInstall(pkg)
                 self.logger.debug("Adding package %s for multilib" % (pkg,))
                 filelist.append(pname)
+        reponum = 1
+        oursack = yumbase.repos.getRepo('%s-%s' % (self.config.name, arch)).sack
+        for repo in self.config.parent_repos:
+                reponame = 'parent%d' % (reponum,)
+                reponum = reponum + 1
+                yumbase.doSackSetup(archlist = archlist, thisrepo='%s-%s' % (reponame, arch))
+                yumbase.doSackFilelistPopulate()
+                r = yumbase.repos.getRepo('%s-%s' % (reponame, arch))
+                r.enable()
+                for pkg in r.getPackageSack():
+                    if not oursack.searchNevra(name=pkg.name, arch=pkg.arch):
+                        yumbase.tsInfo.addInstall(pkg)
+
+
         self.logger.info("Resolving depenencies for arch %s" % (arch,))
         (rc, errors) = yumbase.resolveDeps()
         if do_multi:

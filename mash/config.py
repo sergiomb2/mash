@@ -84,6 +84,7 @@ class MashDistroConfig(config.BaseConfig):
     distro_tags = config.Inherit(MashConfig.distro_tags)
     content_tags = config.Inherit(MashConfig.content_tags)
     hash_packages = config.BoolOption(False)
+    parent_repos = config.ListOption()
     previous = None
 
 def readMainConfig(conf):

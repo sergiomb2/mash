@@ -5,7 +5,7 @@ Version:        0.5.20
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
-License:        GPL
+License:        GPLv2
 URL:            http://fedorahosted.org/releases/m/a/mash/
 Source0:        http://fedorahosted.org/releases/m/a/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)

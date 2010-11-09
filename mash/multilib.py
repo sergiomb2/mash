@@ -134,6 +134,8 @@ class RuntimeMultilibMethod(MultilibMethod):
             # images
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/loaders'):
                 return True
+            if fnmatch(dirname, '/usr/lib*/gdk-pixbuf-2.0/*/loaders'):
+                return True
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/printbackends'):
                 return True
             if fnmatch(dirname, '/usr/lib*/gtk-2.0/*/filesystems'):

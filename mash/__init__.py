@@ -82,6 +82,9 @@ class Mash:
         self.config = config
         self.session = koji.ClientSession(config.buildhost, {})
         self._setupLogger()
+        if self.config.prefer_ppc64:
+            del masharch.biarch['ppc']
+            masharch.biarch.setdefault('ppc64','ppc')
 
     def _setupLogger(self):
         self.logger = logging.getLogger('mash')

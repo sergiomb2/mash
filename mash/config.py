@@ -49,6 +49,7 @@ class MashConfig(config.BaseConfig):
     latest = config.BoolOption(True)
     distro_tags = config.Option()
     content_tags = config.ListOption()
+    prefer_ppc64 = config.BoolOption(False)
     distros = []
     
 class MashDistroConfig(config.BaseConfig):
@@ -83,6 +84,7 @@ class MashDistroConfig(config.BaseConfig):
     latest = config.Inherit(MashConfig.latest)
     distro_tags = config.Inherit(MashConfig.distro_tags)
     content_tags = config.Inherit(MashConfig.content_tags)
+    prefer_ppc64 = config.Inherit(MashConfig.prefer_ppc64)
     hash_packages = config.BoolOption(False)
     parent_repos = config.ListOption()
     previous = None

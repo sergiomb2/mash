@@ -44,7 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
-* Tue Feb 10 2010 Bill Nottingham <notting@redhat.com> 0.5.21-1
+* Tue Feb 10 2011 Bill Nottingham <notting@redhat.com> 0.5.21-1
 - update configs for F15 (<dennis@ausil.us>)
 - add a knob for frobbing which ppc arch is preferred (<jwboyer@gmail.com>)
 - fix gdk-pixbuf loader path (#649339)

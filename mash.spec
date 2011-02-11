@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.20
+Version:        0.5.21
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Tue Feb 10 2010 Bill Nottingham <notting@redhat.com> 0.5.21-1
+- update configs for F15 (<dennis@ausil.us>)
+- add a knob for frobbing which ppc arch is preferred (<jwboyer@gmail.com>)
+- fix gdk-pixbuf loader path (#649339)
+
 * Tue Sep 28 2010 Bill Nottingham <notting@redhat.com> 0.5.20-1
 - solve multilib against parent repos if configured (#633136)
 - fix traceback when only binary RPMS exist (modified from #636697, <tguthmann@iseek.com.au>)

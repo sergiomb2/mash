@@ -183,6 +183,8 @@ def doit(dir, treename, mail=True):
             carch = 'ppc64'
         elif arch == 'sparc':
             carch = 'sparc64v'
+        elif arch == 'arm':
+            carch = 'armv7l'
         else:
             carch = arch
         my = repoclosure.RepoClosure(config = conffile, arch = [carch])

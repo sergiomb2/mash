@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.21
+Version:        0.5.22
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Mon Feb 27 2011 Bill Nottingham <notting@redhat.com> 0.5.22-1
+- Add perl-libs whitelist
+- fix arm dependency checks (<dennis@ausil.us>)
+- fix key ordering
+
 * Tue Feb 10 2011 Bill Nottingham <notting@redhat.com> 0.5.21-1
 - update configs for F15 (<dennis@ausil.us>)
 - add a knob for frobbing which ppc arch is preferred (<jwboyer@gmail.com>)

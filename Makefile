@@ -14,7 +14,7 @@ all:
 	@echo "Nothing to do"
 
 tag:
-	@git tag -a -m "Tag as $(TAG)" $(TAG)
+	@git tag -f -a -m "Tag as $(TAG)" $(TAG)
 	@echo "Tagged as $(TAG)"
 
 archive: tag clean

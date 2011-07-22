@@ -28,6 +28,7 @@ class MashConfig(config.BaseConfig):
     debuginfo_path = config.Option('%(arch)s/debug')
     multilib = config.BoolOption(True)
     multilib_method = config.Option('devel')
+    multilib_file = config.Option()
     arches = config.ListOption()
     keys = config.ListOption()
     configdir = config.Option('/etc/mash')
@@ -62,10 +63,12 @@ class MashDistroConfig(config.BaseConfig):
     debuginfo_path = config.Inherit(MashConfig.debuginfo_path)
     multilib = config.Inherit(MashConfig.multilib)
     multilib_method = config.Inherit(MashConfig.multilib_method)
+    multilib_file = config.Inherit(MashConfig.multilib_file)
     arches = config.Inherit(MashConfig.arches)
     tag = config.Option()
     inherit = config.BoolOption(True)
     keys = config.Inherit(MashConfig.keys)
+    configdir = config.Inherit(MashConfig.configdir)
     strict_keys = config.Inherit(MashConfig.strict_keys)
     buildhost = config.Inherit(MashConfig.buildhost)
     repodir = config.Inherit(MashConfig.repodir)
@@ -122,6 +125,8 @@ def readMainConfig(conf):
                 if not thisdistro.repodata_path:
                     thisdistro.repodata_path = os.path.dirname(thisdistro.rpm_path)
                 thisdistro.keys = map(string.lower, thisdistro.keys)
+                if thisdistro.multilib_file and thisdistro.multilib_file[0] != '/':
+                    thisdistro.multilib_file = os.path.join(thisdistro.configdir, thisdistro.multilib_file)
                 if len(thisdistro.keys) == 0:
                     thisdistro.keys = ['']
                 config.distros.append(thisdistro)

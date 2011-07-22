@@ -14,7 +14,7 @@
 from fnmatch import fnmatch
 
 class MultilibMethod:
-    def __init__(self):
+    def __init__(self, dummy):
         self.name = 'base'
     def select(self, po):
         prefer_64 = [ 'gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace' ]
@@ -28,14 +28,14 @@ class MultilibMethod:
         return False
 
 class NoMultilibMethod:
-    def __init__(self):
+    def __init__(self, dummy):
         self.name = 'none'
         
     def select(self, po):
         return False
 
 class AllMultilibMethod(MultilibMethod):
-    def __init__(self):
+    def __init__(self, dummy):
         self.name = 'all'
     
     def select(self, po):
@@ -52,7 +52,7 @@ class FileMultilibMethod(MultilibMethod):
             for line in lines:
                 line = line.strip()
                 if not line.startswith('#'):
-                    list.append(line)
+                    self.list.append(line)
     
     def select(self, po):
         for item in self.list:
@@ -61,7 +61,7 @@ class FileMultilibMethod(MultilibMethod):
         return False
 
 class KernelMultilibMethod:
-    def __init__(self):
+    def __init__(self, dummy):
         self.name = 'base'
     def select(self, po):
         if po.arch.find('64') != -1:
@@ -72,7 +72,7 @@ class KernelMultilibMethod:
         return False
             
 class RuntimeMultilibMethod(MultilibMethod):
-    def __init__(self):
+    def __init__(self, dummy):
         self.name = 'runtime'
     
     def select(self, po):
@@ -160,7 +160,7 @@ class RuntimeMultilibMethod(MultilibMethod):
         return False
 
 class DevelMultilibMethod(RuntimeMultilibMethod):
-    def __init__(self):
+    def __init__(self, dummy):
         self.name = 'devel'
     
     def select(self, po):

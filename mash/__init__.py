@@ -441,7 +441,7 @@ class Mash:
                        'kernel'  : multilib.KernelMultilibMethod,
                        'all'     : multilib.AllMultilibMethod,
                        'none'    : multilib.NoMultilibMethod,
-                       'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method]()
+                       'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method](self.config.multilib_file)
         except KeyError:
             self.logger.error("Invalid multilib method %s" % (self.config.multilib_method,))
             do_multi = False

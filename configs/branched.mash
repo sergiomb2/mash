@@ -1,19 +1,19 @@
 # mash config file
 
-[15]
+[16]
 rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS
 debuginfo = True
 multilib = True
 multilib_method = devel
-tag = dist-f15
+tag = f16
 inherit = False
 strict_keys = True
-keys = 069C8460, 97A1071F, E8E40FDE, 57BBCCBA, D22E77F2, 4EBFC273, 0B86274E, 6DF2196F, DF9B0AE9
+keys = A82BA4B7, 069C8460, 97A1071F, E8E40FDE, 57BBCCBA, D22E77F2, 4EBFC273, 0B86274E, 6DF2196F, DF9B0AE9
 repoviewurl = http://download.fedoraproject.org/pub/fedora/linux/development/15/%(arch)s/os/
 repoviewtitle = "Fedora Branched - %(arch)s"
 arches = i386 x86_64
 delta = True
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:15 rawhide
+distro_tags = cpe:/o:fedoraproject:fedora:16 rawhide

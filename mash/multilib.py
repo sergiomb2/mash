@@ -157,6 +157,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # wine
             if fnmatch(dirname, '/usr/lib*/wine') and filename.endswith('.so'):
                 return True
+            # db
+            if dirname in [ '/lib', '/lib64' ] and filename.startswith('libdb-'):
+                return True
         return False
 
 class DevelMultilibMethod(RuntimeMultilibMethod):

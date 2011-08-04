@@ -11,6 +11,7 @@ import smtplib
 from optparse import OptionParser
 from yum.constants import *
 from yum.misc import getCacheDir
+from collections import defaultdict
 
 # HAAACK
 import imp
@@ -199,6 +200,7 @@ def doit(dir, treename, mail=True):
         if len(pkgs) > 0:
             print "Broken deps for %s" % (arch,)
             print "----------------------------------------------------------"
+        naughtydd = defaultdict(list)
         for pkg in pkgs:
             srcpkg = getSrcPkg(pkg)
 
@@ -214,13 +216,20 @@ def doit(dir, treename, mail=True):
 
             broken = []
             for (n, f, v) in baddeps[pkg]:
-                print "\t%s" % printableReq(pkg, (n, f, v))
+                brokendep = "\t%s" % printableReq(pkg, (n, f, v))
+                naughtydd[srcpkg].append(brokendep)
 
                 blamelist = assignBlame(my, n, owners)
 
                 broken.append( (pkg, (n, f, v), blamelist) )
 
             deps[srcpkg][pkgid][arch] = broken
+
+        brokensources = dict((k, list(v)) for k, v in naughtydd.iteritems())
+        for source in sorted(brokensources.keys()):
+            print "[%s]" % (source)
+            for d in brokensources[source]:
+                print d
 
         print "\n\n"
         os.unlink(conffile)

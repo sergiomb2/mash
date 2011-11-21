@@ -161,7 +161,7 @@ class RuntimeMultilibMethod(MultilibMethod):
             if dirname in [ '/lib', '/lib64' ] and filename.startswith('libdb-'):
                 return True
             # sane drivers
-            if dirname in [ '/usr/lib/sane', '/usr/lib64/sane' ] and filename startswith('libsane-'):
+            if dirname in [ '/usr/lib/sane', '/usr/lib64/sane' ] and filename.startswith('libsane-'):
                 return True
         return False
 

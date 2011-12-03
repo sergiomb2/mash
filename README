@@ -1,3 +1,15 @@
 
 mash is a tool that creates repositories from koji tags, and solves
 them for multilib dependencies.
+
+Mash takes a .mash settings file and generates a yum repository.
+
+For example:
+$ mash --output /mnt/repo/ f15
+
+This tells mash to generate the repository to /mnt/repo, and to use
+the configuration file "f15.mash".
+
+Mash's main configuration is at /etc/mash. The main mash.conf file
+contains basic settings for using mash. The other configurations end
+in ".mash".

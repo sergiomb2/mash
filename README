@@ -10,6 +10,6 @@ $ mash --output /mnt/repo/ f15
 This tells mash to generate the repository to /mnt/repo, and to use
 the configuration file "f15.mash".
 
-Mash's main configuration is at /etc/mash. The main mash.conf file
-contains basic settings for using mash. The other configurations end
-in ".mash".
+Mash's main configuration is at /etc/mash/mash.conf, which contains
+basic settings for using mash. Individual configurations end in mash,
+such as 'rawhide.mash' or 'f15-updates.mash'.

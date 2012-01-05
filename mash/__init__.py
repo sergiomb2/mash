@@ -17,7 +17,7 @@ import os
 import logging
 import shutil
 import sys
-
+import traceback
 
 try:
     import koji
@@ -135,7 +135,11 @@ class Mash:
                             self.config.repoviewtitle % { 'arch':arch }, "-u",
                             self.config.repoviewurl % { 'arch':arch }, path]
             self.logger.info("Running repoview for %s" % (path,))
-            os.execv("/usr/bin/repoview", repoview_cmd)
+            try:
+                os.execv("/usr/bin/repoview", repoview_cmd)
+            except:
+                self.logger.error("ERROR: running of repoview failed for %s" % (repoview_cmd,))
+                self.logger.error("ERROR: %s" % (traceback.format_exc(),))
         else:
             os._exit(0)
 

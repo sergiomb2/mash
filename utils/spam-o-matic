@@ -21,6 +21,9 @@ import repoclosure
 owners = {}
 deps = {}
 
+owner_template = "%s-owner@fedoraproject.org"
+from_address = "buildsys@fedoraproject.org"
+
 def generateConfig(distdir, treename, arch):
     if not os.path.exists(os.path.join(distdir, arch)):
         return None
@@ -67,7 +70,7 @@ def addOwner(list, pkg):
     if list.has_key(pkg):
         return False
 
-    f = "%s-owner@fedoraproject.org" % pkg
+    f = owner_template % pkg
     list[pkg] = f
     if f:
         return True
@@ -153,7 +156,7 @@ def generateSpam(pkgname, treename, sendmail = True):
 
     data = data + "Please resolve this as soon as possible.\n\n"
     
-    fromaddr = 'buildsys@fedoraproject.org'
+    fromaddr = from_address
     toaddrs = [guilty]
     if conspirators:
         toaddrs = toaddrs + conspirators
@@ -244,8 +247,14 @@ def doit(dir, treename, mail=True):
 if __name__ == '__main__':
 
     parser = OptionParser("usage: %prog [options] <directory>")
-    parser.add_option("--nomail", action="store_true")
-    parser.add_option("--treename", default="rawhide")
+    parser.add_option("--nomail", action="store_true",
+                      help="Don't mail the results")
+    parser.add_option("--treename", default="rawhide",
+                      help="Name of the tree to use in messages")
+    parser.add_option("--fromaddr", default="buildsys@fedoraproject.org",
+                      help="Address to send mail from (default: buildsys@fedoraproject.org)")
+    parser.add_option("--owneraddr", default="%s-owner@fedoraproject.org",
+                      help="Template for package owner addresses to send mail to (default: %s-owner@fedoraproject.org)")
     (options, args) = parser.parse_args(sys.argv[1:])
     if len(args) != 1:
         parser.error("incorrect number of arguments")
@@ -254,4 +263,8 @@ if __name__ == '__main__':
         mail = False
     else:
         mail = True
+    if options.fromaddr:
+        from_address = options.fromaddr
+    if options.owneraddr:
+        owner_template = options.owneraddr
     doit(args[0], options.treename, mail)

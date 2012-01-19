@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.24
+Version:        0.5.25
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,9 +44,22 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Jan 19 2012 Dennis Gilmore <dennis@ausil.us> 0.5.25-1
+- hash Packages trees
+- make sure all the secondary arch configs are unique
+
 * Wed Jan 18 2012 Dennis Gilmore <dennis@ausil.us> 0.5.24-1
 - retarget banched to f17
 - add configs for each of the secondary arches
+
+* Thu Jan 05 2012 Bill Nottingham <notting@redhat.com> 0.5.23-4
+- add basic support for overriding e-mail addresses in spam-o-matic (#739166)
+
+* Thu Jul 28 2011 Bill Nottingham <notting@redhat.com> 0.5.23-3
+- unbreak rawhide
+
+* Tue Jul 26 2011 Bill Nottingham <notting@redhat.com> 0.5.23-2
+- update keys and configs for F-16
 
 * Fri Jul 22 2011 Bill Nottingham <notting@redhat.com> 0.5.23-1
 - Fix file multilib method (from <joaopfv@br.ibm.com>)

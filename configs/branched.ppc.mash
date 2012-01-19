@@ -17,3 +17,4 @@ arches = ppc ppc64
 delta = True
 # Change distro_tags as fedora-release version gets bumped
 distro_tags = cpe:/o:fedoraproject:fedora:17 rawhide
+hash_packages = True

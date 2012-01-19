@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.23
+Version:        0.5.24
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Jan 18 2012 Dennis Gilmore <dennis@ausil.us> 0.5.24-1
+- retarget banched to f17
+- add configs for each of the secondary arches
+
 * Fri Jul 22 2011 Bill Nottingham <notting@redhat.com> 0.5.23-1
 - Fix file multilib method (from <joaopfv@br.ibm.com>)
 

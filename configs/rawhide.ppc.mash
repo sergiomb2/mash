@@ -1,6 +1,6 @@
 # mash config file
 
-[rawhide]
+[rawhide-ppc]
 rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS

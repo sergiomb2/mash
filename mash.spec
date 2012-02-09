@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.25
+Version:        0.5.26
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Feb 09 2012 Dennis Gilmore <dennis@ausil.us> 0.5.26-1
+- hash the branched repo
+- use rawhide tag for rawhide not deprectated dist-rawhide
+
 * Thu Jan 19 2012 Dennis Gilmore <dennis@ausil.us> 0.5.25-1
 - hash Packages trees
 - make sure all the secondary arch configs are unique

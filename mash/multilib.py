@@ -182,6 +182,8 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
             for (p_name, p_flag, (p_e, p_v, p_r)) in po.provides:
                 if p_name == 'kernel-devel':
                     return False
+        if po.name.startswith('ghc-'):
+            return False
         if po.name.endswith('-devel'):
             return True
         return False

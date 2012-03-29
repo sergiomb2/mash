@@ -28,6 +28,6 @@ compat = { "i386" : ("athlon", "i686", "i586", "i486", "i386", "noarch"),
            "armhfp" : ("armv7hl", "armv7hnl", "noarch"),
 }
 
-biarch = { "ppc" : "ppc64", "x86_64" : "i386", "sparc" : "sparc64", "s390x" : "s390" }
+biarch = { "ppc" : "ppc64", "x86_64" : "i386", "sparc" : "sparc64", "s390x" : "s390", "ppc64": "ppc" }
 
            

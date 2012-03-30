@@ -78,7 +78,7 @@ class MashDistroConfig(config.BaseConfig):
     compsfile = config.Inherit(MashConfig.compsfile)
     use_sqlite = config.Inherit(MashConfig.use_sqlite)
     hash = config.Inherit(MashConfig.hash)
-    use_repoview = config.BoolOption(False)
+    use_repoview = config.Inherit(MashConfig.use_repoview)
     repoviewurl = config.Inherit(MashConfig.repoviewurl)
     repoviewtitle = config.Inherit(MashConfig.repoviewtitle)
     delta = config.Inherit(MashConfig.delta)

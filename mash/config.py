@@ -74,6 +74,7 @@ class MashDistroConfig(config.BaseConfig):
     repodir = config.Inherit(MashConfig.repodir)
     workdir = config.Inherit(MashConfig.workdir)
     outputdir = config.Inherit(MashConfig.outputdir)
+    output_subdir = config.Option()
     cachedir = config.Inherit(MashConfig.cachedir)
     compsfile = config.Inherit(MashConfig.compsfile)
     use_sqlite = config.Inherit(MashConfig.use_sqlite)
@@ -124,6 +125,8 @@ def readMainConfig(conf):
                     thisdistro.name = sect
                 if not thisdistro.repodata_path:
                     thisdistro.repodata_path = os.path.dirname(thisdistro.rpm_path)
+                if not thisdistro.output_subdir:
+                    thisdistro.output_subdir = sect
                 thisdistro.keys = map(string.lower, thisdistro.keys)
                 if thisdistro.multilib_file and thisdistro.multilib_file[0] != '/':
                     thisdistro.multilib_file = os.path.join(thisdistro.configdir, thisdistro.multilib_file)

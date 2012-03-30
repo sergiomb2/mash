@@ -237,7 +237,8 @@ class Mash:
                 os._exit(1)
             previous_path = None
             if self.config.previous:
-                prefix = os.path.join(self.config.outputdir, self.config.name, "")
+                prefix = os.path.join(self.config.outputdir, 
+                                      self.config.output_subdir, "")
                 suffix = repo_path.replace(prefix, "")
                 previous_path = os.path.join(self.config.previous, suffix)
             self.logger.info("createrepo: starting %s..." % (path,))
@@ -393,7 +394,8 @@ class Mash:
             sys.exit(1)
         
         # Make the trees
-        outputdir = os.path.join(self.config.outputdir, self.config.name)
+        outputdir = os.path.join(self.config.outputdir, 
+                                 self.config.output_subdir)
         shutil.rmtree(outputdir, ignore_errors = True)
         os.makedirs(outputdir)
         tmpdir = "%s/mash-%s/" % (self.config.workdir, self.config.name,)
@@ -457,9 +459,12 @@ class Mash:
         if pid:
             return pid
                 
-        self.logger.info("Resolving multilib for arch %s using method %s" % (arch, self.config.multilib_method))
-        pkgdir = os.path.join(self.config.outputdir, self.config.name, self.config.rpm_path % {'arch':arch})
-        repodir = os.path.join(self.config.outputdir, self.config.name, self.config.repodata_path % {'arch':arch})
+        self.logger.info("Resolving multilib for arch %s using method %s" % 
+                         (arch, self.config.multilib_method))
+        pkgdir = os.path.join(self.config.outputdir, self.config.output_subdir, 
+                              self.config.rpm_path % {'arch':arch})
+        repodir = os.path.join(self.config.outputdir, self.config.output_subdir, 
+                               self.config.repodata_path % {'arch':arch})
         tmproot = os.path.join(tmpdir, "%s-%s.tmp" % (self.config.name, arch))
             
         yumbase = yum.YumBase()

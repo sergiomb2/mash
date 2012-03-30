@@ -13,3 +13,12 @@ the configuration file "f15.mash".
 Mash's main configuration is at /etc/mash/mash.conf, which contains
 basic settings for using mash. Individual configurations end in mash,
 such as 'rawhide.mash' or 'f15-updates.mash'.
+
+mash is a Fedora build system tool. For discussion, comments, and
+patches please send mail to:
+	buildsys@lists.fedoraproject.org
+	http://lists.fedoraproject.org/mailman/listinfo/buildsys
+
+Bugs can be filed at:
+	https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora
+under the 'mash' component.

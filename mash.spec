@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.26
+Version:        0.5.27
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,18 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Jun 21 2012 Bill Nottingham <notting@redhat.com> 0.5.27-1
+- explicitly whitelist redhat-lsb, to handle packaging changes thereof
+
+* Tue May 08 2012 Dennis Gilmore <dennis@ausil.us> 0.5.26-4
+- blacklist java-1.7.0-openjdk-devel from multilib
+
+* Mon Apr 09 2012 Dennis Gilmore <dennis@ausil.us> 0.5.26-3
+- make sure secondary arch branched configs have the right key
+
+* Tue Apr 03 2012 Dennis Gilmore <dennis@ausil.us> 0.5.26-2
+- pull in patches from upstream for secondary arch config fixes
+
 * Thu Feb 09 2012 Dennis Gilmore <dennis@ausil.us> 0.5.26-1
 - hash the branched repo
 - use rawhide tag for rawhide not deprectated dist-rawhide

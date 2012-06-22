@@ -93,6 +93,19 @@ class MashDistroConfig(config.BaseConfig):
     parent_repos = config.ListOption()
     previous = None
 
+    def fixup(self, sect):
+        if not self.name:
+            self.name = sect
+        if not self.repodata_path:
+            self.repodata_path = os.path.dirname(self.rpm_path)
+        if not self.output_subdir:
+            self.output_subdir = sect
+        self.keys = map(string.lower, self.keys)
+        if self.multilib_file and self.multilib_file[0] != '/':
+            self.multilib_file = os.path.join(self.configdir, self.multilib_file)
+        if len(self.keys) == 0:
+            self.keys = ['']
+
 def readMainConfig(conf):
     config = MashConfig()
     parser = RawConfigParser()
@@ -109,29 +122,17 @@ def readMainConfig(conf):
         
         thisdistro = MashDistroConfig()
         thisdistro.populate(parser, section)
-        thisdistro.keys = map(string.lower, thisdistro.keys)
-        if len(thisdistro.keys) == 0:
-            thisdistro.keys = ['']
+        thisdistro.fixup(section)
         config.distros.append(thisdistro)
     
     if os.path.isdir(config.configdir):
         for file in glob.glob('%s/*.mash' % config.configdir):
-            thisdistro = MashDistroConfig()
             parser = RawConfigParser()
             parser.read(file)
             for sect in parser.sections():
+                thisdistro = MashDistroConfig()
                 thisdistro.populate(parser, sect, config)
-                if not thisdistro.name:
-                    thisdistro.name = sect
-                if not thisdistro.repodata_path:
-                    thisdistro.repodata_path = os.path.dirname(thisdistro.rpm_path)
-                if not thisdistro.output_subdir:
-                    thisdistro.output_subdir = sect
-                thisdistro.keys = map(string.lower, thisdistro.keys)
-                if thisdistro.multilib_file and thisdistro.multilib_file[0] != '/':
-                    thisdistro.multilib_file = os.path.join(thisdistro.configdir, thisdistro.multilib_file)
-                if len(thisdistro.keys) == 0:
-                    thisdistro.keys = ['']
+                thisdistro.fixup(sect)
                 config.distros.append(thisdistro)
     return config
 

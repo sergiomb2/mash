@@ -23,7 +23,7 @@ import mash.config
     
 def main():
     usage = "usage: %prog [options] <configuration to build>"
-    parser = OptionParser(usage, version='%prog 0.5.28')
+    parser = OptionParser(usage, version='%prog 0.5.29')
     parser.add_option("-o","--outputdir",default="", dest="outputdir",
       help="output directory")
     parser.add_option("-c","--config", default="/etc/mash/mash.conf", dest="config",

@@ -78,7 +78,7 @@ class RuntimeMultilibMethod(MultilibMethod):
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
         blacklist = [ 'tomcat-native' ]
-        whitelist = [ 'libgnat', 'wine', 'lmms-vst', 'nspluginwrapper', 'libflashsupport', 'pulseaudio-utils', 'valgrind', 'perl-libs', 'redhat-lsb' ]
+        whitelist = [ 'libgnat', 'wine', 'lmms-vst', 'nspluginwrapper', 'libflashsupport', 'pulseaudio-utils', 'valgrind', 'perl-libs', 'redhat-lsb', 'yaboot' ]
         if po.name in blacklist:
             return False
         if po.name in whitelist:
@@ -172,7 +172,6 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
     def select(self, po):
         blacklist = ['dmraid-devel', 'kdeutils-devel', 'mkinitrd-devel', 'java-1.5.0-gcj-devel', 'java-1.7.0-icedtea-devel', 'php-devel', 'java-1.6.0-openjdk-devel',
                      'java-1.7.0-openjdk-devel' ]
-        whitelist = ['yaboot']
         if po.name in blacklist:
             return False
         if po.name in whitelist:

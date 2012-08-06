@@ -1,20 +1,20 @@
 # mash config file
 
-[17-arm]
+[18-arm]
 rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS
 debuginfo = True
 multilib = False
 multilib_method = devel
-tag = f17
+tag = f18
 inherit = False
 strict_keys = True
-keys = 34E166FA, F8DF67E6, A82BA4B7, 069C8460, 97A1071F, E8E40FDE, 57BBCCBA, D22E77F2, 4EBFC273, 0B86274E, 6DF2196F, DF9B0AE9
-repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/17/%(arch)s/os/
+keys = A4D647E9
+repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/18/%(arch)s/os/
 repoviewtitle = "Fedora Branched - %(arch)s"
 arches = arm armhfp
 delta = True
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:17 rawhide
+distro_tags = cpe:/o:fedoraproject:fedora:18 rawhide
 hash_packages = True

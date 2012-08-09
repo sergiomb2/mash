@@ -16,5 +16,5 @@ repoviewtitle = "Fedora Rawhide - %(arch)s"
 arches = s390 s390x
 delta = True
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:17 rawhide
+distro_tags = cpe:/o:fedoraproject:fedora:19 rawhide
 hash_packages = True

@@ -13,7 +13,7 @@ strict_keys = False
 keys = A4D647E9, F8DF67E6, 34E166FA, A82BA4B7, 069C8460, 97A1071F, E8E40FDE, 57BBCCBA, D22E77F2, 4EBFC273, 0B86274E, 6DF2196F, DF9B0AE9
 repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/rawhide/%(arch)s/os/
 repoviewtitle = "Fedora Rawhide - %(arch)s"
-arches = arm armhfp
+arches = armhfp
 delta = True
 # Change distro_tags as fedora-release version gets bumped
 distro_tags = cpe:/o:fedoraproject:fedora:19 rawhide

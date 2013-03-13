@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.30
+Version:        0.5.32
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,14 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Mar 13 2013 Dennis Gilmore <dennis@ausil.us> - 0.5.32-1
+- point rawhide configs at f20 tag
+
+* Tue Mar 12 2013 Dennis Gilmore <dennis@ausil.us> - 0.5.31-1
+- setup branched for f19 and rawhide for f20
+- drop sparc configs
+- arm is hfp only
+
 * Thu Aug 09 2012 Dennis Gilmore <dennis@ausil.us> 0.5.30-1
 - setup branched for f18 and rawhide for f19
 

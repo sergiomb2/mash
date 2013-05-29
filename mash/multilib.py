@@ -70,7 +70,16 @@ class KernelMultilibMethod:
                     if p_name == 'kernel' or p_name == 'kernel-devel':
                         return True
         return False
-            
+
+class YabootMultilibMethod:
+    def __init__(self, dummy):
+        self.name = 'base'
+    def select(self, po):
+        if po.arch in ['ppc'] :
+            if po.name.startswith('yaboot'):
+                return True
+        return False
+
 class RuntimeMultilibMethod(MultilibMethod):
     def __init__(self, dummy):
         self.name = 'runtime'

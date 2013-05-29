@@ -445,6 +445,7 @@ class Mash:
                        'devel'   : multilib.DevelMultilibMethod,
                        'file'    : multilib.FileMultilibMethod,
                        'kernel'  : multilib.KernelMultilibMethod,
+                       'yaboot'  : multilib.YabootMultilibMethod,
                        'all'     : multilib.AllMultilibMethod,
                        'none'    : multilib.NoMultilibMethod,
                        'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method](self.config.multilib_file)

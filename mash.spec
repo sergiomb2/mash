@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.32
+Version:        0.5.33
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed May 29 2013 Dennis Gilmore <dennis@ausil.us> - 0.5.33-1
+- fix rawhide cpe
+- add yaboot multilib policy make defualt for ppc in rawhide
+
 * Wed Mar 13 2013 Dennis Gilmore <dennis@ausil.us> - 0.5.32-1
 - point rawhide configs at f20 tag
 

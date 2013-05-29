@@ -6,7 +6,6 @@ repodata_path = %(arch)s/os/
 source_path = source/SRPMS
 debuginfo = True
 multilib = False
-multilib_method = devel
 tag = f20
 inherit = False
 strict_keys = False
@@ -16,5 +15,5 @@ repoviewtitle = "Fedora Rawhide - %(arch)s"
 arches = armhfp
 delta = True
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:19 rawhide
+distro_tags = cpe:/o:fedoraproject:fedora:20 rawhide
 hash_packages = True

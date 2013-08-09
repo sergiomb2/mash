@@ -34,6 +34,8 @@ def main():
       help="previous mash run to use as basis for createrepo")
     parser.add_option("-d","--delta", action='append', dest="delta",
       help="previous directory to use for deltarpm creation")
+    parser.add_option("--no-delta", action='store_false', dest="do_delta",
+      default=True, help="do not compose the deltarpms")
     (opts, args) = parser.parse_args()
     
     if len(args) < 1:
@@ -65,6 +67,9 @@ def main():
             dist.previous = opts.previous
             if not dist.delta_dirs:
                 dist.delta_dirs = [os.path.join(opts.previous, dist.rpm_path)]
+    if not opts.do_delta:
+        for dist in conf.distros:
+            dist.delta = False
 
     dists = []
     for dist in conf.distros:

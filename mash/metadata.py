@@ -65,7 +65,7 @@ class MetadataOld:
         if skip:
             self.args.append('--skip-stat')
 
-    def set_delta(self, deltapaths):
+    def set_delta(self, deltapaths, max_delta_rpm_size):
         # Sorry, can't do that here.
         pass
 
@@ -127,11 +127,11 @@ class MetadataNew:
     def set_skipstat(self, skip):
         self.conf.skip_stat = skip
 
-    def set_delta(self, deltapaths):
+    def set_delta(self, deltapaths, max_delta_rpm_size):
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
               self.conf.deltas = True
               self.conf.oldpackage_paths = deltapaths
-              self.conf.max_delta_rpm_size = 300000000
+              self.conf.max_delta_rpm_size = max_delta_rpm_size
 
     def set_previous(self, previous):
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
@@ -230,8 +230,8 @@ class Metadata:
     def set_skipstat(self, skip):
         self.obj.set_skipstat(skip)
 
-    def set_delta(self, deltapaths):
-        self.obj.set_delta(deltapaths)
+    def set_delta(self, deltapaths, max_delta_rpm_size):
+        self.obj.set_delta(deltapaths, max_delta_rpm_size)
 
     def set_previous(self, previous):
         self.obj.set_previous(previous)

@@ -115,7 +115,11 @@ class Mash:
                 if self.config.delta_dirs:
                     for dir in self.config.delta_dirs:
                         paths.append(dir % {'arch': arch })
-                md.set_delta(paths)
+                if self.config.max_delta_rpm_size:
+                    max_delta_rpm_size = self.config.max_delta_rpm_size
+                else:
+                    max_delta_rpm_size = 300000000
+                md.set_delta(paths, max_delta_rpm_size)
         if previous:
             md.set_previous(previous)
         # Setup the distro tags

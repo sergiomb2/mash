@@ -15,6 +15,7 @@ repoviewurl = http://download.fedoraproject.org/pub/fedora/linux/development/20/
 repoviewtitle = "Fedora Branched - %(arch)s"
 arches = armhfp i386 x86_64 
 delta = True
+max_delta_rpm_size = 800000000
 # Change distro_tags as fedora-release version gets bumped
 distro_tags = cpe:/o:fedoraproject:fedora:20 Null
 hash_packages = True

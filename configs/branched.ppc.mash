@@ -1,21 +1,21 @@
 # mash config file
 
-[19-ppc]
+[20-ppc]
 rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS
 debuginfo = True
 multilib = True
 multilib_method = devel
-tag = f19
+tag = f20
 inherit = False
 strict_keys = True
 keys = BA094068
-repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/19/%(arch)s/os/
+repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/20/%(arch)s/os/
 repoviewtitle = "Fedora Branched - %(arch)s"
 arches = ppc ppc64
 delta = True
 prefer_ppc64 = True
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:19 Schrödinger's Cat
+distro_tags = cpe:/o:fedoraproject:fedora:20 Null
 hash_packages = True

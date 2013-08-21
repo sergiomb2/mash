@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.5.34
+Version:        0.6.00
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Tue Aug 20 2013 Dennis Gilmore <dennis@ausil.us> - 0.6.00-1
+- make maximum deltarpm size configurable
+- setup branched for f20
+- setup rawhide for f21
+
 * Fri Jul 19 2013 Dennis Gilmore <dennis@ausil.us> - 0.5.34-1
 - add armhfp to the primary arch arches
 

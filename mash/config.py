@@ -109,6 +109,9 @@ class MashDistroConfig(config.BaseConfig):
             self.keys = ['']
 
 def readMainConfig(conf):
+    if not os.path.exists(conf):
+        raise ValueError("The config file does not exist: %s" % conf)
+
     config = MashConfig()
     parser = RawConfigParser()
     parser.read(conf)

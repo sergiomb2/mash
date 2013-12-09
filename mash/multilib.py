@@ -106,6 +106,9 @@ class RuntimeMultilibMethod(MultilibMethod):
             # dri
             if dirname in [ '/usr/lib/dri', '/usr/lib64/dri' ]:
                 return True
+            # vdpau
+            if dirname in [ '/usr/lib/vdpau', '/usr/lib64/vdpau' ]:
+                return True
             # krb5
             if dirname in [ '/usr/lib/krb5/plugins', '/usr/lib64/krb5/plugins' ]:
                 return True

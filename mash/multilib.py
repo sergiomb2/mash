@@ -157,6 +157,9 @@ class RuntimeMultilibMethod(MultilibMethod):
                 return True
             if fnmatch(dirname, '/usr/lib*/kde*/plugins/*'):
                 return True
+            # qml
+            if fnmatch(dirname, '/usr/lib*/qt5/qml/*'):
+                return True
             # gstreamer
             if fnmatch(dirname, '/usr/lib*/gstreamer-*'):
                 return True

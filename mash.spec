@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.01
+Version:        0.6.02
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,13 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Dec 11 2013 Dennis Gilmore <dennis@ausil.us> - 0.6.02-1
+- add --no-delta command line
+- multilib blacklist java-1.8.0-openjdk
+- enable vdpsu drivers as multilib
+- enable qt5 and qml as multilib
+- fail mash if pointed at non existant config file
+
 * Wed Aug 21 2013 Dennis Gilmore <dennis@ausil.us> - 0.6.01-1
 - setup default config options for max_delta_rpm_size
 

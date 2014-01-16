@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.02
+Version:        0.6.3
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,12 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Jan 16 2013 Dennis Gilmore <dennis@ausil.us> - 0.6.3-1
+- setup branched configs for f21
+- fix up secondary arch branched configs
+- add arm configs back to mash rawhide for aarch64
+- remove the sparc mash config file
+
 * Wed Dec 11 2013 Dennis Gilmore <dennis@ausil.us> - 0.6.02-1
 - add --no-delta command line
 - multilib blacklist java-1.8.0-openjdk

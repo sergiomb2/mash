@@ -44,7 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
-* Thu Jan 16 2013 Dennis Gilmore <dennis@ausil.us> - 0.6.3-1
+* Thu Jan 16 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.3-1
 - setup branched configs for f21
 - fix up secondary arch branched configs
 - add arm configs back to mash rawhide for aarch64

@@ -1,21 +1,21 @@
 # mash config file
 
-[20]
+[21]
 rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS
 debuginfo = True
 multilib = True
 multilib_method = devel
-tag = f20
+tag = f21
 inherit = False
 strict_keys = True
-keys = 246110C1
-repoviewurl = http://download.fedoraproject.org/pub/fedora/linux/development/20/%(arch)s/os/
+keys = 95A43F54
+repoviewurl = http://download.fedoraproject.org/pub/fedora/linux/development/21/%(arch)s/os/
 repoviewtitle = "Fedora Branched - %(arch)s"
 arches = armhfp i386 x86_64 
 delta = True
 max_delta_rpm_size = 800000000
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:20 Null
+distro_tags = cpe:/o:fedoraproject:fedora:21 Null
 hash_packages = True

@@ -1,6 +1,6 @@
 # mash config file
 
-[21-s390]
+[21-arm]
 rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS
@@ -13,8 +13,9 @@ strict_keys = True
 keys = A0A7BADB
 repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/21/%(arch)s/os/
 repoviewtitle = "Fedora Branched - %(arch)s"
-arches = s390 s390x
+arches = aarch64
 delta = True
+prefer_arm64 = True
 # Change distro_tags as fedora-release version gets bumped
 distro_tags = cpe:/o:fedoraproject:fedora:21 Null
 hash_packages = True

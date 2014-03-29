@@ -145,6 +145,9 @@ class MetadataNew:
         self.conf.content_tags = content_tags
 
     def _copy_in_deltas(self, path):
+        if not os.path.exists('%s/drpms' % (path,)):
+            os.mkdir('%s/drpms' % (path,))
+
         ts = rpmUtils.transaction.initReadOnlyTransaction()
         ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
 
@@ -166,8 +169,6 @@ class MetadataNew:
             return False
 
         def _copy(file, path):
-            if not os.path.exists('%s/drpms' % (path,)):
-                os.mkdir('%s/drpms' % (path,))
             destpath = '%s/drpms/%s' % (path, os.path.basename(file))
             try:
                 os.link(file, destpath)

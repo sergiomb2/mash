@@ -119,7 +119,11 @@ class Mash:
                     max_delta_rpm_size = self.config.max_delta_rpm_size
                 else:
                     max_delta_rpm_size = 300000000
-                md.set_delta(paths, max_delta_rpm_size)
+                if self.config.max_delta_rpm_age:
+                    max_delta_rpm_age = self.config.max_delta_rpm_age
+                else:
+                    max_delta_rpm_age = None  # No age specified.  Copy all.
+                md.set_delta(paths, max_delta_rpm_size, max_delta_rpm_age)
         if previous:
             md.set_previous(previous)
         # Setup the distro tags

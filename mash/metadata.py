@@ -1,7 +1,9 @@
 
 import locale
 import os
+import os.path
 import shutil
+import time
 
 import rpm
 import rpmUtils
@@ -65,7 +67,7 @@ class MetadataOld:
         if skip:
             self.args.append('--skip-stat')
 
-    def set_delta(self, deltapaths, max_delta_rpm_size):
+    def set_delta(self, deltapaths, max_delta_rpm_size, max_delta_rpm_age):
         # Sorry, can't do that here.
         pass
 
@@ -127,11 +129,12 @@ class MetadataNew:
     def set_skipstat(self, skip):
         self.conf.skip_stat = skip
 
-    def set_delta(self, deltapaths, max_delta_rpm_size):
+    def set_delta(self, deltapaths, max_delta_rpm_size, max_delta_rpm_age):
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
               self.conf.deltas = True
               self.conf.oldpackage_paths = deltapaths
               self.conf.max_delta_rpm_size = max_delta_rpm_size
+              self.conf.max_delta_rpm_age = max_delta_rpm_age
 
     def set_previous(self, previous):
         if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
@@ -170,6 +173,14 @@ class MetadataNew:
 
         def _copy(file, path):
             destpath = '%s/drpms/%s' % (path, os.path.basename(file))
+
+            modified_time = os.path.getmtime(file)
+            age = time.time() - modified_time
+
+            # If max_delta_rpm_age is None, then don't worry about it.
+            if self.conf.max_delta_rpm_age and age > self.conf.max_delta_rpm_age:
+                return
+
             try:
                 os.link(file, destpath)
             except OSError:
@@ -231,8 +242,8 @@ class Metadata:
     def set_skipstat(self, skip):
         self.obj.set_skipstat(skip)
 
-    def set_delta(self, deltapaths, max_delta_rpm_size):
-        self.obj.set_delta(deltapaths, max_delta_rpm_size)
+    def set_delta(self, deltapaths, max_delta_rpm_size, max_delta_rpm_age):
+        self.obj.set_delta(deltapaths, max_delta_rpm_size, max_delta_rpm_age)
 
     def set_previous(self, previous):
         self.obj.set_previous(previous)

@@ -456,14 +456,16 @@ class Mash:
         do_multi = self.config.multilib
         
         try:
-            method = { 'base'    : multilib.MultilibMethod,
-                       'devel'   : multilib.DevelMultilibMethod,
-                       'file'    : multilib.FileMultilibMethod,
-                       'kernel'  : multilib.KernelMultilibMethod,
-                       'yaboot'  : multilib.YabootMultilibMethod,
-                       'all'     : multilib.AllMultilibMethod,
-                       'none'    : multilib.NoMultilibMethod,
-                       'runtime' : multilib.RuntimeMultilibMethod}[self.config.multilib_method](self.config.multilib_file)
+            method = {
+                'base'    : multilib.MultilibMethod,
+                'devel'   : multilib.DevelMultilibMethod,
+                'file'    : multilib.FileMultilibMethod,
+                'kernel'  : multilib.KernelMultilibMethod,
+                'yaboot'  : multilib.YabootMultilibMethod,
+                'all'     : multilib.AllMultilibMethod,
+                'none'    : multilib.NoMultilibMethod,
+                'runtime' : multilib.RuntimeMultilibMethod
+            }[self.config.multilib_method](self.config)
         except KeyError:
             self.logger.error("Invalid multilib method %s" % (self.config.multilib_method,))
             do_multi = False

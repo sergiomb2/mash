@@ -14,7 +14,7 @@
 from fnmatch import fnmatch
 
 class MultilibMethod:
-    def __init__(self, dummy):
+    def __init__(self, config):
         self.name = 'base'
     def select(self, po):
         prefer_64 = [ 'gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace' ]
@@ -28,21 +28,22 @@ class MultilibMethod:
         return False
 
 class NoMultilibMethod:
-    def __init__(self, dummy):
+    def __init__(self, config):
         self.name = 'none'
-        
+
     def select(self, po):
         return False
 
 class AllMultilibMethod(MultilibMethod):
-    def __init__(self, dummy):
+    def __init__(self, config):
         self.name = 'all'
-    
+
     def select(self, po):
         return True
     
 class FileMultilibMethod(MultilibMethod):
-    def __init__(self, file):
+    def __init__(self, config):
+        file = config.multilib_file
         self.name = 'file'
         self.list = []
         if file:
@@ -61,8 +62,9 @@ class FileMultilibMethod(MultilibMethod):
         return False
 
 class KernelMultilibMethod:
-    def __init__(self, dummy):
+    def __init__(self, config):
         self.name = 'base'
+
     def select(self, po):
         if po.arch.find('64') != -1:
             if po.name.startswith('kernel'):
@@ -72,8 +74,9 @@ class KernelMultilibMethod:
         return False
 
 class YabootMultilibMethod:
-    def __init__(self, dummy):
+    def __init__(self, config):
         self.name = 'base'
+
     def select(self, po):
         if po.arch in ['ppc'] :
             if po.name.startswith('yaboot'):
@@ -81,9 +84,9 @@ class YabootMultilibMethod:
         return False
 
 class RuntimeMultilibMethod(MultilibMethod):
-    def __init__(self, dummy):
+    def __init__(self, config):
         self.name = 'runtime'
-    
+
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
         blacklist = [ 'tomcat-native' ]
@@ -181,7 +184,7 @@ class RuntimeMultilibMethod(MultilibMethod):
         return False
 
 class DevelMultilibMethod(RuntimeMultilibMethod):
-    def __init__(self, dummy):
+    def __init__(self, config):
         self.name = 'devel'
     
     def select(self, po):

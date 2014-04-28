@@ -59,6 +59,10 @@ class MetadataOld:
     def set_database(self, db):
         self.args.append('-d')
 
+    def set_compress_type(self, compress_type):
+        self.args.append('--compress-type')
+        self.args.append(compress_type)
+
     def set_hash(self, hashtype):
         # Sorry, can't do that here.
         pass
@@ -122,6 +126,9 @@ class MetadataNew:
 
     def set_database(self, db):
         self.conf.database = db
+
+    def set_compress_type(self, compress_type):
+        self.conf.compress_type = compress_type
 
     def set_hash(self, hashtype):
         self.conf.sumtype = hashtype

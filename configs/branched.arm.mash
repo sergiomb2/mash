@@ -15,7 +15,7 @@ repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development
 repoviewtitle = "Fedora Branched - %(arch)s"
 arches = aarch64
 delta = True
-prefer_arm64 = True
+max_delta_rpm_age = 604800
 # Change distro_tags as fedora-release version gets bumped
 distro_tags = cpe:/o:fedoraproject:fedora:21 Null
 hash_packages = True

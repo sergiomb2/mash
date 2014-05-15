@@ -14,6 +14,7 @@ repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development
 repoviewtitle = "Fedora Rawhide - %(arch)s"
 arches = aarch64
 delta = True
+max_delta_rpm_age = 604800
 # Change distro_tags as fedora-release version gets bumped
 distro_tags = cpe:/o:fedoraproject:fedora:21 rawhide
 hash_packages = True

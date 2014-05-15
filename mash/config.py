@@ -32,6 +32,7 @@ class MashConfig(config.BaseConfig):
     arches = config.ListOption()
     keys = config.ListOption()
     configdir = config.Option('/etc/mash')
+    compress_type = config.Option('xz')
     strict_keys = config.BoolOption(False)
     workdir = config.Option('/var/tmp/mash')
     outputdir = config.Option('/var/tmp/mash')

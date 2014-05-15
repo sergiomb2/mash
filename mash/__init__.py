@@ -19,10 +19,7 @@ import shutil
 import sys
 import traceback
 
-try:
-    import koji
-except:
-    import brew as koji
+import koji
 import rpm
 import urlgrabber
 import time

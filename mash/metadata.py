@@ -246,6 +246,9 @@ class Metadata:
     def set_hash(self, hashtype):
         self.obj.set_hash(hashtype)
 
+    def set_compress_type(self, compress_type):
+        self.obj.set_compress_type(compress_type)
+
     def set_skipstat(self, skip):
         self.obj.set_skipstat(skip)
 

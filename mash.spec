@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.6
+Version:        0.6.7
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu May 15 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.7-1
+- remove dulicate compression definition
+- define set_compress_type in the Metadata class
+
 * Thu May 15 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.6-1
 - set default compression type
 

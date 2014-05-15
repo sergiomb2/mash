@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu May 15 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.8-1
+- add max_delta_rpm_age to configs and set the defaults in
+- the config.py
+- disable multilib on ppc and no longer mash ppc trees
+
 * Thu May 15 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.7-1
 - remove dulicate compression definition
 - define set_compress_type in the Metadata class

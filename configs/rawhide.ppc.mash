@@ -5,15 +5,14 @@ rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS
 debuginfo = True
-multilib = True
-multilib_method = yaboot
+multilib = False
 tag = f21
 inherit = False
 strict_keys = False
 keys = 4B94091B, BA094068, A4D647E9, F8DF67E6, 34E166FA, A82BA4B7, 069C8460, 97A1071F, E8E40FDE, 57BBCCBA, D22E77F2, 4EBFC273, 0B86274E, 6DF2196F, DF9B0AE9
 repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/rawhide/%(arch)s/os/
 repoviewtitle = "Fedora Rawhide - %(arch)s"
-arches = ppc ppc64
+arches = ppc64
 delta = True
 max_delta_rpm_age = 604800
 # Change distro_tags as fedora-release version gets bumped

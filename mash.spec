@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.4
+Version:        0.6.5
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,12 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed May 14 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.5-1
+- Add configurable compression type to mash (default to xz)
+- update multilib policy for syslinux changes
+- Only copy drpms if they're new-ish.
+- Only check directory once, not once for every drpm.
+
 * Thu Jan 16 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.4-1
 - add aarch64 to arch mappings
 

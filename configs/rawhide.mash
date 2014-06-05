@@ -17,6 +17,7 @@ arches = i386 x86_64 armhfp
 delta = True
 max_delta_rpm_size = 800000000
 max_delta_rpm_age = 604800
+delta_workers = 8
 # Change distro_tags as fedora-release version gets bumped
 distro_tags = cpe:/o:fedoraproject:fedora:21 rawhide
 hash_packages = True

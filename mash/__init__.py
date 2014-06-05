@@ -121,7 +121,11 @@ class Mash:
                     max_delta_rpm_age = self.config.max_delta_rpm_age
                 else:
                     max_delta_rpm_age = None  # No age specified.  Copy all.
-                md.set_delta(paths, max_delta_rpm_size, max_delta_rpm_age)
+                if self.config.delta_workers:
+                    delta_workers = self.config.delta_workers
+                else:
+                    delta_workers = 1 # default to 1 worker
+                md.set_delta(paths, max_delta_rpm_size, max_delta_rpm_age, delta_workers)
         if previous:
             md.set_previous(previous)
         # Setup the distro tags

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.9
+Version:        0.6.10
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Jun 05 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.10-1
+- fix up the Metadata class to have the correct paramaters
+
 * Wed Jun 04 2014 Dennis Gilmore <dennis@ausil.us> - 0.6.9-1
 - enable ppc64le support
 - enable parallel deltarpm creation

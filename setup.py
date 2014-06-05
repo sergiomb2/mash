@@ -2,10 +2,10 @@ from distutils.core import setup
 import glob
 
 setup(name='mash',
-      version='0.6.9',
+      version='0.6.10',
       description='Build system -> repository tool',
-      author='Bill Nottingham',
-      author_email='notting@redhat.com',
+      author='Dennis gilmore',
+      author_email='dennis@ausil.us',
       url='https://fedorahosted.org/releases/m/a/mash/',
       license='GPLv2',
       packages=['mash'],

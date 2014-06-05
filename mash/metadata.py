@@ -253,8 +253,8 @@ class Metadata:
     def set_skipstat(self, skip):
         self.obj.set_skipstat(skip)
 
-    def set_delta(self, deltapaths, max_delta_rpm_size, max_delta_rpm_age):
-        self.obj.set_delta(deltapaths, max_delta_rpm_size, max_delta_rpm_age)
+    def set_delta(self, deltapaths, max_delta_rpm_size, max_delta_rpm_age, delta_workers):
+        self.obj.set_delta(deltapaths, max_delta_rpm_size, max_delta_rpm_age, delta_workers)
 
     def set_previous(self, previous):
         self.obj.set_previous(previous)

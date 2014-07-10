@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.11
+Version:        0.6.12
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Jul 10 2014 Kevin Fenzi <kevin@scrye.com> 0.6.12-1
+- Bump release to sync with Fedora. 
+
 * Tue Jul 08 2014 Kevin Fenzi <kevin@scrye.com> 0.6.11-1
 - Update rawhide config for f22
 

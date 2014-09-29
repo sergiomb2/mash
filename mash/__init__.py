@@ -12,6 +12,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import errno
 import glob
 import os
 import logging
@@ -269,8 +270,11 @@ class Mash:
                     path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
                 try:
                     os.mkdir(os.path.dirname(cachepath))
-                except:
-                    pass
+                except Exception as e:
+                    if e.errno != errno.EEXIST:
+                        # If the directory already exists, that's fine
+                        self.logger.error(e)
+
                 try:
                     result = urlgrabber.grabber.urlgrab(path, cachepath)
                 except:
@@ -279,8 +283,9 @@ class Mash:
                     path = os.path.join(koji.pathinfo.build(builds_hash[pkg['build_id']]), koji.pathinfo.rpm(pkg))
                     try:
                         result = urlgrabber.grabber.urlgrab(path, cachepath)
-                    except:
-                        self.logger.error("ERROR: can't download %s from %s" % (nevra(pkg), path))
+                    except Exception as e:
+                        self.logger.error("ERROR: can't download %s from %s: %s"
+                                          % (nevra(pkg), path, e))
                         return None
 
             fd = open(result)

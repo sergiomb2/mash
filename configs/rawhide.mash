@@ -7,7 +7,7 @@ source_path = source/SRPMS
 debuginfo = True
 multilib = True
 multilib_method = devel
-tag = f22
+tag = f23
 inherit = False
 strict_keys = False
 keys = 8E1431D5
@@ -19,5 +19,5 @@ max_delta_rpm_size = 800000000
 max_delta_rpm_age = 604800
 delta_workers = 8
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:22 rawhide
+distro_tags = cpe:/o:fedoraproject:fedora:23 rawhide
 hash_packages = True

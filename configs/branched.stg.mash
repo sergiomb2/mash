@@ -1,0 +1,23 @@
+# mash config file
+
+[22-stg]
+rpm_path = %(arch)s/os/Packages
+repodata_path = %(arch)s/os/
+source_path = source/SRPMS
+debuginfo = True
+multilib = True
+multilib_method = devel
+tag = f22
+inherit = False
+strict_keys = True
+keys = 8E1431D5
+repoviewurl = http://download.fedoraproject.org/pub/fedora/linux/development/22/%(arch)s/os/
+repoviewtitle = "Fedora Branched - %(arch)s"
+arches = armhfp i386 x86_64
+delta = True
+max_delta_rpm_size = 800000000
+max_delta_rpm_age = 604800
+delta_workers = 8
+# Change distro_tags as fedora-release version gets bumped
+distro_tags = cpe:/o:fedoraproject:fedora:22 Twenty Two
+hash_packages = True

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.13
+Version:        0.6.14
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,14 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed Apr 29 2015 Dennis Gilmore <dennis@ausil.us> - 0.6.14-1
+- blacklist php and httpd from being multilib rhbz#1217168 (dennis)
+- Make blacklist/whitelist into config values. based on patch from Ralph Bean
+  in rhbz#1082832 (dennis)
+- Pass the config object into the multilib method objects. (rbean)
+- Add configs for stg. (rbean)
+- update the mash configs for rawhide (dennis)
+
 * Mon Jan 19 2015 Dennis Gilmore <dennis@ausil.us> - 0.6.13-1
 - make sure we keep values expected to be integers, integers
 - when reading the config file

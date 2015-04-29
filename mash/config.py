@@ -29,6 +29,20 @@ class MashConfig(config.BaseConfig):
     multilib = config.BoolOption(True)
     multilib_method = config.Option('devel')
     multilib_file = config.Option()
+    multilib_devel_whitelist = config.ListOption()
+    multilib_devel_blacklist = config.ListOption([
+        'dmraid-devel', 'kdeutils-devel', 'mkinitrd-devel',
+        'java-1.5.0-gcj-devel', 'java-1.7.0-icedtea-devel',
+        'php-devel', 'java-1.6.0-openjdk-devel',
+        'java-1.7.0-openjdk-devel', 'java-1.8.0-openjdk-devel',
+    ])
+    multilib_runtime_whitelist = config.ListOption([
+        'libgnat', 'wine', 'lmms-vst', 'nspluginwrapper',
+        'libflashsupport', 'valgrind', 'perl-libs', 'redhat-lsb',
+        'yaboot', 'syslinux-extlinux-nonlinux', 'syslinux-nonlinux',
+        'syslinux-tftpboot',
+    ])
+    multilib_runtime_blacklist = config.ListOption(['tomcat-native'])
     arches = config.ListOption()
     keys = config.ListOption()
     configdir = config.Option('/etc/mash')

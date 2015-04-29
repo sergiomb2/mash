@@ -35,6 +35,7 @@ class MashConfig(config.BaseConfig):
         'java-1.5.0-gcj-devel', 'java-1.7.0-icedtea-devel',
         'php-devel', 'java-1.6.0-openjdk-devel',
         'java-1.7.0-openjdk-devel', 'java-1.8.0-openjdk-devel',
+        'httpd-devel',
     ])
     multilib_runtime_whitelist = config.ListOption([
         'libgnat', 'wine', 'lmms-vst', 'nspluginwrapper',
@@ -42,7 +43,9 @@ class MashConfig(config.BaseConfig):
         'yaboot', 'syslinux-extlinux-nonlinux', 'syslinux-nonlinux',
         'syslinux-tftpboot',
     ])
-    multilib_runtime_blacklist = config.ListOption(['tomcat-native'])
+    multilib_runtime_blacklist = config.ListOption(['tomcat-native',
+        'php', 'httpd',
+    ])
     arches = config.ListOption()
     keys = config.ListOption()
     configdir = config.Option('/etc/mash')

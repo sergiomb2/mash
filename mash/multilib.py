@@ -86,6 +86,7 @@ class YabootMultilibMethod:
 class RuntimeMultilibMethod(MultilibMethod):
     def __init__(self, config):
         self.name = 'runtime'
+        self.config = config
 
     def select(self, po):
         libdirs = [ '/usr/lib', '/usr/lib64', '/lib', '/lib64' ]
@@ -184,6 +185,7 @@ class RuntimeMultilibMethod(MultilibMethod):
 class DevelMultilibMethod(RuntimeMultilibMethod):
     def __init__(self, config):
         self.name = 'devel'
+        self.config = config
 
     def select(self, po):
         if po.name in self.config.multilib_devel_blacklist:

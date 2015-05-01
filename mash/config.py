@@ -43,8 +43,8 @@ class MashConfig(config.BaseConfig):
         'yaboot', 'syslinux-extlinux-nonlinux', 'syslinux-nonlinux',
         'syslinux-tftpboot',
     ])
-    multilib_runtime_blacklist = config.ListOption(['tomcat-native',
-        'php', 'httpd',
+    multilib_runtime_blacklist = config.ListOption([
+        'tomcat-native', 'php', 'httpd',
     ])
     arches = config.ListOption()
     keys = config.ListOption()

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.14
+Version:        0.6.15
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
@@ -44,6 +44,10 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Wed May 01 2015 Dennis Gilmore <dennis@ausil.us> - 0.6.15-1
+- Save a reference to the config. (rbean)
+- add script for making changelogs from git for rpm (dennis)
+
 * Wed Apr 29 2015 Dennis Gilmore <dennis@ausil.us> - 0.6.14-1
 - blacklist php and httpd from being multilib rhbz#1217168 (dennis)
 - Make blacklist/whitelist into config values. based on patch from Ralph Bean

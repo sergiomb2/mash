@@ -85,6 +85,14 @@ class MashDistroConfig(config.BaseConfig):
     multilib = config.Inherit(MashConfig.multilib)
     multilib_method = config.Inherit(MashConfig.multilib_method)
     multilib_file = config.Inherit(MashConfig.multilib_file)
+    multilib_devel_whitelist = config.Inherit(
+        MashConfig.multilib_devel_whitelist)
+    multilib_devel_blacklist = config.Inherit(
+        MashConfig.multilib_devel_blacklist)
+    multilib_runtime_whitelist = config.Inherit(
+        MashConfig.multilib_runtime_whitelist)
+    multilib_runtime_blacklist = config.Inherit(
+        MashConfig.multilib_runtime_blacklist)
     arches = config.Inherit(MashConfig.arches)
     tag = config.Option()
     inherit = config.BoolOption(True)

@@ -19,6 +19,48 @@ import string
 from ConfigParser import RawConfigParser
 
 from yum import config
+from yum.misc import read_in_items_from_dot_dir
+
+class SetOption(config.Option):
+    """An option that contains a set of strings.
+
+       This is a port of :class:`yum.config.ListOption` to return sets
+    """
+    def __init__(self, default=None, parse_default=False):
+        if default is None:
+            default = set()
+        super(SetOption, self).__init__(default, parse_default)
+
+    def parse(self, s):
+        """Convert a string from the config file into a set.  parses
+        globdir:paths as foo.d-style dirs.
+
+        :param s: The string to be converted to a set.  Commas and
+            whitespace are used as separators for the set.
+        :return: *s* converted to a set
+        """
+        # we need to allow for the '\n[whitespace]' continuation - easier
+        # to sub the \n with a space and then read the lines
+        s = s.replace('\n', ' ')
+        s = s.replace(',', ' ')
+        results = set()
+        for item in s.split():
+            if item.startswith('glob:'):
+                thisglob = item.replace('glob:', '')
+                results.update(read_in_items_from_dot_dir(thisglob))
+                continue
+            results.add(item)
+
+        return results
+
+    def tostring(self, value):
+        """Convert a set of strings to a string value.  This does the
+        opposite of the :meth:`parse` method above.
+
+        :param value: a list of values
+        :return: string representation of input
+        """
+        return '\n '.join(value)
 
 class MashConfig(config.BaseConfig):
     rpm_path = config.Option('Mash')
@@ -29,23 +71,23 @@ class MashConfig(config.BaseConfig):
     multilib = config.BoolOption(True)
     multilib_method = config.Option('devel')
     multilib_file = config.Option()
-    multilib_devel_whitelist = config.ListOption()
-    multilib_devel_blacklist = config.ListOption([
+    multilib_devel_whitelist = SetOption()
+    multilib_devel_blacklist = SetOption(set((
         'dmraid-devel', 'kdeutils-devel', 'mkinitrd-devel',
         'java-1.5.0-gcj-devel', 'java-1.7.0-icedtea-devel',
         'php-devel', 'java-1.6.0-openjdk-devel',
         'java-1.7.0-openjdk-devel', 'java-1.8.0-openjdk-devel',
         'httpd-devel',
-    ])
-    multilib_runtime_whitelist = config.ListOption([
+    )))
+    multilib_runtime_whitelist = SetOption(set((
         'libgnat', 'wine', 'lmms-vst', 'nspluginwrapper',
         'libflashsupport', 'valgrind', 'perl-libs', 'redhat-lsb',
         'yaboot', 'syslinux-extlinux-nonlinux', 'syslinux-nonlinux',
         'syslinux-tftpboot',
-    ])
-    multilib_runtime_blacklist = config.ListOption([
+    )))
+    multilib_runtime_blacklist = SetOption(set((
         'tomcat-native', 'php', 'httpd',
-    ])
+    )))
     arches = config.ListOption()
     keys = config.ListOption()
     configdir = config.Option('/etc/mash')

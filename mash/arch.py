@@ -14,22 +14,21 @@
 # Unfortunately, rpmUtils.arch is not what we want.
 
 
-compat = { "i386" : ("athlon", "i686", "i586", "i486", "i386", "noarch"),
-           "x86_64" : ("amd64", "ia32e", "x86_64", "noarch"),
-           "ia64" : ("ia64", "noarch"),
-           "ppc" : ("ppc", "noarch"),
-           "ppc64" : ("ppc64p7", "ppc64pseries", "ppc64iseries", "ppc64", "noarch"),
-           "ppc64le" : ("ppc64le", "noarch"),
-           "s390" : ("s390", "noarch"),
-           "s390x" : ("s390x",  "noarch"),
-           "sparc" : ("sparcv9v", "sparcv9", "sparcv8", "sparc", "noarch"),
-           "sparc64" : ("sparc64v", "sparc64", "noarch"),
-           "alpha" : ("alphaev6", "alphaev56", "alphaev5", "alpha", "noarch"),
-           "arm" : ("arm", "armv4l", "armv4tl", "armv5tel", "armv5tejl", "armv6l", "armv7l", "noarch"),
-           "armhfp" : ("armv7hl", "armv7hnl", "noarch"),
-           "aarch64" : ("aarch64", "noarch"),
-}
+compat = {"i386": ("athlon", "i686", "i586", "i486", "i386", "noarch"),
+          "x86_64": ("amd64", "ia32e", "x86_64", "noarch"),
+          "ia64": ("ia64", "noarch"),
+          "ppc": ("ppc", "noarch"),
+          "ppc64": ("ppc64p7", "ppc64pseries", "ppc64iseries", "ppc64", "noarch"),
+          "ppc64le": ("ppc64le", "noarch"),
+          "s390": ("s390", "noarch"),
+          "s390x": ("s390x",  "noarch"),
+          "sparc": ("sparcv9v", "sparcv9", "sparcv8", "sparc", "noarch"),
+          "sparc64": ("sparc64v", "sparc64", "noarch"),
+          "alpha": ("alphaev6", "alphaev56", "alphaev5", "alpha", "noarch"),
+          "arm": ("arm", "armv4l", "armv4tl", "armv5tel", "armv5tejl", "armv6l", "armv7l", "noarch"),
+          "armhfp": ("armv7hl", "armv7hnl", "noarch"),
+          "aarch64": ("aarch64", "noarch"),
+          }
 
-biarch = { "ppc" : "ppc64", "x86_64" : "i386", "sparc" : "sparc64", "s390x" : "s390", "ppc64": "ppc" }
-
-           
+biarch = {"ppc": "ppc64", "x86_64": "i386", "sparc":
+          "sparc64", "s390x": "s390", "ppc64": "ppc"}

@@ -15,10 +15,11 @@ try:
 except:
     usenew = False
 
+
 def _make_ancient(path, excludes, previous, logger):
-    args = [ "yum-arch", "-q", "-s" ]
+    args = ["yum-arch", "-q", "-s"]
     for exclude in excludes:
-        args = args + [ "-x", exclude ]
+        args = args + ["-x", exclude]
     args.append(path)
     if previous:
         try:
@@ -32,9 +33,11 @@ def _make_ancient(path, excludes, previous, logger):
         (p, status) = os.waitpid(pid, 0)
     return status
 
+
 class MetadataOld:
+
     def __init__(self, logger):
-        self.args = [ 'createrepo', '--update', '-q' ]
+        self.args = ['createrepo', '--update', '-q']
         self.previous = None
         self.logger = logger
         self.excludes = []
@@ -90,9 +93,11 @@ class MetadataOld:
         self.args.append(path)
         if self.previous:
             try:
-                shutil.copytree("%s/repodata" %(self.previous,), "%s/repodata" % (path,))
+                shutil.copytree("%s/repodata" %
+                                (self.previous,), "%s/repodata" % (path,))
             except OSError:
-                self.logger.error("Couldn't copy repodata from %s" % (self.previous,))
+                self.logger.error(
+                    "Couldn't copy repodata from %s" % (self.previous,))
         pid = os.fork()
         if not pid:
             os.execv("/usr/bin/createrepo", self.args)
@@ -101,7 +106,9 @@ class MetadataOld:
         if self.ancient:
             _make_ancient(path, self.excludes, self.previous, self.logger)
 
+
 class MetadataNew:
+
     def __init__(self, logger):
         self.conf = createrepo.MetaDataConfig()
         self.conf.update = True
@@ -137,16 +144,16 @@ class MetadataNew:
         self.conf.skip_stat = skip
 
     def set_delta(self, deltapaths, max_delta_rpm_size, max_delta_rpm_age, delta_workers):
-        if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
-              self.conf.deltas = True
-              self.conf.oldpackage_paths = deltapaths
-              self.conf.max_delta_rpm_size = max_delta_rpm_size
-              self.conf.max_delta_rpm_age = max_delta_rpm_age
-              self.conf.delta_workers = delta_workers
+        if rpm.labelCompare([createrepo.__version__, '0', '0'], ['0.9.7', '0', '0']) >= 0:
+            self.conf.deltas = True
+            self.conf.oldpackage_paths = deltapaths
+            self.conf.max_delta_rpm_size = max_delta_rpm_size
+            self.conf.max_delta_rpm_age = max_delta_rpm_age
+            self.conf.delta_workers = delta_workers
 
     def set_previous(self, previous):
-        if rpm.labelCompare([createrepo.__version__,'0','0'], ['0.9.7', '0', '0']) >= 0:
-              self.conf.update_md_path = previous
+        if rpm.labelCompare([createrepo.__version__, '0', '0'], ['0.9.7', '0', '0']) >= 0:
+            self.conf.update_md_path = previous
         self.previous = previous
 
     def set_distro_tags(self, distro_tags):
@@ -160,7 +167,7 @@ class MetadataNew:
             os.mkdir('%s/drpms' % (path,))
 
         ts = rpmUtils.transaction.initReadOnlyTransaction()
-        ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES|rpm._RPMVSF_NODIGESTS))
+        ts.pushVSFlags((rpm._RPMVSF_NOSIGNATURES | rpm._RPMVSF_NODIGESTS))
 
         def _sigmatches(hdr, filename):
             newhdr = rpmUtils.miscutils.hdrFromPackage(ts, filename)
@@ -173,9 +180,10 @@ class MetadataNew:
 
         def _matches(file, list):
             hdr = rpmUtils.miscutils.hdrFromPackage(ts, file)
-            fname = '%s-%s-%s.%s.rpm' % (hdr['name'], hdr['version'], hdr['release'], hdr['arch'])
+            fname = '%s-%s-%s.%s.rpm' % (
+                hdr['name'], hdr['version'], hdr['release'], hdr['arch'])
             if fname in list.keys():
-                #if _sigmatches(hdr, list[fname]):
+                # if _sigmatches(hdr, list[fname]):
                 return True
             return False
 
@@ -197,8 +205,10 @@ class MetadataNew:
         fulllist = self.repomatic.getFileList(self.conf.directory, '.rpm')
         filelist = {}
         for f in fulllist:
-            filelist[os.path.basename(f)] = os.path.join(self.conf.directory, f)
-        deltalist = self.repomatic.getFileList('%s/drpms' % (self.previous,), '.drpm')
+            filelist[os.path.basename(f)] = os.path.join(
+                self.conf.directory, f)
+        deltalist = self.repomatic.getFileList(
+            '%s/drpms' % (self.previous,), '.drpm')
         for file in deltalist:
             fullpath = '%s/drpms/%s' % (self.previous, file)
             if _matches(fullpath, filelist):
@@ -211,9 +221,11 @@ class MetadataNew:
         if self.previous:
             if not self.conf.update_md_path:
                 try:
-                    shutil.copytree("%s/repodata" %(self.previous,), "%s/repodata" % (path,))
+                    shutil.copytree("%s/repodata" %
+                                    (self.previous,), "%s/repodata" % (path,))
                 except OSError:
-                    self.logger.error("Couldn't copy repodata from %s" % (self.previous,))
+                    self.logger.error(
+                        "Couldn't copy repodata from %s" % (self.previous,))
             if self.conf.deltas:
                 self._copy_in_deltas(path)
         self.repomatic.doPkgMetadata()
@@ -222,7 +234,9 @@ class MetadataNew:
         if self.ancient:
             _make_ancient(path, self.conf.excludes, self.previous, self.logger)
 
+
 class Metadata:
+
     def __init__(self, logger):
         if usenew:
             self.obj = MetadataNew(logger)
@@ -254,13 +268,14 @@ class Metadata:
         self.obj.set_skipstat(skip)
 
     def set_delta(self, deltapaths, max_delta_rpm_size, max_delta_rpm_age, delta_workers):
-        self.obj.set_delta(deltapaths, max_delta_rpm_size, max_delta_rpm_age, delta_workers)
+        self.obj.set_delta(
+            deltapaths, max_delta_rpm_size, max_delta_rpm_age, delta_workers)
 
     def set_previous(self, previous):
         self.obj.set_previous(previous)
 
     def set_distro_tags(self, distro_tags):
-        split_tag = distro_tags.split(' ',1)
+        split_tag = distro_tags.split(' ', 1)
         self.obj.set_distro_tags(split_tag)
 
     def set_content_tags(self, content_tags):

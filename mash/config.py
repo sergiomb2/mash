@@ -21,11 +21,14 @@ from ConfigParser import RawConfigParser
 from yum import config
 from yum.misc import read_in_items_from_dot_dir
 
+
 class SetOption(config.Option):
+
     """An option that contains a set of strings.
 
        This is a port of :class:`yum.config.ListOption` to return sets
     """
+
     def __init__(self, default=None, parse_default=False):
         if default is None:
             default = set()
@@ -61,6 +64,7 @@ class SetOption(config.Option):
         :return: string representation of input
         """
         return '\n '.join(value)
+
 
 class MashConfig(config.BaseConfig):
     rpm_path = config.Option('Mash')
@@ -115,7 +119,8 @@ class MashConfig(config.BaseConfig):
     content_tags = config.ListOption()
     prefer_ppc64 = config.BoolOption(False)
     distros = []
-    
+
+
 class MashDistroConfig(config.BaseConfig):
     name = config.Option()
     rpm_path = config.Inherit(MashConfig.rpm_path)
@@ -177,9 +182,11 @@ class MashDistroConfig(config.BaseConfig):
             self.output_subdir = sect
         self.keys = map(string.lower, self.keys)
         if self.multilib_file and self.multilib_file[0] != '/':
-            self.multilib_file = os.path.join(self.configdir, self.multilib_file)
+            self.multilib_file = os.path.join(
+                self.configdir, self.multilib_file)
         if len(self.keys) == 0:
             self.keys = ['']
+
 
 def readMainConfig(conf):
     if not os.path.exists(conf):
@@ -193,16 +200,16 @@ def readMainConfig(conf):
     config.keys = map(string.lower, config.keys)
     if len(config.keys) == 0:
         config.keys = ['']
-    
+
     for section in config.parser.sections():
         if section == 'defaults':
             continue
-        
+
         thisdistro = MashDistroConfig()
         thisdistro.populate(parser, section)
         thisdistro.fixup(section)
         config.distros.append(thisdistro)
-    
+
     if os.path.isdir(config.configdir):
         for file in glob.glob('%s/*.mash' % config.configdir):
             parser = RawConfigParser()
@@ -213,4 +220,3 @@ def readMainConfig(conf):
                 thisdistro.fixup(sect)
                 config.distros.append(thisdistro)
     return config
-

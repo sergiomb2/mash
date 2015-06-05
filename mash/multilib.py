@@ -14,8 +14,10 @@
 import os
 from fnmatch import fnmatch
 
+
 class MultilibMethod(object):
-    PREFER_64 = frozenset(( 'gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace' ))
+    PREFER_64 = frozenset(
+        ('gdb', 'frysk', 'systemtap', 'systemtap-runtime', 'ltrace', 'strace'))
 
     def __init__(self, config):
         self.name = 'base'
@@ -30,27 +32,33 @@ class MultilibMethod(object):
                         return True
         return False
 
+
 class NoMultilibMethod(object):
+
     def __init__(self, config):
         self.name = 'none'
 
     def select(self, po):
         return False
 
+
 class AllMultilibMethod(MultilibMethod):
+
     def __init__(self, config):
         self.name = 'all'
 
     def select(self, po):
         return True
 
+
 class FileMultilibMethod(MultilibMethod):
+
     def __init__(self, config):
         file = config.multilib_file
         self.name = 'file'
         self.list = []
         if file:
-            f = open(file,'r')
+            f = open(file, 'r')
             lines = f.readlines()
             f.close()
             for line in lines:
@@ -64,7 +72,9 @@ class FileMultilibMethod(MultilibMethod):
                 return True
         return False
 
+
 class KernelMultilibMethod(object):
+
     def __init__(self, config):
         self.name = 'base'
 
@@ -76,12 +86,14 @@ class KernelMultilibMethod(object):
                         return True
         return False
 
+
 class YabootMultilibMethod(object):
+
     def __init__(self, config):
         self.name = 'base'
 
     def select(self, po):
-        if po.arch in ['ppc'] :
+        if po.arch in ['ppc']:
             if po.name.startswith('yaboot'):
                 return True
         return False
@@ -99,11 +111,11 @@ class RuntimeMultilibMethod(MultilibMethod):
 
     # alsa, dri, gtk-accessibility, scim-bridge-gtk, krb5, sasl, vdpau
     by_dir.update(frozenset(os.path.join('/usr/lib', p) for p in ('alsa-lib',
-        'dri', 'gtk-2.0/modules', 'gtk-2.0/immodules', 'krb5/plugins',
-        'sasl2', 'vdpau')))
+                                                                  'dri', 'gtk-2.0/modules', 'gtk-2.0/immodules', 'krb5/plugins',
+                                                                  'sasl2', 'vdpau')))
     by_dir.update(frozenset(os.path.join('/usr/lib64', p) for p in ('alsa-lib',
-        'dri', 'gtk-2.0/modules', 'gtk-2.0/immodules', 'krb5/plugins',
-        'sasl2', 'vdpau')))
+                                                                    'dri', 'gtk-2.0/modules', 'gtk-2.0/immodules', 'krb5/plugins',
+                                                                    'sasl2', 'vdpau')))
 
     # pam
     by_dir.update(frozenset(os.path.join(p, 'security') for p in ROOTLIBDIRS))
@@ -197,7 +209,9 @@ class RuntimeMultilibMethod(MultilibMethod):
                 return True
         return False
 
+
 class DevelMultilibMethod(RuntimeMultilibMethod):
+
     def __init__(self, config):
         self.name = 'devel'
         self.config = config
@@ -222,4 +236,3 @@ class DevelMultilibMethod(RuntimeMultilibMethod):
         if po.name.endswith('-static'):
             return True
         return False
-

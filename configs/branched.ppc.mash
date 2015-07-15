@@ -1,21 +1,21 @@
 # mash config file
 
-[22-ppc]
+[23-ppc]
 rpm_path = %(arch)s/os/Packages
 repodata_path = %(arch)s/os/
 source_path = source/SRPMS
 debuginfo = True
 multilib = False
-tag = f22
+tag = f23
 inherit = False
 strict_keys = True
-keys = A29CB19C
-repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/22/%(arch)s/os/
+keys = 873529B8
+repoviewurl = http://download.fedoraproject.org/pub/fedora-secondary/development/23/%(arch)s/os/
 repoviewtitle = "Fedora Branched - %(arch)s"
 arches = ppc64le ppc64
 delta = True
 max_delta_rpm_age = 604800
 delta_workers = 8
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:22 Twenty Two
+distro_tags = cpe:/o:fedoraproject:fedora:23 Twenty Two
 hash_packages = True

@@ -17,5 +17,5 @@ delta = True
 max_delta_rpm_age = 604800
 delta_workers = 8
 # Change distro_tags as fedora-release version gets bumped
-distro_tags = cpe:/o:fedoraproject:fedora:23 Twenty Two
+distro_tags = cpe:/o:fedoraproject:fedora:23 Twenty Three
 hash_packages = True

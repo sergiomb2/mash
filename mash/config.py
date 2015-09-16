@@ -114,7 +114,7 @@ class MashConfig(config.BaseConfig):
     max_delta_rpm_size = config.IntOption(300000000)
     max_delta_rpm_age = config.IntOption()
     make_ancient = config.BoolOption(False)
-    latest = config.BoolOption(True)
+    latest = config.Option(True)
     distro_tags = config.Option()
     content_tags = config.ListOption()
     prefer_ppc64 = config.BoolOption(False)

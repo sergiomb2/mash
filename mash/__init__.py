@@ -29,6 +29,7 @@ import arch as masharch
 import multilib
 import metadata
 import yum
+import yum.config
 
 import rpmUtils.arch
 
@@ -326,11 +327,25 @@ class Mash:
 
         if self.config.cachedir and not os.path.exists(self.config.cachedir):
             os.makedirs(self.config.cachedir, 0755)
+
         # Get package list. This is an expensive operation.
         self.logger.info("Getting package lists for %s..." % (self.config.tag))
 
-        (pkglist, buildlist) = self.session.listTaggedRPMS(self.config.tag,
-                                                           inherit=self.config.inherit, latest=self.config.latest, rpmsigs=True)
+        # Latest may be an int or a bool.
+        # https://bugzilla.redhat.com/showdependencytree.cgi?id=1082830
+        latest = self.config.latest
+        try:
+            latest = int(latest)
+        except ValueError:
+            latest = yum.config.BoolOption().parse(latest)
+
+        (pkglist, buildlist) = self.session.listTaggedRPMS(
+            self.config.tag,
+            inherit=self.config.inherit,
+            latest=latest,
+            rpmsigs=True,
+        )
+
         # filter by key
         biglist = PackageList(self.config)
         for pkg in pkglist:

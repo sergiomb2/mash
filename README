@@ -17,7 +17,10 @@ such as 'rawhide.mash' or 'f15-updates.mash'.
 mash is a Fedora build system tool. For discussion, comments, and
 patches please send mail to:
 	buildsys@lists.fedoraproject.org
-	http://lists.fedoraproject.org/mailman/listinfo/buildsys
+	https://lists.fedoraproject.org/mailman/listinfo/buildsys
+
+Or open a pull request at:
+	https://pagure.io/mash/pull-requests
 
 Bugs can be filed at:
 	https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora

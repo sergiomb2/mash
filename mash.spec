@@ -1,12 +1,12 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
-Version:        0.6.18
+Version:        0.6.19
 Release:        1%{?dist}
 Summary:        Koji buildsystem to yum repository converter
 Group:          Development/Tools
 License:        GPLv2
-URL:            http://fedorahosted.org/releases/m/a/mash/
+URL:            https://pagure.io/mash
 Source0:        http://fedorahosted.org/releases/m/a/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       yum, createrepo, koji
@@ -44,6 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 /var/cache/mash
 
 %changelog
+* Thu Sep 24 2015 Till Maas <opensource@till.name> - 0.6.19-1
+- Use Fedora 24 key for Rawhide
+- Update URL in SPEC
+- Update README
+
 * Thu Jul 23 2015 Dennis Gilmore <dennis@ausil.us> - 0.6.18-1
 - fix up permission on spam-o-matic
 

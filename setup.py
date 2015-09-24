@@ -2,7 +2,7 @@ from distutils.core import setup
 import glob
 
 setup(name='mash',
-      version='0.6.18',
+      version='0.6.19',
       description='Build system -> repository tool',
       author='Dennis Gilmore',
       author_email='dennis@ausil.us',

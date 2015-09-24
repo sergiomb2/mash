@@ -24,7 +24,7 @@ import mash.config
 
 def main():
     usage = "usage: %prog [options] <configuration to build>"
-    parser = OptionParser(usage, version='%prog 0.6.18')
+    parser = OptionParser(usage, version='%prog 0.6.19')
     parser.add_option("-o", "--outputdir", default="", dest="outputdir",
                       help="output directory")
     parser.add_option(

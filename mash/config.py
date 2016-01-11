@@ -87,7 +87,7 @@ class MashConfig(config.BaseConfig):
         'libgnat', 'wine', 'lmms-vst', 'nspluginwrapper',
         'libflashsupport', 'valgrind', 'perl-libs', 'redhat-lsb',
         'yaboot', 'syslinux-extlinux-nonlinux', 'syslinux-nonlinux',
-        'syslinux-tftpboot',
+        'syslinux-tftpboot', 'nosync',
     )))
     multilib_runtime_blacklist = SetOption(set((
         'tomcat-native', 'php', 'httpd',

@@ -28,6 +28,14 @@ compat = {"i386": ("athlon", "i686", "i586", "i486", "i386", "noarch"),
           "arm": ("arm", "armv4l", "armv4tl", "armv5tel", "armv5tejl", "armv6l", "armv7l", "noarch"),
           "armhfp": ("armv7hl", "armv7hnl", "noarch"),
           "aarch64": ("aarch64", "noarch"),
+          "mips": ("mips", "noarch"),
+          "mipsel": ("mipsel", "noarch"),
+          "mips64": ("mips64", "noarch"),
+          "mips64el": ("mips64el", "noarch"),
+          "mipsr6": ("mipsr6", "noarch"),
+          "mipsr6el": ("mipsr6el", "noarch"),
+          "mips64r6": ("mips64r6", "noarch"),
+          "mips64r6el": ("mips64r6el", "noarch"),
           }
 
 biarch = {"ppc": "ppc64", "x86_64": "i386", "sparc":

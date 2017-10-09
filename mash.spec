@@ -9,7 +9,7 @@ License:        GPLv2
 URL:            https://pagure.io/mash
 Source0:        http://fedorahosted.org/releases/m/a/mash/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       yum, createrepo, koji
+Requires:       yum, createrepo, koji, python-multilib
 Conflicts:	pungi < 1.0.0
 BuildRequires:  python-devel
 BuildArch:      noarch

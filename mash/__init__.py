@@ -26,10 +26,10 @@ import urlgrabber
 import time
 
 import arch as masharch
-import multilib
 import metadata
 import yum
 import yum.config
+from multilib import multilib
 
 import rpmUtils.arch
 
@@ -425,7 +425,7 @@ class Mash:
                         (exclusivearch[pkg['build_id']] and not has_any(masharch.compat[target_arch], [arch for arch in exclusivearch[pkg['build_id']] if arch != 'noarch'])):
                     self.logger.info(
                         "Excluding %s.%s from %s due to EXCLUDEARCH/EXCLUSIVEARCH" %
-                                     (pkg['name'], pkg['arch'], target_arch))
+                        (pkg['name'], pkg['arch'], target_arch))
                     continue
                 else:
                     if pkg['name'].find('-debuginfo') != -1:
@@ -532,7 +532,7 @@ class Mash:
                               self.config.rpm_path % {'arch': arch})
         repodir = os.path.join(
             self.config.outputdir, self.config.output_subdir,
-                               self.config.repodata_path % {'arch': arch})
+            self.config.repodata_path % {'arch': arch})
         tmproot = os.path.join(tmpdir, "%s-%s.tmp" % (self.config.name, arch))
 
         yumbase = yum.YumBase()

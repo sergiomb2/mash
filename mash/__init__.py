@@ -376,7 +376,7 @@ class Mash:
                 source.add(pkg)
                 continue
 
-            if pkg['name'].find('-debuginfo') != -1:
+            if pkg['name'].find('-debuginfo') != -1 or pkg['name'].find('-debugsource') != -1:
                 for target_arch in self.config.arches:
                     if arch in masharch.compat[target_arch]:
                         debug[target_arch].add(pkg)

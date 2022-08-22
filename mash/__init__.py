@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,9 +26,9 @@ import rpm
 import urlgrabber
 import time
 
-import arch as masharch
-import multilib
-import metadata
+from . import arch as masharch
+from . import multilib
+from . import metadata
 import yum
 
 import rpmUtils.arch
@@ -53,11 +54,11 @@ class PackageList:
             try:
                 aIndex = keylist.index(aKey)
             except:
-                aIndex = sys.maxint
+                aIndex = sys.maxsize
             try:
                 bIndex = keylist.index(bKey)
             except:
-                bIndex = sys.maxint
+                bIndex = sys.maxsize
 
             if aIndex < bIndex:
                 return a
@@ -65,18 +66,18 @@ class PackageList:
                 return b
 
         tag = nevra(package)
-        if self._packages.has_key(tag):
+        if tag in self._packages:
             self._packages[tag] = _better_sig(self._packages[tag], package)
         else:
             self._packages[tag] = package
 
     def remove(self, package):
         tag = nevra(package)
-        if self._packages.has_key(tag):
+        if tag in self._packages:
             self._packages.remove(tag)
 
     def packages(self):
-        return self._packages.values()
+        return list(self._packages.values())
 
 
 class Mash:
@@ -368,13 +369,13 @@ class Mash:
                 continue
 
             for target_arch in self.config.arches:
-                if not masharch.compat.has_key(arch):
+                if arch not in masharch.compat:
                     masharch.compat[arch] = (arch, 'noarch')
 
                 if arch in masharch.compat[target_arch]:
                     packages[target_arch].add(pkg)
 
-                if self.config.multilib and masharch.biarch.has_key(target_arch):
+                if self.config.multilib and target_arch in masharch.biarch:
                     if arch in masharch.compat[masharch.biarch[target_arch]]:
                         packages[target_arch].add(pkg)
 
@@ -647,7 +648,7 @@ enabled=0
         repocache = os.path.join(tmpdir, ".createrepo-cache")
         pids = []
         for arch in self.config.arches:
-            if arch in masharch.biarch.keys():
+            if arch in list(masharch.biarch.keys()):
                 pid = self.doDepSolveAndMultilib(arch, repocache)
                 pids.append(pid)
 

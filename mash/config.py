@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +17,7 @@ import os
 import glob
 import string
 
-from ConfigParser import RawConfigParser
+from configparser import RawConfigParser
 
 from yum import config
 from yum.misc import read_in_items_from_dot_dir
@@ -180,7 +181,7 @@ class MashDistroConfig(config.BaseConfig):
             self.repodata_path = os.path.dirname(self.rpm_path)
         if not self.output_subdir:
             self.output_subdir = sect
-        self.keys = map(string.lower, self.keys)
+        self.keys = list(map(string.lower, self.keys))
         if self.multilib_file and self.multilib_file[0] != '/':
             self.multilib_file = os.path.join(
                 self.configdir, self.multilib_file)
@@ -197,7 +198,7 @@ def readMainConfig(conf):
     parser.read(conf)
     config.populate(parser, 'defaults')
     config.parser = parser
-    config.keys = map(string.lower, config.keys)
+    config.keys = list(map(string.lower, config.keys))
     if len(config.keys) == 0:
         config.keys = ['']
 

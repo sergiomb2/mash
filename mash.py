@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,11 +41,11 @@ def main():
     (opts, args) = parser.parse_args()
 
     if len(args) < 1:
-        print "ERROR: No configuration specified!\n"
+        print("ERROR: No configuration specified!\n")
         parser.print_help()
         sys.exit(1)
     if len(args) > 1:
-        print "ERROR: Only one configuration at a time, please.\n"
+        print("ERROR: Only one configuration at a time, please.\n")
         parser.print_help()
         sys.exit(1)
 
@@ -88,20 +88,20 @@ def main():
             else:
                 (p, status) = os.waitpid(pid, 0)
             if not os.WIFEXITED(status) or os.WEXITSTATUS(status) != 0:
-                print "mash failed in %s" % os.path.join(dist.outputdir,
-                                                         dist.output_subdir)
+                print("mash failed in %s" % os.path.join(dist.outputdir,
+                                                         dist.output_subdir))
                 sys.exit(1)
             if themash.config.multilib:
                 rc = themash.doMultilib()
                 if rc:
-                    print "mash failed in %s" % os.path.join(dist.outputdir,
-                                                             dist.output_subdir)
+                    print("mash failed in %s" % os.path.join(dist.outputdir,
+                                                             dist.output_subdir))
                     sys.exit(1)
-            print "mash done in %s" % os.path.join(dist.outputdir,
-                                                   dist.output_subdir)
+            print("mash done in %s" % os.path.join(dist.outputdir,
+                                                   dist.output_subdir))
             sys.exit(0)
 
-    print "ERROR: No configuration named '%s'!\n" % (args[0],)
+    print("ERROR: No configuration named '%s'!\n" % (args[0],))
     parser.print_help()
     sys.exit(1)
 

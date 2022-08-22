@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 
 import locale
 import os
@@ -182,7 +183,7 @@ class MetadataNew:
             hdr = rpmUtils.miscutils.hdrFromPackage(ts, file)
             fname = '%s-%s-%s.%s.rpm' % (
                 hdr['name'], hdr['version'], hdr['release'], hdr['arch'])
-            if fname in list.keys():
+            if fname in list(list.keys()):
                 # if _sigmatches(hdr, list[fname]):
                 return True
             return False

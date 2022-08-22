@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import os
 import shutil
@@ -70,7 +70,7 @@ def addOwner(list, pkg):
     if list.get(pkg):
         return True
 
-    if list.has_key(pkg):
+    if pkg in list:
         return False
 
     f = owner_template % pkg
@@ -134,9 +134,9 @@ def generateSpam(pkgname, treename, sendmail=True):
     guilty = owners[pkgname]
     conspirators = []
 
-    for s in package.keys():
+    for s in list(package.keys()):
         subpackage = package[s]
-        for arch in subpackage.keys():
+        for arch in list(subpackage.keys()):
             brokendeps = subpackage[arch]
             for dep in brokendeps:
                 for blame in dep[2]:
@@ -153,9 +153,9 @@ def generateSpam(pkgname, treename, sendmail=True):
 %s has broken dependencies in the %s tree:
 """ % (pkgname, treename)
 
-    for s in package.keys():
+    for s in list(package.keys()):
         subpackage = package[s]
-        for arch in subpackage.keys():
+        for arch in list(subpackage.keys()):
             data = data + "On %s:\n" % (arch)
             brokendeps = subpackage[arch]
             for dep in brokendeps:
@@ -181,7 +181,7 @@ Subject: Broken dependencies: %s
             server.set_debuglevel(1)
             server.sendmail(fromaddr, toaddrs, msg)
         except:
-            print 'sending mail failed'
+            print('sending mail failed')
 
 
 def doit(dir, treename, mail=True):
@@ -206,25 +206,25 @@ def doit(dir, treename, mail=True):
         my.repos.setCacheDir(cachedir)
         my.readMetadata()
         baddeps = my.getBrokenDeps(newest=False)
-        pkgs = baddeps.keys()
+        pkgs = list(baddeps.keys())
         tmplist = [(x.returnSimple('name'), x) for x in pkgs]
         tmplist.sort()
         pkgs = [x for (key, x) in tmplist]
         if len(pkgs) > 0:
-            print "Broken deps for %s" % (arch,)
-            print "----------------------------------------------------------"
+            print("Broken deps for %s" % (arch,))
+            print("----------------------------------------------------------")
         naughtydd = defaultdict(list)
         for pkg in pkgs:
             srcpkg = getSrcPkg(pkg)
 
             addOwner(owners, srcpkg)
 
-            if not deps.has_key(srcpkg):
+            if srcpkg not in deps:
                 deps[srcpkg] = {}
 
             pkgid = "%s-%s" % (pkg.name, pkg.printVer())
 
-            if not deps[srcpkg].has_key(pkgid):
+            if pkgid not in deps[srcpkg]:
                 deps[srcpkg][pkgid] = {}
 
             broken = []
@@ -238,17 +238,17 @@ def doit(dir, treename, mail=True):
 
             deps[srcpkg][pkgid][arch] = broken
 
-        brokensources = dict((k, list(v)) for k, v in naughtydd.iteritems())
+        brokensources = dict((k, list(v)) for k, v in naughtydd.items())
         for source in sorted(brokensources.keys()):
-            print "[%s]" % (source)
+            print("[%s]" % (source))
             for d in brokensources[source]:
-                print d
+                print(d)
 
-        print "\n\n"
+        print("\n\n")
         os.unlink(conffile)
         shutil.rmtree(cachedir, ignore_errors=True)
 
-    pkglist = deps.keys()
+    pkglist = list(deps.keys())
     for pkg in pkglist:
         generateSpam(pkg, treename, mail)
 

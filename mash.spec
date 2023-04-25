@@ -1,4 +1,4 @@
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%{!?python_sitelib: %define python_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           mash
 Version:        0.6.19
@@ -11,7 +11,7 @@ Source0:        http://fedorahosted.org/releases/m/a/mash/%{name}-%{version}.tar
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       yum, createrepo, koji
 Conflicts:	pungi < 1.0.0
-BuildRequires:  python-devel
+BuildRequires:  python2-devel
 BuildArch:      noarch
 
 %description
@@ -21,13 +21,15 @@ any multlib RPMs that are necessary.
 
 %prep
 %setup -q
+sed -i '0,/python/s//python2/' utils/spam-o-matic
+sed -i '0,/python/s//python2/' mash.py
 
 %build
-%{__python} setup.py build
+%{__python2} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%{__python2} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 mv $RPM_BUILD_ROOT/%{_bindir}/mash.py $RPM_BUILD_ROOT/%{_bindir}/mash
 mkdir -p $RPM_BUILD_ROOT/var/cache/mash
@@ -38,7 +40,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING README TODO
 %config(noreplace) %{_sysconfdir}/mash
-%{python_sitelib}/mash*
+%{python2_sitelib}/mash*
 %{_bindir}/*
 %{_datadir}/mash
 /var/cache/mash

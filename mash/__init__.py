@@ -326,7 +326,7 @@ class Mash:
             return 0
 
         if self.config.cachedir and not os.path.exists(self.config.cachedir):
-            os.makedirs(self.config.cachedir, 0755)
+            os.makedirs(self.config.cachedir, 0o755)
         # Get package list. This is an expensive operation.
         self.logger.info("Getting package lists for %s..." % (self.config.tag))
 

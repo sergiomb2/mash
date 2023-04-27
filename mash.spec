@@ -6,8 +6,9 @@ Group:          Development/Tools
 License:        GPLv2
 URL:            https://pagure.io/mash
 Source0:        http://fedorahosted.org/releases/m/a/mash/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       yum, createrepo, koji
+Requires:       yum
+Requires:       createrepo
+Requires:       koji
 Conflicts:      pungi < 1.0.0
 BuildRequires:  python3-devel
 BuildArch:      noarch
@@ -23,13 +24,13 @@ sed -i '0,/python/s//python3/' utils/spam-o-matic
 sed -i '0,/python/s//python3/' mash.py
 
 %build
-%{__python3} setup.py build
+%py3_build
 
 %install
-%{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%py3_install
 
-mv $RPM_BUILD_ROOT/%{_bindir}/mash.py $RPM_BUILD_ROOT/%{_bindir}/mash
-mkdir -p $RPM_BUILD_ROOT/var/cache/mash
+mv %{buildroot}%{_bindir}/mash.py %{buildroot}/%{_bindir}/mash
+mkdir -p %{buildroot}/var/cache/mash
 
 %files
 %doc AUTHORS ChangeLog COPYING README TODO
